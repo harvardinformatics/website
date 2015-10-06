@@ -1,3 +1,7 @@
 output/*
 .project
 .DS_Store
+*.pyc
+.pydevproject
+.settings*
+
