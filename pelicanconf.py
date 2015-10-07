@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 import os
 
+PLUGIN_PATHS = ['../pelican-plugins/']
 PLUGINS = ['tag_cloud.tag_cloud',]
 
 AUTHOR = u'Aaron Kitzmiller'
