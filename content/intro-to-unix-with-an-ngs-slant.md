@@ -1,6 +1,7 @@
 Title: Intro to Unix with an NGS slant
 Date: 2015-01-01 11:00
 Category: Tutorials
+Summary: This tutorial introduces basic Linux operation in the context of many of the operations that might be done for NGS data  processing.
 
 This tutorial introduces basic Linux operation in the context of many of the operations that might be done for NGS data  processing.
 
@@ -41,10 +42,6 @@ This is a very good intro put together by John Brunelle and is worth a read.  W
 ### **Logging in**
 
 From an OS X Terminal  (or an xterm or similar) type
-
-
-
-
 
 <pre>ssh -X [myusername@login.rc.fas.harvard.edu](mailto:myusername@login.rc.fas.harvard.edu)</pre>
 
@@ -94,15 +91,9 @@ Let’s dive in with some commands right away.    When you log in you land i
 On unix directories are separated by a forward slash (unlike windows) .   Everything hangs off the root directory [ / ] so regardless of which physical disk or filesystem your files live on full paths always start with [ / ]
 
 
-
-
-
 General Note: Typing man <command> will bring up the help page for any command.  This will list what it does, definitions of the different options and, if you’re lucky, some examples.
 
 <span style="color: #ff0000;">Hands on:</span>
-
-
-
 <span style="color: #ff0000;">1  Try the pwd command in your home directory now.   Note the differences.</span>
 
 
@@ -124,8 +115,6 @@ or you can navigate relative to your current directory with .. which means move 
 
 <pre>cd ../../regal/informatics/workshops
 </pre>
-
-
 
 
 
@@ -165,12 +154,15 @@ drwxr-xr-x 2 mclamp rc_admin 4096 Jun 17 18:26 .
 -rw-r--r-- 1 mclamp rc_admin 5033941307 Jun 17 18:27 LPS2_atac_SP2.R1.fastq
 -rw-r--r-- 1 mclamp rc_admin 5033941307 Jun 17 18:28 LPS2_atac_SP2.R2.fastq
 
+</pre>
+
 The columns are permissions, ?,owner, group, size in bytes, date modified, filename
 
 The . file means the current directory (as opposed to .. which means the parent directory)
 
 The permissions look complicated but are mostly straightforward.  
 
+<pre>
 **d**rwxrwxrwxrwx     A d at the front means it's a directory
 
 -**rw-**r--r--       The next three are user permissions (this case read and write)
@@ -178,9 +170,10 @@ The permissions look complicated but are mostly straightforward.
 -rw-**r--**r--       The second three are group permissions (read)
 
 -rw-r--**r--** The final three are world permissions (read)
+</pre>
+
 
 Directories have to have read and execute permissions for people to read them and read,write and execute for people to write.  Hence drwxrwxrwx means everybody and read and write to this directory.
-</pre>
 
 Note:  Command line editing
 
