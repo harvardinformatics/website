@@ -1,7 +1,7 @@
 Title: JalView at ISMB 2015
 Date: 2015-10-06 11:00
 Category: Blog
-Tags: jalview
+Tags: Jalview
 
 ![JalView at ISMB]({filename}/images/jalview.jpg)
 

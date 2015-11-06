@@ -15,18 +15,18 @@ a:hover {
 h1 {
 	font-size: 40px;
 	font-weight: bold;
-	margin-top: 1em;
+	margin-top: 1.5em;
 }
 
 h2 {
 	font-size: 30px;
 	font-weight: bold;
-	margin-top: 1em;
+	margin-top: 1.5em;
 }
 h3,h4 {
 	font-size: 20px;
 	font-weight: bold;
-	margin-top: 1em;
+	margin-top: 1.5em;
 }
 
 h1 a, h2 a, h3 a, h4 a {
@@ -48,6 +48,10 @@ img {
 	font-size: 20px;
 	font-style: italic;
 	margin: 1em;
+}
+
+.highlight {
+	margin: 1.5em;
 }
 
 #sidebar .list-group, #sidebar .list-group-item {
@@ -295,5 +299,8 @@ figure.floatcenter, .align-center {
 	}
 	footer, .tagcloud, .subtitle {
 		display: none;
+	}
+	.highlight {
+		margin: 0;
 	}
 }
