@@ -27,19 +27,21 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Sidebar stuff
-LINKS = (('Harvard University', 'http://www.harvard.edu'),
-         ('Harvard FAS', 'http://www.fas.harvard.edu'),
-         ('FAS Research Computing', 'http://rc.fas.harvard.edu'),)
+# LINKS = (('Harvard University', 'http://www.harvard.edu'),
+#          ('Harvard FAS', 'http://www.fas.harvard.edu'),
+#          ('FAS Research Computing', 'http://rc.fas.harvard.edu'),)
 
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
 #           ('Another social link', '#'),)
 
-DISPLAY_RECENT_POSTS_ON_SIDEBAR = True
-DISPLAY_TAGS_ON_SIDEBAR = True
+DISPLAY_RECENT_POSTS_ON_SIDEBAR = False
+DISPLAY_TAGS_ON_SIDEBAR = False
 DISPLAY_TAGS_INLINE = True
 TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
+
+DISPLAY_CATEGORIES_ON_SIDEBAR = False
 
 DEFAULT_PAGINATION = 10
 
