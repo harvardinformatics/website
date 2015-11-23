@@ -14,6 +14,7 @@ PATH = 'content'
 BANNER = True
 BANNER_ALL_PAGES = False
 DISPLAY_PAGES_ON_MENU = True
+FAVICON = 'favicon.ico'
 
 TIMEZONE = 'America/New_York'
 
@@ -50,4 +51,8 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
-STATIC_PATHS = ['images']
+STATIC_PATHS = ['images','extra']
+EXTRA_PATH_METADATA = {
+    'extra/favicon.ico': {'path': 'favicon.ico'},
+}
+

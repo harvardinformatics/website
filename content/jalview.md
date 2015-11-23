@@ -2,6 +2,7 @@ Title: JalView at ISMB 2015
 Date: 2015-10-06 11:00
 Category: Blog
 Tags: Jalview
+Summary: Jalview appears at ISMB
 
 ![JalView at ISMB]({filename}/images/jalview.jpg)
 

@@ -17,12 +17,11 @@
 		</div>
          <div class="col-sm-3">
                 <ul class="navbar-right list-group list-inline tagcloud" id="tags">
-                <li class="list-group-item"><a href="{{ SITEURL }}/{{ TAGS_URL }}"><h4><span class="icon-label">Tags</span></h4></a></li>
-                {% for tag in tag_cloud %}
-                		
+				{% set tags = tag_cloud | sort(attribute='0') %}                
+				{% for tag in tags %}                		
                     <li class="list-group-item tag-{{ tag.1 }}">
                         <a href="{{ SITEURL }}/{{ tag.0.url }}">
-                            {{ tag.0 }} ({{ tag.1 }})
+                            {{ tag.0 }}
                         </a>
                     </li>
                 {% endfor %}
