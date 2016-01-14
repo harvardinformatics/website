@@ -2,8 +2,7 @@ Title: Intermediate Unix Workshop
 Date: 2016-01-13 16:05
 Category: Tutorials
 Author: mclamp@harvard.edu
-Summary: This tutorial is intended for people who are familiar with the basics of unix but want to learn more
-about manipulating files and running commands.
+Summary: This tutorial is intended for people who are familiar with the basics of unix but want to learn more about manipulating files and running commands.
 
 
 ## Notes
@@ -748,14 +747,13 @@ Fasta format looks like
 GGTTATTAGGGTGGCAGAGCCAGGAAATTGCGT
 >another header line
 CCTCTAAGGCGGGCCACTGTGCCAAATTCTCTA
-</pre>
 </li>
 <li>2. Extract the index strings from the fastq file and estimate the frequency distribution
 (Use the /n/regal/informatics/workshops/Intermediate_Unix/DF_2.R1.fastq file)
 Index strings are on the end of the header line and look like CGTACTAG (or a similar length sequence)</li>
 </ul>
 </div>
+
 Extra: Useful information about perl in command lines
 http://www.softpanorama.org/Scripting/Perlorama/perl_in_command_line.shtml
-</div>
-</article>
+
