@@ -78,7 +78,8 @@ Finally, retrieve and uncompress the latest Trinotate pre-generated resource SQL
 	$ wget "https://data.broadinstitute.org/Trinity/Trinotate_v2.0_RESOURCES/Trinotate.sprot_uniref90.20150131.boilerplate.sqlite.gz" -O Trinotate.sqlite.gz
 	$ gunzip Trinotate.sqlite.gz
 
-Place the Trinotate.sqlite database in the working directory.
+Place the Trinotate.sqlite database in the working directory. Create a separate working directory for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs, especially if there is a lot of I/O or large files are written out during jobs.
+
 
 
 
@@ -92,7 +93,7 @@ In this example, we have used a mouse transcriptome from Ensembl. It can be down
 	$ wget ftp://ftp.ensembl.org/pub/release-82/fasta/mus_musculus/cdna/Mus_musculus.GRCm38.cdna.all.fa.gz
 	$ gunzip Mus_musculus.GRCm38.cdna.all.fa.gz
 
-The transcriptome data can be placed in a separate folder, which we can mark with an environment variable, for easy reference:  
+The transcriptome data can be placed in a separate folder (the /n/regal file system is recommended), which we can mark with an environment variable, for easy reference:  
 
 	:::bash
 	$ export TRANS_DATA=/path/to/trasncriptome/data
@@ -329,12 +330,12 @@ Below is an example SLURM script to run these three programs sequentially. Alter
 	#SBATCH -e optional.err
 	#SBATCH -t 600
 	
-	TRINOTATE_HOME=/n/home_rc/gmarnellos/regal/trinotate/Trinotate-2.0.2
-	TRANS_DATA=/n/home_rc/gmarnellos/regal/refdata/mouse/Ensembl/
+	TRANS_DATA=/path/to/trasncriptome/data
+	TRINOTATE_HOME=/path/to/trinotate/Trinotate-2.0.2
 	
 	source new-modules.sh
 	
-	
+
 	## Run SignalP to predict signal peptides
 	
 	module load signalp/4.1c-fasrc01
@@ -342,13 +343,11 @@ Below is an example SLURM script to run these three programs sequentially. Alter
 	signalp -f short -n signalp.out $TRANS_DATA/mouse38_cdna.fa.transdecoder.pep
 	
 	
-	
 	## Run RNAMMER 1.2 to identify rRNA transcripts
 	
 	module load rnammer/1.2-fasrc01
 	
 	$TRINOTATE_HOME/util/rnammer_support/RnammerTranscriptome.pl --transcriptome $TRANS_DATA/mouse38_cdna.fa --path_to_rnammer /n/sw/fasrcsw/apps/Core/rnammer/1.2-fasrc01/rnammer
-	
 	
 	
 	## Run tmHMM to predict transmembrane regions
@@ -454,3 +453,6 @@ With optional results loaded, the following columns also have data in the report
 Voilà!
 
 
+#### 7 References
+
+[Trinotate](https://trinotate.github.io/) has not been published as a paper but the last section of their webpage has a list of references for the individual software programs that Trinotate uses for functional annotation.

@@ -12,7 +12,7 @@ Summary: An example of running a Sleuth analysis on Odyssey cluster
 
 Sleuth is an R package and can be installed in a user account on Odyssey cluster. We recommend running it in an interactive SLURM session on Odyssey.
 
-When logged in on Odyssey, and interactive session can be launched with a command like the following, in which we are requesting one CPU (parameter "-n") in the interactive partition (parameter "-p"), for a bash session of 150 minutes ("-t") with memory 5000 Mb ("--mem="):
+When logged in on Odyssey, an interactive session can be launched with a command like the following, in which we are requesting one CPU (parameter "-n") in the interactive partition (parameter "-p"), for a bash session of 150 minutes ("-t") with memory 5000 Mb ("--mem="):
 
 	:::bash
 	$ srun -p interact -n 1 --pty -t 150 --mem=5000 /bin/bash
@@ -33,8 +33,9 @@ In order for a user to install R packages in the user account environment the fo
 	:::bash
 	$ export R_LIBS_USER=$HOME/R:$R_LIBS_USER
 
-Create a separate working folder for this example, for data and results files, running jobs, etc.
-For example, if you create your working directory under your home directory and name it "sleuth_example", the full path to the directory would be: ~/sleuth_example
+Create a separate working folder for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs.
+For example, if you create your working directory under regal and name it "sleuth_example", the full path to the directory could be: ~/regal/sleuth_example
+
 
 
 #### 2  Download example data
@@ -99,7 +100,7 @@ Before running the sleuth analysis proper, we need to define some intermediate v
 First specify where the example data kallisto results are located. Set an R variable with the base directory where data were downloaded in section 2 above:
 
 	:::r
-	base_dir <- "~/sleuth_example" ## susbtitute with your own path to the sleuth example directory
+	base_dir <- "~/regal/sleuth_example" ## susbtitute with your own path to the sleuth example directory
 
 Get the list of sample IDs:
 
@@ -195,6 +196,10 @@ Optionally, to view the results in a browser and do further exploratory data ana
 The webpage has several menus with analysis options: for instance, check the "MA plot", "volcano plot", and "test table" (this has the same information as the "results_table" we generated above) under the "analyses" menu; the "PCA" and "sample heatmap" plots under the "maps" menu; and the "scatter plots" under the "diagnostics" menu.
 
 
+
+#### 6 References
+
+Lior Pachter (2015). [A sleuth for RNA-Seq](https://liorpachter.wordpress.com/2015/08/17/a-sleuth-for-rna-seq/). Blogpost, August 17, 2015.
 
 
 

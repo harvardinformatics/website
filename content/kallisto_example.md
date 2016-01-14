@@ -28,16 +28,17 @@ The result of the command should look like:
 
 We recommend running longer kallisto jobs in an interactive SLURM session on Odyssey, or submit them as SLURM jobs.
 
-When logged in on Odyssey, and interactive session can be launched with a command like the following, in which we are requesting one CPU (parameter "-n") in the interactive partition (parameter "-p"), for a bash session of 150 minutes ("-t") with memory 5000 Mb ("--mem="):
+When logged in on Odyssey, an interactive session can be launched with a command like the following, in which we are requesting one CPU (parameter "-n") in the interactive partition (parameter "-p"), for a bash session of 150 minutes ("-t") with memory 5000 Mb ("--mem="):
 
 	:::bash
 	$ srun -p interact -n 1 --pty -t 150 --mem=5000 /bin/bash
 
-Create a separate working folder for this example, for data and results files, running jobs, etc.
-For example, if you create your working directory under your home directory and name it "kallisto_example", the full path to the directory would be: ~/kallisto_example
+
+Create a separate working folder for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs, especially if there is a lot of I/O or large files are written out during jobs.
+For example, if you create your working directory under regal and name it "kallisto_example", the full path to the directory could be:
 
 	:::bash
-	$ export KALLISTO_DIR=~/kallisto_example
+	$ export KALLISTO_DIR=~/regal/kallisto_example
 
 
 #### 2  Download example data
@@ -70,6 +71,7 @@ The fastq-dump command produces two compressed fastq files for each dataset, for
 	#SBATCH -n 1
 	#SBATCH -N 1
 	#SBATCH --mem 1000
+	#SBATCH -p serial_requeue
 	#SBATCH -o sra_%A_%a.out
 	#SBATCH -e sra_%A_%a.err
 	#SBATCH -J sra_arr
@@ -79,7 +81,7 @@ The fastq-dump command produces two compressed fastq files for each dataset, for
 	source new-modules.sh
 	module load sratoolkit/0.2.3.4-2.bib-fasrc02
 
-	KALLISTO_DIR=~/kallisto_example
+	KALLISTO_DIR=~/regal/kallisto_example
 
 	srafile=SRR4933${SLURM_ARRAY_TASK_ID}.sra
 
@@ -94,7 +96,7 @@ For human transcriptome reference, we are using transcriptome data from a recent
 	:::bash
 	$ wget ftp://ftp.ensembl.org/pub/release-83/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
 
-The transcriptome data can be placed in a separate folder, which we can mark with an environment variable, for easy reference:  
+The transcriptome data can be placed in a separate folder (the /n/regal file system is recommended), which we can mark with an environment variable, for easy reference:  
 
 	:::bash
 	$ export TRANS_DATA=/path/to/trasncriptome/data
@@ -126,6 +128,7 @@ We run this as a SLURM job-array:
 	#SBATCH -n 32
 	#SBATCH -N 1
 	#SBATCH --mem 15000
+	#SBATCH -p serial_requeue
 	#SBATCH -o kallisto_%A_%a.out
 	#SBATCH -e kallisto_%A_%a.err
 	#SBATCH -J kallisto_arr
@@ -137,7 +140,7 @@ We run this as a SLURM job-array:
 	module load gcc openmpi kallisto
 
 	TRANS_DATA=/path/to/trasncriptome/data
-	KALLISTO_DIR=~/kallisto_example
+	KALLISTO_DIR=~/regal/kallisto_example
 
 
 	dataset=SRR4933${SLURM_ARRAY_TASK_ID}
@@ -162,3 +165,9 @@ The main output of the kallisto quantification are the abundance estimates in th
 The "run_info.json" file contains a summary of the run, including data on the number targets used for quantification, the number of bootstraps performed, the version of the program used and how it was called. 
 
 The "abundance.h5" file contains the main quantification together with the boostraps in HDF5 compressed format, for large output of runs with many bootstraps.
+
+
+#### 5 References
+
+N. Bray, H. Pimentel, P. Melsted, and L. Pachter (2015). Near-optimal RNA-Seq quantification. [arXiv:1505.02710](http://arxiv.org/abs/1505.02710)
+
