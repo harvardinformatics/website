@@ -12,16 +12,21 @@ a:hover {
     color: orange;
 }
 
+code {
+	font-family: Andale Mono, Courier New, monospace;
+	background-color: transparent;
+	color: #c7254e;
+}
 h1 {
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: bold;
-	margin-top: 1.5em;
+	margin-top: 2em;
 }
 
 h2 {
-	font-size: 30px;
+	font-size: 25px;
 	font-weight: bold;
-	margin-top: 1.5em;
+	margin-top: 2em;
 }
 h3,h4 {
 	font-size: 20px;
@@ -45,7 +50,7 @@ img {
 
 .subtitle {
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 18px;
 	font-style: italic;
 	margin: 1em;
 }
@@ -266,6 +271,21 @@ figure.floatcenter, .align-center {
 #banner .btn, #banner .intro {
     margin-left: 4px;
 }
+
+.exercises {
+	color: red; 
+	margin: 50px	;
+}
+
+
+.highlight > pre {
+	border: none;
+	padding: 18px;
+	font-size: 16px;
+	font-family: 'Andale Mono', 'Courier New', monospace;
+	background-color: #f9f9f9;
+}
+
 
 /* Solutions for mobile and small screens  */
 @media (max-width: 650px) {

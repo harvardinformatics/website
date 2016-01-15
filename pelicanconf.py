@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 
 PLUGIN_PATHS = ['../pelican-plugins/']
-PLUGINS = ['tag_cloud.tag_cloud',]
+PLUGINS = ['tag_cloud.tag_cloud','interlinks','extract_toc','tipue_search']
 
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
@@ -54,5 +54,21 @@ RELATIVE_URLS = True
 STATIC_PATHS = ['images','extra']
 EXTRA_PATH_METADATA = {
     'extra/favicon.ico': {'path': 'favicon.ico'},
+}
+
+# Common URLs
+INTERLINKS = {
+    'account_request': 'https://account.rc.fas.harvard.edu/request/',
+    'password_reset': 'https://account.rc.fas.harvard.edu/password_reset/',
+    'openauth': 'https://software.rc.fas.harvard.edu/oa/',
+    'revoke': 'https://software.rc.fas.harvard.edu/oa/revoke/',
+    'module_list': 'https://portal.rc.fas.harvard.edu/apps/modules',
+    'slurm': 'http://slurm.schedmd.com/',
+    'rc_site': 'https://rc.fas.harvard.edu/',
+    'informatics_site': 'http://informatics.fas.harvard.edu/',
+    'rchelp' : 'https://portal.rc.fas.harvard.edu/rcrt/submit_ticket',
+    'lustre' : 'http://wiki.lustre.org/index.php/Main_Page',
+    'rcvpn' : 'https://vpn.rc.fas.harvard.edu',
+    'access-and-login' : 'https://rc.fas.harvard.edu/docs/access-and-login.html',
 }
 
