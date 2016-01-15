@@ -6,26 +6,10 @@
 </style>
 
 <div id="banner">
-	<div class="container">
-		<div class="col-sm-9">
 			<div>
 				<img class="img-responsive" src="/images/harvard-informatics-banner.png"></img>
 			</div>
 			<div class="subtitle">
 				Analysis, training, software, and data management services for <a href="http://www.fas.harvard.edu/">Harvard Faculty of Arts and Sciences</a>
 			</div>
-		</div>
-         <div class="col-sm-3">
-                <ul class="navbar-right list-group list-inline tagcloud" id="tags">
-				{% set tags = tag_cloud | sort(attribute='0') %}                
-				{% for tag in tags %}                		
-                    <li class="list-group-item tag-{{ tag.1 }}">
-                        <a href="{{ SITEURL }}/{{ tag.0.url }}">
-                            {{ tag.0 }}
-                        </a>
-                    </li>
-                {% endfor %}
-                </ul>
-         </div>
-	</div>
 </div>

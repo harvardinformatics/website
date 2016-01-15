@@ -598,23 +598,20 @@ the largest read length?</li>
 </div>
 
 
-## 10. Making Directories - mkdir
+## 10. Making Directories - `mkdir`
 
-The mkdir command will create a new directory. For example
+The `mkdir` command will create a new directory. For example
 
+    :::bash
+    mkdir ~/mynewdir
 
-<pre style="margin-top: 20px">
-mkdir ~/mynewdir
-</pre>
 will create a new directory in your home directory.
 
-If you want to create a directory multiple levels down use the -p option to fill in the middle
-directories.
+If you want to create a directory multiple levels down use the -p option to fill in the middle directories.
 
+    :::bash
+    mkdir -p ~/dir1/dir2/dir3
 
-<pre style="margin-top: 20px">
-mkdir -p ~/dir1/dir2/dir3
-</pre>
 
 <div class="exercises">
 Exercises
@@ -627,61 +624,56 @@ test1/test2/test3</li>
 </div>
 
 
-## 11. Copying Files and Directories - cp
+## 11. Copying Files and Directories - `cp`
 
-Continuing the tradition of terse commands copying files and directories is done using the cp
-command. For files the basic syntax is :
+Continuing the tradition of terse commands copying files and directories is done using the `cp` command. For files the basic syntax is :
 
-<pre style="margin-top: 20px">
-cp myfile.dat newfile.dat
-</pre>
+    :::bash
+    cp myfile.dat newfile.dat
+
 We can also copy files into directories using
 
-<pre style="margin-top: 20px">
-cp myfile.dat mydir
-</pre>
+    :::bash
+    cp myfile.dat mydir
+
 
 Note that the directory has to exist for this command to work.
 
 Multiple files can be copied using wildcards.
 
-<pre style="margin-top: 20px">
-cp *.dat mydir
-</pre>
+    :::bash
+    cp *.dat mydir
+
 
 This will copy all files ending in .dat into a new directory.
 
 For directory copying we generally want to copy the contents as well. In this case we use the -r option
 
-<pre style="margin-top: 20px">
-cp -r mydir mynewdir
-</pre>
+    :::bash
+    cp -r mydir mynewdir
+
 
 In this case the destination directory doesn't need to pre exist.
 
-By default the cp command makes 'fresh' copies of all the files and doesn't preserve timestamps. If
-you want to do this use the -p option.
+By default the `cp` command makes 'fresh' copies of all the files and doesn't preserve timestamps. If you want to do this use the `-p` option.
 
-<pre style="margin-top: 20px">
-cp -rp mydir mynewdir
-</pre>
+    :::bash
+    cp -rp mydir mynewdir
 
-Finally sometimes we want to reference a file in a directory but don't want to copy the whole thing.
-This is useful to save space for very large files and for this we use the ln command to link to the
-original.
 
-<pre style="margin-top: 20px">
-ln -s myrealfile.dat mylinkedfile.dat
-</pre>
+Finally sometimes we want to reference a file in a directory but don't want to copy the whole thing. This is useful to save space for very large files and for this we use the `ln` command to link to the original.
 
-If you then do an ls to list the linked file you'll see something like
+    :::basj
+    ln -s myrealfile.dat mylinkedfile.dat
 
-<pre style="margin-top: 20px">
-[mclamp@bioinf02 ~]$ cd work
-[mclamp@bioinf02 work]$ ln -s ../data/Homo_sapiens.GRCh38.78.gtf human.gtf
-[mclamp@bioinf02 work]$ ls -l *.gtf
-lrwx------ 1 mclamp rc_admin 34 Nov 2 16:08 human.gtf -> ../data/Homo_sapiens.GRCh38.78.gtf*
-</pre>
+
+If you then do an `ls` to list the linked file you'll see something like
+
+    :::bash
+    [mclamp@bioinf02 ~]$ cd work
+    [mclamp@bioinf02 work]$ ln -s ../data/Homo_sapiens.GRCh38.78.gtf human.gtf
+    [mclamp@bioinf02 work]$ ls -l *.gtf
+    lrwx------ 1 mclamp rc_admin 34 Nov 2 16:08 human.gtf -> ../data/Homo_sapiens.GRCh38.78.gtf*
 
 <div class="exercises">
 
@@ -696,26 +688,22 @@ Exercises
 </div>
 
 
-## 12. Deleting Files and Directories - rm
+## 12. Deleting Files and Directories - `rm`
 
-To remove a file use the rm command
+To remove a file use the `rm` command
 
-<pre style="margin-top: 20px">
-rm myfile.dat
-</pre>
+    :::bash
+    rm myfile.dat
 
-Note if you're on a scratch filesystem you won't be able to get this back. If you're on a backed up
-filesystem you can retrieve things from the .snapshot directories.
 
-To remove a directory use the rm -rf command which recursively removes the directory and all it's
-contents.
+Note if you're on a scratch filesystem you won't be able to get this back. If you're on a backed up filesystem you can retrieve things from the .snapshot directories.
 
-<pre style="margin-top: 20px">
-rm -rf myunwanteddir
-</pre>
+To remove a directory use the `rm -rf` command which recursively removes the directory and all it's contents.
 
-Note - be very careful with this and double check before pressing return. Be especially careful with
-wildcards.
+    :::bash
+    rm -rf myunwanteddir
+
+Note - be very careful with this and double check before pressing return. Be especially careful with wildcards.
 
 <div class="exercises">
 Exercises
@@ -727,39 +715,33 @@ directory and its contents to your user space</li>
 </ul>
 </div>
 
-## 13. Renaming Files and Directories - mv and rename
+## 13. Renaming Files and Directories - `mv` and `rename`
 
-You can rename files and directories using mv
+You can rename files and directories using `mv`
 
-<pre style="margin-top: 20px">
-mv myfile.dat mynewfile.dat
-mv mydir mynewdir
-</pre>
+    :::bash
+    mv myfile.dat mynewfile.dat
+    mv mydir mynewdir
 
 You can also use the relative notation to move things up a directory or directories
 
-<pre style="margin-top: 20px">
-mv myfile.dat ../../
-</pre>
+    :::bash
+    mv myfile.dat ../../
 
 This will move myfile.dat up two directories
 
-If you want to rename multiple files then you can't just use wild cards. You either have to use a loop
-or the rename command. An example of the rename command is :
+If you want to rename multiple files then you can't just use wild cards. You either have to use a loop or the rename command. An example of the rename command is :
 
-<pre style="margin-top: 20px">
-rename .htm .html *.htm
-</pre>
+    :::bash
+    rename .htm .html *.htm
 
-This will rename all files matching *.htm from an .htm extension to an .html extension
-Using a loop is a little more complicated but the following will do the same thing
+This will rename all files matching *.htm from an .htm extension to an .html extension. Using a loop is a little more complicated but the following will do the same thing
 
-<pre style="margin-top: 20px">
-for i in *.htm ; do # Loop over all files ending .htm and reference them using $i
- j=${i%.htm} # Strip off the .htm extension and reference that using $j
- mv $i $j.html # Use the mv command to rename the original file to .html
-done
-</pre>
+    :::bash
+    for i in *.htm ; do # Loop over all files ending .htm and reference them using $i
+     j=${i%.htm} # Strip off the .htm extension and reference that using $j
+     mv $i $j.html # Use the mv command to rename the original file to .html
+    done
 
 <div class="exercises">
 Exercises
@@ -774,35 +756,31 @@ directory and its contents to your user space</li>
 
 ## 14. Transferring Files To/From the Cluster
 
-There are graphical tools to transfer files to and from the cluster but it is very handy to know the
-command line versions. For this we use the scp (secure copy) command.
+There are graphical tools to transfer files to and from the cluster but it is very handy to know the command line versions. For this we use the `scp` (secure copy) command.
 
 The basic syntax is (and you need a terminal open on your local machine):
-<pre style="margin-top: 20px">
-scp username@server:remotefilename localfilename
-</pre>
-The remote filename can be the full path or just the filename if it's in your home directory. The local
-filename can just be . for your current directory.
+
+    :::bash
+    scp username@server:remotefilename localfilename
+
+The remote filename can be the full path or just the filename if it's in your home directory. The local filename can just be . for your current directory.
 
 For example for a single file we can use:
 
-<pre style="margin-top: 20px">
-scp mclamp@login.rc.fas.harvard.edu:/n/mypath/seq/pog.fa .
-</pre>
+    :::bash
+    scp mclamp@login.rc.fas.harvard.edu:/n/mypath/seq/pog.fa .
 
 For a directory and its contents we can use the -r option :
 
-<pre style="margin-top: 20px">
-scp -r mclamp@login.rc.fas.harvard.edu:/n/mypath/seq/ .
-</pre>
+    :::bash
+    scp -r mclamp@login.rc.fas.harvard.edu:/n/mypath/seq/ .
 
 Common mistakes include
-<ul>
-<li>Forgetting the colon : separating the servername from the path</li>
-<li>Mistyping the path</li>
-<li>Forgetting the -r when copying directories</li>
-<li>Running scp from the remote machine and not your local machine - check your command prompt people! Everyone does it at least once.</li>
-</ul>
+
+* Forgetting the colon : separating the servername from the path
+* Mistyping the path
+* Forgetting the -r when copying directories
+* Running scp from the remote machine and not your local machine - check your command prompt people! Everyone does it at least once.
 
 <div class="exercises">
 Exercises
@@ -810,4 +788,3 @@ Exercises
 <li>Transfer the seq directory used above to your local machine. Try and get it right first time</li>
 </ul>
 </div>
-</article>
