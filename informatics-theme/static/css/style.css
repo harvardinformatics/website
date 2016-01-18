@@ -4,6 +4,33 @@ body {
     font-family: FontAwesome;
 }
 
+table {
+	margin: 1.5em;
+	border-collapse: separate;
+}
+
+table tr td {
+	padding: 6px;
+}
+
+figure {
+	width: 100%;
+    margin: 1em; 
+}
+
+img {
+  	vertical-align: middle; 
+	display:block;
+	height: auto;
+	max-width: 100%;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto; 
+}
+
 a {
 	color: #C90016;
 }
@@ -42,11 +69,6 @@ p {
 	margin: 1em 1em 0em 1em;
 }
 
-img {
-	display:block;
-	height: auto;
-	max-width: 100%;
-}
 
 .subtitle {
 	font-weight: bold;

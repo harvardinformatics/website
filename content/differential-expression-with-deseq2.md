@@ -45,9 +45,6 @@ Now create a second data frame for sample information, such as the experimental 
     condition <- c('Control', 'Control', 'Control', 'Infected', 'Infected', 'Infected')  #vector of column names for the data frame
     colData <- data.frame(row.names=colnames(countData), condition=factor(condition, levels=c('Control','Infected')))
     colData
-&nbsp;
-
-    :::rconsole
     ##           condition
     ## dmel_unf1   Control
     ## dmel_unf2   Control
@@ -66,9 +63,6 @@ First, create a DESeqDataSet by specifying the gene counts data frame, the sampl
                                       colData = colData,
                                       design = ~condition)
     dataset
-&nbsp;
-
-    :::rconsole
     ## class: DESeqDataSet 
     ## dim: 17321 6 
     ## exptData(0):
@@ -83,7 +77,6 @@ Then run the DESeq2 algorithm and extract results for our two-class comparison:
 
     :::r
     dds <- DESeq(dataset)
-
     ## estimating size factors
     ## estimating dispersions
     ## gene-wise dispersion estimates
@@ -94,9 +87,7 @@ Then run the DESeq2 algorithm and extract results for our two-class comparison:
     result <- results(dds, contrast=c('condition','Infected','Control'))
     result <- result[complete.cases(result),]  #remove any rows with NA
     head(result)
-&nbsp;
 
-    :::rconsole
     ## log2 fold change (MAP): condition Infected vs Control 
     ## Wald test p-value: condition Infected vs Control 
     ## DataFrame with 6 rows and 6 columns
@@ -124,9 +115,7 @@ View a summary of DESeq2 results:
 
     :::r
     summary(result) 
-&nbsp; 
 
-    :::rconsole
     ## 
     ## out of 10255 with nonzero total read count
     ## adjusted p-value < 0.1
@@ -146,9 +135,7 @@ The top 50 up-regulated and down-regulated genes by p-value:
     topResults <- rbind( resOrdered[ resOrdered[,'log2FoldChange'] > 0, ][1:n,], 
                         resOrdered[ resOrdered[,'log2FoldChange'] < 0, ][n:1,] )
     topResults[c(1:5,(2*n-4):(2*n)), c('baseMean','log2FoldChange','padj')]
-&nbsp;
 
-    :::rconsole
     ## DataFrame with 10 rows and 3 columns
     ##                baseMean log2FoldChange          padj
     ##               <numeric>      <numeric>     <numeric>
@@ -180,12 +167,25 @@ Plot log fold change vs. mean expression for all genes, with genes where p < 0.
     rld <- rlogTransformation(dds, blind=TRUE)
     plotPCA(rld)
 
+<figure>
+	<a class="img" href="/images/deseq2-pca-plot.png">
+    		<img class="img-responsive" src="/images/deseq2-pca-plot.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 Plot counts for a single gene. Below is the plot for the gene with the lowest p-value:
 
     :::r
     plotCounts(dds, gene=which.min(result$padj), intgroup='condition', pch = 19)
+
+<figure>
+	<a class="img" href="/images/deseq2-plotcounts.png">
+    		<img class="img-responsive" src="/images/deseq2-plotcounts.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 
@@ -195,6 +195,13 @@ Display top genes’ normalized counts in a heatmap:
     hmcol <- brewer.pal(11,'RdBu')
     nCounts <- counts(dds, normalized=TRUE)
     heatmap(as.matrix(nCounts[ row.names(topResults), ]), Rowv = NA, col = hmcol, mar = c(8,2))
+
+<figure>
+	<a class="img" href="/images/deseq2-heatmap.png">
+    		<img class="img-responsive" src="/images/deseq2-heatmap.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 

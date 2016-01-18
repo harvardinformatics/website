@@ -5,8 +5,6 @@ Author: Tim Sackton
 Tags: R
 Summary: This tutorial is intended for R
 
-# Intro to R
-
 R is a functional programming language, which means that most of what one does is apply functions to objects.
 
 We will begin with a brief introduction to R objects and how functions work, and then focus on getting data into R, manipulating that data in R, and generating basic summary statistics.
@@ -18,13 +16,15 @@ R has very good built-in documentation that describes what functions do.
 
 To get help about a particular function, use ? followed by the function name, like so:
 
-?read.table
+    :::r
+    ?read.table
 
 
 ## Vectors
 
 Let’s start by creating one of the simplest R objects, a vector of numbers.
 
+    :::r
     v1<-c(1,2,3,4,5)
 
 v1 is an _object_ which we created by using the `<-` operator (less followed by a dash).
@@ -33,6 +33,7 @@ v1 now contains the output of the _function_ `c(1,2,3,4,5)` (c, for **c**ombined
 
 Let’s display the contents of v1:
 
+    :::r
     print(v1)
 
     ## [1] 1 2 3 4 5
@@ -41,18 +42,21 @@ We can also just type the name of an object (in this case `v1`) to display it.
 
 Let’s make a few more objects:
 
+    :::r
     x<-10
     y<-11
     letters<-c("a", "b", "c", "d")
 
 We might want to get a list of all the objects we’ve created at this point. In R, the function ls() returns a character vector with the names of all the objects in a specified environment (by default, the set of user-defined objects and functions).
 
+    :::r
     ls()
 
     ## [1] "letters" "v1"      "x"       "y"
 
 We can manipulate objects like so:
 
+    :::r
     x+5
 
     ## [1] 15
@@ -73,6 +77,7 @@ Note that the value of `x` is not modified here. We did not save the output to a
 
 If we want to update the value of `x`, we need to use our assignment operator:
 
+    :::r
     x<-x+5
     print(x)
 
@@ -80,6 +85,7 @@ If we want to update the value of `x`, we need to use our assignment operator:
 
 R handles vector math for us automatically:
 
+    :::r
     v1*x
 
     ## [1] 15 30 45 60 75
@@ -94,6 +100,7 @@ R handles vector math for us automatically:
 
 All objects have a type. Object types are a complex topic and we are only going to scratch the surface today. To slightly simplify, all data objects in R are either atomic vectors (contain only a single type of data), or data structures that combine atomic vectors in various ways. We’ll walk through a few examples. First, let’s consider a couple of the vectors that we’ve already made.
 
+    :::r
     class(x)
 
     ## [1] "numeric"
@@ -104,6 +111,7 @@ All objects have a type. Object types are a complex topic and we are only going 
 
 _Numeric_ and _character_ data types are two of the most common we’ll encounter, and are just what they sound like. Another useful type is _logical_ data, as in TRUE/FALSE. We can create a logical vector directly like so:
 
+    :::r
     logic1<-c(TRUE, TRUE, FALSE, FALSE)
     print(logic1)
 
@@ -111,6 +119,7 @@ _Numeric_ and _character_ data types are two of the most common we’ll encounte
 
 Or we can use logical tests.
 
+    :::r
     logic2<-v1>2
     print(logic2)
 
@@ -118,8 +127,9 @@ Or we can use logical tests.
 
 Note that the logical test here (>2) is applied independently to each element in the vector. We’ll come back to this when we talk about data subsets.
 
-A final thing to note about logical vectors: they can be converted to numeric with TRUE=1 and FALSE=0\. So a simple way to find how many elements in a logical vector are true is sum().
+A final thing to note about logical vectors: they can be converted to numeric with TRUE=1 and FALSE=0. So a simple way to find how many elements in a logical vector are true is `sum()`.
 
+    :::r
     sum(logic2)
 
     ## [1] 3
@@ -129,17 +139,17 @@ A final thing to note about logical vectors: they can be converted to numeric wi
 
 So far we’ve been talking about atomic vectors, which only contain a single data type (every element is logical, or character, or numeric). However, data sets will usually have multiple different data types: numeric for continunous data, character for categorical data and sample labels. Depending on how underlying types are combined, we can have four different “higher-level” data types in R:
 
-<table class="table table-condensed">
+<table class="table table-condensed" style="margin: 1em">
 
 <thead>
 
 <tr class="header">
 
-<th align="left">**Dimensions**</th>
+<th align="left">Dimensions</th>
 
-<th align="left">**Homogeneous**</th>
+<th align="left">Homogeneous</th>
 
-<th align="left">**Heterogeneous**</th>
+<th align="left">Heterogeneous</th>
 
 </tr>
 
@@ -175,6 +185,7 @@ We’ll focus on data frames, as those are the data type most commonly found in 
 
 One way to do this is with the data.frame() function.
 
+    :::r
     df1<-data.frame(label=c("rep1", "rep2", "rep3", "rep4"), data=c(23, 34, 15, 19))
     class(df1)
 
@@ -190,6 +201,7 @@ One way to do this is with the data.frame() function.
 
 str() gives lots of information about the data type of the consituent parts of a data frame
 
+    :::r
     str(df1)
 
     ## 'data.frame':    4 obs. of  2 variables:
@@ -200,6 +212,7 @@ Note that label is a _factor_ – this is a special kind of character vector. By
 
 A more common way to create a data frame is by reading from a file. There are a few functions to do this in R: read.table() and read.csv() are some of the most common.
 
+    :::r
     bus<-read.table(file="http://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/mbta_bus.tsv", header=TRUE, sep="\t", stringsAsFactors=T)
 
     #note that R can read data directly from the web -- no need to download the file first
@@ -214,8 +227,9 @@ A more common way to create a data frame is by reading from a file. There are a 
     ## 5     8     Local         2.02      3844           85
     ## 6     9     Local         1.21      5980          187
 
-head() displays the first few rows of a data frame and is great for examining large objects. Let’s also look at str()
+`head()` displays the first few rows of a data frame and is great for examining large objects. Let’s also look at `str()`
 
+    :::r
     str(bus)
 
     ## 'data.frame':    163 obs. of  5 variables:
@@ -227,6 +241,7 @@ head() displays the first few rows of a data frame and is great for examining la
 
 summary() is a good way to see some basic information about a data frame
 
+    :::r
     summary(bus)
 
     ##      route            type      cost.per.pax     ridership      
@@ -251,6 +266,7 @@ summary() is a good way to see some basic information about a data frame
 
 Now let’s look at ways to get subsets of data. R uses `[]` to index rows and columns, like so:
 
+    :::r
     bus[1,]
 
     ##   route type cost.per.pax ridership pax.per.trip
@@ -284,14 +300,17 @@ Now let’s look at ways to get subsets of data. R uses `[]` to index rows and c
 
 Of course, usually we want to select a set of rows from a data frame matching some criteria. We can use the subset() function for this. Let’s start by just getting the data for key bus routes.
 
+    :::r
     key.bus<-subset(bus, type=="Key")
 
 Sometimes we might want something more complicated. Let’s say we want to get data for all “local” bus routes with at least 1000 daily riders.
 
+    :::r
     local.bus<-subset(bus, type=="Local" & ridership > 1000)
 
 We can also use [] (see `?Extract`) to subset data in more complicated ways. The key insight here is that we can use logical vectors as indexes. So for example:
 
+    :::r
     high.ridership<-bus$ridership > 5000
     class(high.ridership)
 
@@ -340,6 +359,7 @@ We can also use [] (see `?Extract`) to subset data in more complicated ways. The
 
 We don’t need to store the logical vector in an object, so we can get the same result with this:
 
+    :::r
     bus[bus$ridership > 5000,]
 
     ##    route  type cost.per.pax ridership pax.per.trip
@@ -365,6 +385,7 @@ We don’t need to store the logical vector in an object, so we can get the same
 
 We might want to add some new variables to our dataset. For example, perhaps we want to know the cost per day to operate each bus line. We can calculate this from the ridership and cost.per.pax numbers.
 
+    :::r
     bus$cost.per.day<-bus$cost.per.pax * bus$ridership
     head(bus)
 
@@ -378,21 +399,25 @@ We might want to add some new variables to our dataset. For example, perhaps we 
 
 Let’s also compute the revenue per day for each bus line. This is actually a bit complicated because not all buses charge the same rate. For local/key/community lines, it is $1.60, but for express/commuter lines it is either $3.65 or $5.25\. So we do this in a few steps. Let’s first make a fare column that lists the fare for each line.
 
+    :::r
     bus$fare<-ifelse(bus$type != "Commuter" & bus$type != "Express", 1.60, 3.65)
     bus$fare[bus$route=="352" | bus$route=="354" | bus$route=="505"] = 5.25
 
 Now we can calculate revenue per line as fare * ridership.
 
+    :::r
     bus$revenue.per.day = bus$fare * bus$ridership
 
 Now let’s explore this dataset a bit. What is the mean ridership on MBTA bus lines?
 
+    :::r
     mean(bus$ridership)
 
     ## [1] 2427.055
 
 What if we wanted to get the means for all the (numeric) columns? We could type each by hand, but R has a shortcut – the apply function.
 
+    :::r
     apply(bus[,c(3,4,5,6)], MARGIN=2, mean)
 
     ## cost.per.pax    ridership pax.per.trip cost.per.day 
@@ -405,12 +430,14 @@ Apply can be used to apply a function (in this case mean) to all the columns (MA
 
 We’ve added several variables now, and we might want to write our updated dataset to a file. We do this with the write.table() function, which writes out a data.frame.
 
+    :::r
     write.table(bus, file="mbta_bus_updated.tsv", quote=F, sep="\t", row.names=F, col.names=T)
 
-But where did R put the file on our computer? R does all file operations without a full path in a working directory. RStudio has a preference to set the default working directory, which is typically something like /Users/Tim/R.
+But where did R put the file on our computer? R does all file operations without a full path in a working directory. RStudio has a preference to set the default working directory, which is typically something like `/Users/Tim/R`.
 
 To see the current working directory, use:
 
+    :::r
     getwd()
 
     ## [1] "/Users/williams03/a/workshops/2015.March/Intro_to_R"
@@ -424,31 +451,67 @@ Now, let’s do some visualizations. We’ll start with something simple – mak
 
 How about the distribution? We’ll use the hist() function to plot a histogram
 
+    :::r
     hist(bus$ridership, col="gray50", breaks=15, xlab="Ridership", main="")
 
+<figure>
+	<a class="img" href="/images/ridership-hist.png">
+    		<img class="img-responsive" src="/images/ridership-hist.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Another very useful way to summarize data is with a boxplot. Here, we’ll look at ridership for each bus type. However, we’ll ignore the one bus line with type==Community.
 
+    :::r
     boxplot(ridership ~ type, data=bus[bus$type!="Community",])
 
+<figure>
+	<a class="img" href="/images/ridership-boxplot.png">
+    		<img class="img-responsive" src="/images/ridership-boxplot.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
-Note that Community still shows up on the axis, even though we are not plotting the data for that bus line. This is because ‘type’ is stored as a factor, and all levels of a factor (even those with no actual data) are plotted. One simple way to remove factor levels that don’t appear in the dataset is with droplevels().
+Note that Community still shows up on the axis, even though we are not plotting the data for that bus line. This is because ‘type’ is stored as a factor, and all levels of a factor (even those with no actual data) are plotted. One simple way to remove factor levels that don’t appear in the dataset is with `droplevels()`.
 
+    :::r
     boxplot(ridership ~ type, data=droplevels(bus[bus$type!="Community",]))
 
+<figure>
+	<a class="img" href="/images/ridership-boxplot-2.png">
+    		<img class="img-responsive" src="/images/ridership-boxplot-2.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Finally, let’s look at an X-Y plot, in this case comparing ridership to cost per passenger.
 
+    :::r
     plot(x=bus$ridership, y=bus$cost.per.pax, pch=16)
 
+<figure>
+	<a class="img" href="/images/ridership-xy.png">
+    		<img class="img-responsive" src="/images/ridership-xy.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Looks like a non-linear relationship, so let’s try a log-log plot
 
+    :::r
     plot(x=bus$ridership, y=bus$cost.per.pax, pch=16, log="xy")
 
+<figure>
+	<a class="img" href="/images/ridership-log.png">
+    		<img class="img-responsive" src="/images/ridership-log.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Alternatively:
 
+    :::r
     plot(log10(bus$cost.per.pax) ~ log10(bus$ridership), pch=16)
 
 
@@ -458,6 +521,7 @@ Now let’s demonstrate a few statistical tests.
 
 Our boxplot suggests that ‘key’ bus routes have much higher ridership than other bus routes. Let’s test that using a T-test.
 
+    :::r
     #note that we can use a logical test as a grouping variable in a formula
     t.test(ridership ~ type=="Key", data=bus)
 
@@ -475,6 +539,7 @@ Our boxplot suggests that ‘key’ bus routes have much higher ridership than o
 
 We might want to do this non-parameterically using a Wilcoxon Rank Sum Test.
 
+    :::r
     wilcox.test(ridership ~ type=="Key", data=bus)
 
     ## 
@@ -486,6 +551,7 @@ We might want to do this non-parameterically using a Wilcoxon Rank Sum Test.
 
 Our plot suggested that log(ridership) and log(cost per passenger) are strongly correlated. Let’s test that with cor.test()
 
+    :::r
     cor.test(log10(bus$ridership), log10(bus$cost.per.pax))
 
     ## 
@@ -502,6 +568,7 @@ Our plot suggested that log(ridership) and log(cost per passenger) are strongly 
 
 Now let’s work through a final example that involves both data manipulation and some more statistical tests. Let’s say we want to find out how many bus lines are profitable (make more in fare revenue than they cost to operate)? What would you do?
 
+    :::r
     bus$cost.per.day < bus$revenue.per.day
 
     ##   [1]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE
@@ -527,10 +594,12 @@ Now let’s work through a final example that involves both data manipulation an
 
 Now we might want to know if different types of buses are more or less likely to be profitable. Let’s start by making a new column in our data frame that is TRUE if a bus route is profitable and FALSE otherwise. How would you do that?
 
+    :::r
     bus$profitable = bus$cost.per.day < bus$revenue.per.day
 
 Now we can use the table() function to look for associations between categorical variables.
 
+    :::r
     table(bus$profitable, bus$type)
 
     ##        
@@ -559,20 +628,23 @@ Finally, we’ll end with a note about missing data. R stores missing data with 
 
 For next Tuesday, we will be using packages from Bioconductor. Packages extend R in various ways – Bioconductor, in particular, contains a very useful set of packages for handling various kinds of genomic and high-throughput biological data.
 
-The easiest way to install packages in RStudio is using the pull-down menu, but you can also use the function install.packages(). For example, install.packages(“maps”) will install a package for using R to draw maps.
+The easiest way to install packages in RStudio is using the pull-down menu, but you can also use the function `install.packages()`. For example, `install.packages(“maps”)` will install a package for using R to draw maps.
 
-Packages, however, are not automatially loaded. To load a package, use library(packagename). For example,
+Packages, however, are not automatically loaded. To load a package, use `library(packagename`). For example,
 
+    :::r
     library(maps) #loads R package to draw geographic maps
 
 [Installing packages from Bioconductor](http://www.bioconductor.org/install/) is a little more complicated and requires running a helper script from the Bioconductor web site, but this is actually pretty easy:
 
+    :::r
     source("http://bioconductor.org/biocLite.R")
 
-Now we can use the biocLite() function to install Bioconductor packages.
+Now we can use the `biocLite()` function to install Bioconductor packages.
 
 **Important:** prior to next Tuesday, please install DESeq2 and edgeR packages from Bioconductor, with these commands:
 
+    :::r
     biocLite("DESeq2")
     biocLite("edgeR")
 

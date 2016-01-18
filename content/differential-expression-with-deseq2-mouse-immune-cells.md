@@ -1,8 +1,8 @@
-Title: Differential expression with DESeq2 nc11-2conditions
+Title: Differential expression with DESeq2 mouse immune cells
 Date: 2016-01-01 13:51
 Category: Tutorials
 Author: Tim Sackton
-Tags: Differential Expression, Drosophila melanogaster
+Tags: Differential Expression, Mouse
 Summary: This tutorial is intended for diffeq
 
 
@@ -20,21 +20,23 @@ This document and the data in this example can be found at:
 
 First, install [DESeq2](http://bioconductor.org/packages/release/bioc/html/DESeq2.html):
 
+    :::r
     source('http://bioconductor.org/biocLite.R')
     biocLite('DESeq2')
 
 Then load the libraries we’ll need into R:
 
+    :::r  
     library('DESeq2')
     library('RColorBrewer')
 
-* * *
 
 
-### 2\. Read gene counts into a _data frame_
+### 2. Read gene counts into a _data frame_
 
 Read sample gene counts from a tab-delimited file into a data frame. The rows of the data frame are genes while the columns are samples.
 
+    :::r
     countFilePath = 'http://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/NC11.gene.txt'
     countData = read.table(file = countFilePath, header = TRUE, sep = '\t', row.names = 1)
     countData = countData[3:ncol(countData)]  #discard chr and strand columns
@@ -44,6 +46,7 @@ Read sample gene counts from a tab-delimited file into a data frame. The rows of
 
 Read in a second data frame that contains the experimental condition that each sample belongs to:
 
+    :::r
     colFilePath = 'http://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/NC11.colData_2conditions.txt'
     colData = read.table(file = colFilePath, header = TRUE, sep = '\t', row.names = 1)
     colData[['condition']] =  factor(colData[['condition']], levels = c('Control', 'Treatment'))       
@@ -77,10 +80,11 @@ Read in a second data frame that contains the experimental condition that each s
 
 
 
-### 3\. Run DESeq2
+### 3. Run DESeq2
 
 First, create a DESeqDataSet by specifying the gene counts data frame, the sample information data frame and a design model:
 
+    :::r
     dataset <- DESeqDataSetFromMatrix(countData = countData,
                                       colData = colData,
                                       design = ~condition)
@@ -101,6 +105,7 @@ First, create a DESeqDataSet by specifying the gene counts data frame, the sampl
 
 Then run the DESeq2 algorithm and extract results for our two-class comparison:
 
+    :::r
     dds <- DESeq(dataset)
 
     ## estimating size factors
@@ -140,10 +145,11 @@ Then run the DESeq2 algorithm and extract results for our two-class comparison:
     ## Lrp11         0.00224374
 
 
-### 4\. View results
+### 4. View results
 
 A summary of DESeq2 results:
 
+    :::r
     summary(result)
 
     ## 
@@ -159,25 +165,46 @@ A summary of DESeq2 results:
 
 Plot log fold change vs. mean expression for all genes, with genes where p < 0.1 colored red:
 
+    :::r
     plotMA(result, main=paste0('Condition: Control vs. Treatment'), ylim=c(-5,5))
 
+<figure>
+	<a class="img" href="/images/deseq2-plotma-mouse.png">
+    		<img class="img-responsive" src="/images/deseq2-plotma-mouse.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 PCA plot for all genes:
 
+    :::r
     rld <- rlogTransformation(dds, blind=TRUE)
     plotPCA(rld, intgroup = 'condition')
 
+<figure>
+	<a class="img" href="/images/deseq2-plotpca-mouse.png">
+    		<img class="img-responsive" src="/images/deseq2-plotpca-mouse.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 Plot counts for a single gene. Below is the plot for the gene with the lowest p-value:
 
+    :::r
     plotCounts(dds, gene=which.min(result$padj), intgroup='condition', pch = 19)
 
-
+<figure>
+	<a class="img" href="/images/deseq2-plotcounts-mouse.png">
+    		<img class="img-responsive" src="/images/deseq2-plotcounts-mouse.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Extract results for the top 250 up-regulated and top 250 down-regulated genes, sorted by p-value:
 
+    :::r
     n = 250 
     resOrdered <- result[order(result$padj),]
     topResults <- rbind( resOrdered[ resOrdered[,'log2FoldChange'] > 0, ][1:n,],
@@ -200,24 +227,38 @@ Extract results for the top 250 up-regulated and top 250 down-regulated genes, s
 
 Display these top genes’ normalized counts in a heatmap, and cluster samples by similarity:
 
+    :::r
     hmcol <- brewer.pal(11,'RdBu')
     nCounts <- counts(dds, normalized=TRUE)
     heatmap(as.matrix(nCounts[ row.names(topResults), ]), Rowv = NA, col = hmcol, mar = c(10,2))
 
+<figure>
+	<a class="img" href="/images/deseq2-heatmap-mouse.png">
+    		<img class="img-responsive" src="/images/deseq2-heatmap-mouse.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 
 Examine sample clusters that arise from the top 25 and bottom 25 genes are used:
 
+    :::r
     m = 25
     heatmap(as.matrix(nCounts[ row.names(topResults)[c(1:m,(n-m+1):n)], ]), Rowv = NA, col = hmcol, mar = c(10,2))
 
-
+<figure>
+	<a class="img" href="/images/deseq2-heatmap-mouse-2.png">
+    		<img class="img-responsive" src="/images/deseq2-heatmap-mouse-2.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Note the similarities and differences in the sample clusters that occur when using only the very top up and down genes, verses using a broader representation of each sample.
 
 
-### 5\. Write DESeq2 data to file
+### 5. Write DESeq2 data to file
 
+    :::r
     project.dir <- '~/My_R_Example' 
     dir.create(project.dir, showWarnings=FALSE)
     write.table(result, file = file.path(project.dir,paste0('NC11_Control_vs_Treatment.tsv')), quote = FALSE, sep = '\t')

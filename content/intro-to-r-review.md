@@ -16,19 +16,22 @@ R has very good built-in documentation that describes what functions do.
 
 To get help about a particular function, use ? followed by the function name, like so:
 
-?read.table
+    :::r
+    ?read.table
 
 
 ## Vectors
 
 Create a vector with c():
 
+    :::r
     x<-c(1,2,3,4,5)
 
 Type the name of an object (in this case `x`) to display it.
 
 Some basic operations with vectors:
 
+    :::r
     y = x+5
     z = 4
     y*z
@@ -37,10 +40,12 @@ Some basic operations with vectors:
 
 Below, `logic1` is a logical vector:
 
+    :::r
     logic1<-c(TRUE, TRUE, FALSE, FALSE, TRUE)
 
 Use this logical vector to select values from our vector `x`:
 
+    :::r
     x[logic1]
 
     ## [1] 1 2 5
@@ -50,6 +55,7 @@ Use this logical vector to select values from our vector `x`:
 
 Create a matrix:
 
+    :::r
     m = matrix( c(13, 42, 6, 3, 124, 40), nrow = 2, ncol = 3, byrow = TRUE) 
     m
 
@@ -59,18 +65,21 @@ Create a matrix:
 
 Extract the second row as a vector:
 
+    :::r
     m[2,]
 
     ## [1]   3 124  40
 
 Extract the third column as a vector:
 
+    :::r
     m[,3]
 
     ## [1]  6 40
 
 Create a new matrix from all rows, but only the first two columns of m:
 
+    :::r
     m[,1:2]
 
     ##      [,1] [,2]
@@ -79,6 +88,7 @@ Create a new matrix from all rows, but only the first two columns of m:
 
 Alternatively, we could have extracted all rows and columns 1 and 2 of m with:
 
+    :::r
     m[,c(1,2)]
 
 
@@ -89,11 +99,13 @@ Data frames are like matrices, but where the columns are considered to be sample
 
 Create a data frame from gene count data:
 
+    :::r
     filePath='http://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/fruitfly.gene_counts.allsamples.tsv'
     d = read.table(file = filePath, header = TRUE, row.names = 1, sep = '\t')
 
 Use the following functions to view information about the data frame:
 
+    :::r
     class(d)     #data type
     dim(d)       #number of rows and columns
     print(d)     #print the data frame to the screen
@@ -103,14 +115,17 @@ Use the following functions to view information about the data frame:
 
 Extract the second row of the data frame, as a vector:
 
+    :::r
     d[2,]
 
 Extract the fifth sample, as a data frame:
 
+    :::r
     d[4]
 
 Extract rows 10 to 20 of the third column, as a vector:
 
+    :::r
     d[10:20,3]
 
 
@@ -119,6 +134,7 @@ Extract rows 10 to 20 of the third column, as a vector:
 
 Create a directory and write your data frame to a tab-separated file:
 
+    :::r
     project.dir <- '~/My_R_Example' 
     dir.create(project.dir, showWarnings=FALSE)
     write.table(d, file = file.path(project.dir,'Control_vs_Infected.tsv'), quote = FALSE, sep = '\t')
