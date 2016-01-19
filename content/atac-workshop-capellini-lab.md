@@ -114,29 +114,62 @@ We are using a shell script loop to save typing out all the filenames.
     done
 
 <div class="exercises">
-Exercise<br/>
-In your user directory use a for loop to make symlinks to the fastq files.  Use the <code>ls  -l</code> command to check you have links to files and use the head command on all of them to check all the links are correct. (`head *.fastq` will print out the first 10 lines of every file ending fastq) 
+Exercise
+<ul>
+<li>In your user directory use a for loop to make symlinks to the fastq files.  Use the <code>ls  -l</code> command to check you have links to files and use the head command on all of them to check all the links are correct. (`head *.fastq` will print out the first 10 lines of every file ending fastq)</li>
+</ul>
 </div>
 
 #### The module system.
 Odyssey contains a lot of software and by default most bioinformatics tools won't run out of the box if you type them on the command line.    To 'load' them up you need to use the module system.  For instance for bowtie2 and samtools we need to use
 
-<pre>module load centos6/bowtie2-2.2.1
-module load centos6/samtools-0.1.19</pre>
+    module load bowtie2/2.2.4-fasrc01
+    module load samtools/0.1.19-fasrc01
 
-If you type in these commands and then try typing bowtie2 -h or samtools you should get some help text. If you want to find  a module use
+If you type in these commands and then try typing bowtie2 -h or samtools you should get some help text. If you want to find a module use
 
-<pre>module avail 2>&1 |grep -i <searchstring></pre>
+    module-query <searchstring>
 
 For instance to search for samtools
 
-<pre>module avail 2>&1 |grep -i samtools</pre>
+    [akitzmiller@rclogin12 ~]$ module-query samtools
+
+    ----------------------------------------------------------------------------
+      samtools
+    ----------------------------------------------------------------------------
+        Description:
+          SAM Tools provide various utilities for manipulating alignments in 
+          the SAM format, including sorting, merging, indexing and generating 
+          alignments in a per-position format.
+        
+        Versions:
+          samtools/1.2-fasrc01.................... Core
+          samtools/1.1-fasrc05.................... Core
+          samtools/1.1-fasrc04.................... Core
+          samtools/1.1-fasrc03.................... Comp
+          samtools/1.1-fasrc02.................... Core
+          samtools/1.1-fasrc01.................... Core
+          samtools/1.0-fasrc01.................... Comp
+          samtools/1.0-fasrc01.................... Core
+          samtools/0.1.19.bib-fasrc02............. Core
+          samtools/0.1.19-fasrc02................. Comp
+          samtools/0.1.19-fasrc01................. Core
+          samtools/0.1.19-fasrc01................. Comp
+          samtools/0.1.17-fasrc02................. Comp
+          samtools/0.1.17-fasrc01................. Core
+          samtools/0.1.17-fasrc01................. Comp
+        
+        To find detailed information about a module, enter the full name.
+        For example,
+        
+          module-query samtools/0.1.17-fasrc01
+
 
 Other useful module commands are
 
-<pre>module list                 # Show loaded modules
-module unload <module>      # Unload a module
-module keyword <keyword>    # All modules with a keyword (e.g. bam, alignment)</pre>
+    module list                 # Show loaded modules
+    module unload <module>      # Unload a module
+    module keyword <keyword>    # All modules with a keyword (e.g. bam, alignment)
 
 <div class="exercises">
 Exercise<br/>
@@ -158,8 +191,8 @@ The indexed mouse mm10 genome files are here :
 We're going to use the bowtie2 alignment program.   For paired end reads we need to run it once on each pair of files (so 4 commands - one for each sample).  The command line syntax (including the module commands) is
 
     :::bash
-    module load centos6/bowtie2-2.2.1
-    module load centos6/samtools-0.1.19
+    module load bowtie2/2.2.4-fasrc01
+    module load samtools/0.1.19-fasrc01
     
     bowtie2  \
     -x <genome index>  \
@@ -190,9 +223,10 @@ This has the disadvantage of creating a lot of intermediate files that we won't 
 Much neater yes?  This does have the disadvantage that if anything goes wrong in the samtools view or samtools sort part we have to do the whole alignment again but the tools are robust enough that that is rare. 
 
 <div class="exercises">
-Exercise<br/>
-
-Construct a bowtie2 command line for one of the fastq files.   Do a test run (ctrl-C will interrupt a command) to check it starts running.
+Exercise
+<ul>
+<li>Construct a bowtie2 command line for one of the fastq files.   Do a test run (ctrl-C will interrupt a command) to check it starts running.</li>
+</ul>
 </div>
 
 #### Constructing a Slurm submit script
@@ -207,18 +241,18 @@ Sadly things get a little more complicated still.    We can't just type in a c
     # sbatch [thisfile.sh](http://thisfile.sh) file1.dat file2.dat
 
     #SBATCH -J <jobname>
-    #SBATCH -N 1                                 # Ensure that all cores are on one machine
-    #SBATCH -n <cores>                           # Use <cores> cores for one job
-    #SBATCH -t D-HH:MM                           # Runtime in D-HH:MM
-    #SBATCH -p <partition>                       # Partition to submit to
-    #SBATCH --mem=<mem>                          # Memory pool in Mb for all cores 
-    #SBATCH -o <outfile>.%A.out                  # File to which STDOUT will be written
-    #SBATCH -e <outfile>.%A.err                  # File to which STDERR will be written
-    #SBATCH --mail-type=ALL                      # Type of email notification- BEGIN,END,FAIL,ALL
+    #SBATCH -N 1                   # Ensure that all cores are on one machine
+    #SBATCH -n <cores>             # Use <cores> cores for one job
+    #SBATCH -t D-HH:MM             # Runtime in D-HH:MM
+    #SBATCH -p <partition>         # Partition to submit to
+    #SBATCH --mem=<mem>            # Memory pool in Mb for all cores 
+    #SBATCH -o <outfile>.%A.out    # File to which STDOUT will be written
+    #SBATCH -e <outfile>.%A.err    # File to which STDERR will be written
+    #SBATCH --mail-type=ALL        # Type of email notification- BEGIN,END,FAIL,ALL
     #SBATCH --mail-user=michele.clamp@gmail.com  # Email to which notifications will be sent
 
     # Now your module commands - you can have multiple
-    module load centos6/mymodule
+    module load mymodule
 
     # Now your command (using input parameters $1 $2 etc)
     mycommand $1 $2 > $1.out
@@ -236,6 +270,7 @@ The table below shows a summary of SLURM commands, along with an example. These 
 <table>
 <tbody>
 <tr>
+<th></th>
 <th>SLURM</th>
 <th>SLURM EXAMPLE</th>
 </tr>
@@ -273,6 +308,7 @@ Also see [here](https://rc.fas.harvard.edu/docs/running-jobs.html) for the Res
 
 We are now going to combine out bowtie2/samtools command with the slurm script to produce a script that can be submitted to the cluster.  We've produced a template for this for you to modify.
 
+    :::bash
     #!/bin/bash 
 
     # Call this script with 2 fastq file2 for reads 1 and 2.
@@ -283,18 +319,18 @@ We are now going to combine out bowtie2/samtools command with the slurm script t
     # myfile.R2.fastq is referenced by the variable $2 
 
     #SBATCH -J ATAC_Bowtie2 
-    #SBATCH -N 1                                 # Ensure that all cores are on one machine
-    #SBATCH -n <cores>                           # Use n cores for one job 
-    #SBATCH -t 0-12:00                           # Runtime in D-HH:MM 
-    #SBATCH -p general                           # Partition to submit to 
-    #SBATCH --mem=<mb_ram>                       # Memory pool for all cores 
-    #SBATCH -o <outfile>.%A.out                  # File to which STDOUT will be written 
-    #SBATCH -e <outfile>.%A.err                  # File to which STDERR will be written 
-    #SBATCH --mail-type=ALL                      # Type of email notification- BEGIN,END,FAIL,ALL 
-    #SBATCH [--mail-user=<](mailto:--mail-user=michele.clamp@gmail.com)myemail>                # Email to which notifications will be sent 
+    #SBATCH -N 1                      # Ensure that all cores are on one machine
+    #SBATCH -n <cores>                # Use n cores for one job 
+    #SBATCH -t 0-12:00                # Runtime in D-HH:MM 
+    #SBATCH -p general                # Partition to submit to 
+    #SBATCH --mem=<mb_ram>            # Memory pool for all cores 
+    #SBATCH -o <outfile>.%A.out       # File to which STDOUT will be written 
+    #SBATCH -e <outfile>.%A.err       # File to which STDERR will be written 
+    #SBATCH --mail-type=ALL           # Type of email notification- BEGIN,END,FAIL,ALL 
+    #SBATCH [--mail-user=<](mailto:--mail-user=michele.clamp@gmail.com)myemail> # Email to which notifications will be sent 
 
-    module load centos6/bowtie2-2.2.1 
-    module load centos6/samtools-0.1.19 
+    module load bowtie2/2.2.4-fasrc01
+    module load samtools/0.1.19-fasrc01
 
     bowtie2 -x <indexfile> \ 
     -1 $1 \ 
@@ -349,7 +385,7 @@ Make symlinks to your user directory (like you did for the fastq files) so you c
 Use samtools to get coverage stats for your alignment and then visualize the bam in IGV on your laptop.
 
     :::bash
-    module load centos6/samtools-0.1.19
+    module load samtools/0.1.19-fasrc01
     
     for i in *.bam; do
       samtools flagstat $i
@@ -357,7 +393,7 @@ Use samtools to get coverage stats for your alignment and then visualize the bam
 You can also use other modules such as bamtools or get gene level counts using htseq-count 
 
 <div class="exercises">
-Exercises<br/>
+Exercises
 <ul>
 <li>Run samtools on your bamfiles using a for loop </li>
 <li> Find the bamtools module and load it </li>
@@ -381,7 +417,7 @@ From your laptop do :
 Note:  to split a set of bam files by chromosome (ie. by reference) do
 
     :::bash
-    module load bio/bamtools-2.2.0
+    module load bamtools/2.3.0-fasrc01
     for i in *.bam; do
       bamtools split -in $i -reference
     done
@@ -499,7 +535,7 @@ You can load the output file into excel if you want to look at your individual p
 
 
 <div class="exercises">
-Exercise<br/>
+Exercise
 <ul>
 <li>Construct a command line for the annotatePeaks.pl command using one of the peaks files and the mm10 genome. </li>
 <li>Run this (you don't need a slurm script for this) and generate an output file </li>
@@ -530,7 +566,7 @@ Using this file you can then run the GO enrichment command
 The output gets written to a directory which contains (amongst other things) an HTML file.  I generally download the whole directory to my laptop/desktop using scp and open the HTML file in a browser. 
 
 <div class="exercises">
-Exercise<br/>
+Exercise
 <ul>
 <li>Using your (or the supplied) annotatePeaks output file (either one) extract the entrezids into a file</li>
 <li>Run findGO.pl on this file using the mouse genome and write to a directory findGO </li>
