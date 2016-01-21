@@ -79,5 +79,5 @@ INTERLINKS = {
     'access-and-login' : 'https://rc.fas.harvard.edu/docs/access-and-login.html',
 }
 
-DIRECT_TEMPLATES = ['search','index']
+DIRECT_TEMPLATES = ['search','index','archives']
 
