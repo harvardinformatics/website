@@ -15,7 +15,7 @@ TOC = {
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
 SITEURL = ''
-TAGS_URL = 'tags'
+TAGS_URL = 'tags.html'
 PATH = 'content'
 BANNER = True
 BANNER_ALL_PAGES = False
@@ -79,5 +79,5 @@ INTERLINKS = {
     'access-and-login' : 'https://rc.fas.harvard.edu/docs/access-and-login.html',
 }
 
-DIRECT_TEMPLATES = ['search','index','archives']
+DIRECT_TEMPLATES = ['search','index','archives','tags']
 
