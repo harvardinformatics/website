@@ -51,13 +51,15 @@
             </li>
         {% endif %}
 
+        {% include 'includes/links.html' %}
+
         {% if DISPLAY_TAGS_ON_SIDEBAR %}
             {% if DISPLAY_TAGS_INLINE %}
                 {% set tags = tag_cloud | sort(attribute='0') %}
             {% else %}
                 {% set tags = tag_cloud | sort(attribute='1') %}
             {% endif %}
-            <li class="list-group-item"><a href="{{ SITEURL }}/{{ TAGS_URL }}"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+            <li class="list-group-item"><h4><i class="fa fa-tags fa-lg"></i><a href="{{ SITEURL }}/{{ TAGS_URL }}"><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group {% if DISPLAY_TAGS_INLINE %}list-inline tagcloud{% endif %}" id="tags">
                 {% for tag in tags %}
                 		
@@ -72,7 +74,6 @@
         {% endif %}
         {% include 'includes/github.html' %}
         {% include 'includes/twitter_timeline.html' %}
-        {% include 'includes/links.html' %}
     </ul>
 </section>
 

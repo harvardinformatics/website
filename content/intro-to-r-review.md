@@ -1,4 +1,4 @@
-Title: Introduction to R Review
+Title: Introduction to R Review Workshop
 Date: 2016-01-01 13:51
 Category: Tutorials
 Author: Tim Sackton

@@ -13,12 +13,14 @@
     <section id="content">
         <h1>Archives for {{ SITENAME }}</h1>
         <div id="archives">
+        <table>
             {% for article in dates %}
-                <p>
-                    <span class="categories-timestamp"><time datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time></span>
-                    <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}{% if article.subtitle %} - {{ article.subtitle }}{% endif %}</a>
-                </p>
+        			<tr>
+               		<td><span class="categories-timestamp"><time datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time></span></td>
+                		<td><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}{% if article.subtitle %} - {{ article.subtitle }}{% endif %}</a></td>
+                </tr>
             {% endfor %}
+        </table>
         </div>
     </section>
 {% endblock %}

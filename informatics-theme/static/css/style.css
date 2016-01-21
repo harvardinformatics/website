@@ -78,7 +78,9 @@ p {
 	margin: 1em 1em 0em 1em;
 }
 
-
+.container {
+	width: 90%;
+}
 .subtitle {
 	font-weight: bold;
 	font-size: 18px;
@@ -86,7 +88,7 @@ p {
 	margin: 1em;
 }
 
-.highlight {
+.codehilite {
 	margin: 1.5em;
 }
 
@@ -97,6 +99,7 @@ p {
 /* for list-groups nested within a list-group-item, reset the bottom margin */
 .list-group-item > .list-group {
     margin-bottom: 0px;
+    margin-left: 0;
 }
 
 /* for list-group-items nested within a list-group-item, reset the bottom
@@ -106,8 +109,16 @@ p {
     padding-bottom: 0px;
 }
 
+.list-group-item .list-group-item {
+	padding: 10px 15px 0px 0px;
+}
 .list-group-item {
     border: none;
+}
+
+.link-icon {
+	max-width: 30px;
+	display: inline;
 }
 
 .well .well-sm {
@@ -221,17 +232,17 @@ figure.floatcenter, .align-center {
     margin-bottom: 11px;
 }
 
-.highlighttable pre {
+.codehilitetable pre {
     /* Removes bootstrap default margin-bottom */
     margin-bottom: 0px;
 }
 
-.highlighttable {
+.codehilitetable {
     /* Adds them margin-bottom to highlightable instead of <pre> */
     margin-bottom: 11px;
 }
 
-.highlighttable {
+.codehilitetable {
     width: 100%;
 }
 
@@ -308,15 +319,19 @@ figure.floatcenter, .align-center {
 	margin: 50px	;
 }
 
+.answers {
+	color: green; 
+	margin: 50px	;
+	display: block;
+}
 
-.highlight > pre {
+.codehilite > pre {
 	border: none;
 	padding: 18px;
 	font-size: 16px;
 	font-family: 'Andale Mono', 'Courier New', monospace;
 	background-color: #f3f3f3;
 }
-
 
 /* Solutions for mobile and small screens  */
 @media (max-width: 650px) {
@@ -351,7 +366,7 @@ figure.floatcenter, .align-center {
 	footer, .tagcloud, .subtitle {
 		display: none;
 	}
-	.highlight {
+	.codehilite {
 		margin: 0;
 	}
 }

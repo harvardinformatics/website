@@ -1,4 +1,4 @@
-Title: Differential expression with DESeq2 mouse immune cells
+Title: Differential Expression with DESeq2 Mouse Immune Cells
 Date: 2016-01-01 13:51
 Category: Tutorials
 Author: Tim Sackton

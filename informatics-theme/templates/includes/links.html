@@ -1,10 +1,10 @@
 {% if LINKS %}
     <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
       <ul class="list-group" id="links">
-        {% for name, link in LINKS %}
+        {% for img, name, link in LINKS %}
         <li class="list-group-item">
             <a href="{{ link }}" target="_blank">
-                {{ name }}
+                <img class="link-icon" src="{{ img }}"/>{{ name }}
             </a>
         </li>
         {% endfor %}

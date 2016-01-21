@@ -1,8 +1,8 @@
-Title: Genomic ranges workshop
+Title: Genomic Ranges Workshop
 Date: 2015-01-01
 Category: Tutorials
 Author: Michele Clamp
-Tags: Genome
+Tags: Genome, R, bedtools
 Summary: This tutorial provides useful tips for manipulating genomic range data.
 
 
@@ -92,22 +92,24 @@ Exercise
 </ul>
 </div>
 
+<div class="answers">
+Answer
 
-Answer:
+<div class="codehilite"><pre>
+bedtools closest -a human_enhancers.bed -b ucscGenes.bed | head
 
-    :::bash
-    bedtools closest -a human_enhancers.bed -b ucscGenes.bed | head
-
-    chr1    1015066 1015266 HSE897  9.5706324138    chr1    1017197 1051736 uc001acu.2
-    chr1    1590473 1590673 HSE853  17.3206898329   chr1    1571099 1655775 uc001agv.1
-    chr1    2120861 2121064 HSE86   66.0424471614   chr1    2115898 2126214 uc031pkt.1
-    chr1    6336418 6336624 HSE394  14.8892086906   chr1    6324331 6453826 uc001amt.3
-    chr1    7404594 7404794 HSE315  24.228051023    chr1    6845383 7829766 uc001aoi.3
-    chr1    11941325    11941525    HSE322  17.5192630328   chr1    11917520    11918992    uc001atj.3
-    chr1    15055555    15055755    HSE962  11.7065788965   chr1    14925212    15444544    uc001avm.4
-    chr1    15478024    15478224    HSE354  17.5771586196   chr1    15438310    15478960    uc009voh.3
-    chr1    16065307    16065508    HSE264  23.9092446094   chr1    16062808    16067884    uc001axb.1
-    chr1    23244249    23244449    HSE434  17.1331422162   chr1    23243782    23247347    uc001bgg.1
+chr1    1015066 1015266 HSE897  9.5706324138    chr1    1017197 1051736 uc001acu.2
+chr1    1590473 1590673 HSE853  17.3206898329   chr1    1571099 1655775 uc001agv.1
+chr1    2120861 2121064 HSE86   66.0424471614   chr1    2115898 2126214 uc031pkt.1
+chr1    6336418 6336624 HSE394  14.8892086906   chr1    6324331 6453826 uc001amt.3
+chr1    7404594 7404794 HSE315  24.228051023    chr1    6845383 7829766 uc001aoi.3
+chr1    11941325    11941525    HSE322  17.5192630328   chr1    11917520    11918992    uc001atj.3
+chr1    15055555    15055755    HSE962  11.7065788965   chr1    14925212    15444544    uc001avm.4
+chr1    15478024    15478224    HSE354  17.5771586196   chr1    15438310    15478960    uc009voh.3
+chr1    16065307    16065508    HSE264  23.9092446094   chr1    16062808    16067884    uc001axb.1
+chr1    23244249    23244449    HSE434  17.1331422162   chr1    23243782    23247347    uc001bgg.1
+</pre></div>
+</div>
 
 <div class="exercises">
 Exercise
@@ -116,11 +118,11 @@ Exercise
 </ul>
 </div>
 
-Answer: 
-
-    :::bash
-    bedtools closest -a human_enhancers.bed -b ucscGenes.bed | awk -v OFS='\t' '{print $1, $2, $3, $9, $5}' | head 
-
+<div class="answers">
+Answer 
+<div class="codehilite"><pre>bedtools closest -a human_enhancers.bed -b ucscGenes.bed | awk -v OFS='\t' '{print $1, $2, $3, $9, $5}' | head
+</pre></div>
+</div>
 
 Okay, now let's make a file that contains the closest gene for each of the human-specific enhancers, in proper bed format, but we'll add two additional options (refer back to bedtools closest -h for the full option list): -d to give us the distance to the nearest gene, which we'll put in the 'score' field of the output bed file, and -t "first" means that if there are ties, we'll just keep one (so that we have each enhancer assigned to a single gene). 
 
@@ -132,10 +134,11 @@ Exercise
 <ul><li>What do we need to change to get the equivalent set but for the common enhancers?</li></ul>
 </div>
 
-Answer: The input file name for bed file 'A', the output file name, and the field numbers for the gene and score.
-
-    :::bash
-    bedtools closest -a common_enhancers.bed -b ucscGenes.bed -d -t "first" | awk -v OFS='\t' '{print $1, $2, $3, $7, $8}' > ce_closest_genes.bed
+<div class="answers">
+Answer<br/> 
+The input file name for bed file 'A', the output file name, and the field numbers for the gene and score.
+<div class="codehilite"><pre>bedtools closest -a common_enhancers.bed -b ucscGenes.bed -d -t "first" | awk -v OFS='\t' '{print $1, $2, $3, $7, $8}' > ce_closest_genes.bed</pre></div>
+</div>
 
 Another common task is finding overlaps between two sets of intervals. For example, we might want to know which of our enhancers identified in neural crest cells are shared with enhancers identified in some other cell type. In your directory you should see another bed file, H1-hESC-H3K27Ac.bed, which has H3K27Ac peaks from human embryonic stem cells. We'll use bedtools to get the overlaps between this file and each of our enhancer files. 
 
@@ -188,11 +191,11 @@ Exercise
 Look at the bedtools intersect -h output and see if you can figure out what option to use to do this.
 </div> 
 
-Answer: 
+<div class="answers">
+Answer
 
-    :::bash
-    bedtools intersect -a human_enhancers.bed -b H1-hESC-H3K27Ac.bed -v > human_nconly_enhancers.bed
-
+<div class="codehilite"><pre>bedtools intersect -a human_enhancers.bed -b H1-hESC-H3K27Ac.bed -v > human_nconly_enhancers.bed</pre></div>
+</div>
 
 Finally, we might want to generate a file where, for each neural crest enhancer in our list, we get the number of H1-hESC-H3K27Ac peaks it overlaps with. We'll use the `-c` option in bedtools for this. We'll also restrict overlaps to a reciprocal 20% -- so each feature in A has to overlap 25% of B, and vice versa, to count as an overlap.
 
@@ -286,30 +289,32 @@ Exercise
 </ul>
 </div>
 
-Answer:
+<div class="answers">
+Answer
+<div class="codehilite"><pre>
+prop.table(table(seqnames(sharedEn) == "chrX"))
 
-    :::r
-    prop.table(table(seqnames(sharedEn) == "chrX"))
+FALSE  TRUE 
+0.979 0.021 
 
-    FALSE  TRUE 
-    0.979 0.021 
+prop.table(table(seqnames(humEn) == "chrX"))
 
-    prop.table(table(seqnames(humEn) == "chrX"))
+FALSE  TRUE 
+0.979 0.021 
 
-    FALSE  TRUE 
-    0.979 0.021 
+fisher.test(matrix(c(table(seqnames(sharedEn) == "chrX"),table(seqnames(humEn) == "chrX")),nrow=2,ncol=2))
+Fisher's Exact Test for Count Data
 
-    fisher.test(matrix(c(table(seqnames(sharedEn) == "chrX"),table(seqnames(humEn) == "chrX")),nrow=2,ncol=2))
-        Fisher's Exact Test for Count Data
-
-    data:  
-    p-value = 1
-    alternative hypothesis: true odds ratio is not equal to 1
-    95 percent confidence interval:
-     0.5912779 1.6182666
-    sample estimates:
-    odds ratio 
-             1 
+data:  
+p-value = 1
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.5912779 1.6182666
+sample estimates:
+odds ratio 
+ 1 
+</pre></div>
+</div>
 
 We can also subset genomic ranges like normal R objects. For example, if we want the human-specific neural crest enhancers on chromsome 1:
 
@@ -343,20 +348,20 @@ Exercise
 <ul><li>Make a histogram of the lengths of human transcripts.</li></ul>
 </div> 
 
-Answer:
-
-    :::r
-    hist(width(hg))
+<div class="answers">
+Answer
+<div class="codehilite"><pre>hist(width(hg))</pre></div>
+</div>
 
 <div class="exercises">
 Exercise 
 <ul><li>What is the ID of the longest transcript in humans? </li></ul>
 </div>
 
-Answer:
-
-    :::r
-    hg[width(hg)==max(width(hg)),]
+<div class="answers">
+Answer
+<div class="codehilite"><pre>hg[width(hg)==max(width(hg)),]</pre></div>
+</div>
 
 Okay, so the goal here is actually to find the closest gene to each human-specific enhancer. We use the nearest function to do this:
 

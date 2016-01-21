@@ -5,6 +5,7 @@ import os
 
 PLUGIN_PATHS = ['../pelican-plugins/']
 PLUGINS = ['tag_cloud.tag_cloud','interlinks','extract_toc','tipue_search']
+MD_EXTENSIONS = (['toc(permalink=true)','codehilite'])
 
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
@@ -29,10 +30,10 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-# Sidebar stuff
-# LINKS = (('Harvard University', 'http://www.harvard.edu'),
-#          ('Harvard FAS', 'http://www.fas.harvard.edu'),
-#          ('FAS Research Computing', 'http://rc.fas.harvard.edu'),)
+# Sidebar stuff, Link images are first
+LINKS = (('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard University', 'http://www.harvard.edu'),
+         ('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
+         ('/images/odyssey_branding.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
 
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),

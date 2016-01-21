@@ -166,15 +166,15 @@ Pre-computed bam files are available in
 If you want to use these files rather than your own you can link to them rather than copy them over.
 
 1. If you haven't already done so log into the cluster and cd into the workshop directory
-   <div class="highlight"><pre>ssh login.rc.fas.harvard.edu
+   <div class="codehilite"><pre>ssh login.rc.fas.harvard.edu
 cd /n/regal/informatics/workshops/ChIP-Seq/Users</pre></div>
 
 2. Make your own user directory if you haven't already and cd into it
-   <div class="highlight"><pre>mkdir &lt;username&gt;
+   <div class="codehilite"><pre>mkdir &lt;username&gt;
 cd &lt;username&gt;</pre></div>
 
 3. Now you're going to do a fancy bash loop over the bam files and link to them so they look like they're in your directory
-   <div class="highlight"><pre>for i in /n/regal/informatics/workshops/ChIP-Seq/Output/*.bam* ; do
+   <div class="codehilite"><pre>for i in /n/regal/informatics/workshops/ChIP-Seq/Output/*.bam* ; do
     ln -s $i .
 done</pre></div>
 
@@ -398,10 +398,10 @@ or for the 200bp region
 The motif reported in the paper is GCCNGGC . How can we search for this motif in our data?
 
 1. First we generate a motif file for our motif (no need for a slurm script for this)
-    <div class="highlight"><pre>seq2profile.pl &lt;consensus&gt; [# mismatches] [name] &gt; output.motif</pre></div>
+    <div class="codehilite"><pre>seq2profile.pl &lt;consensus&gt; [# mismatches] [name] &gt; output.motif</pre></div>
 
 2. Then we use that motif file to search our peaks file
-<div class="highlight"><pre>findMotifsGenome.pl  &lt;peakfile&gt;  \ 
+<div class="codehilite"><pre>findMotifsGenome.pl  &lt;peakfile&gt;  \ 
     &lt;genome&gt; \ 
     &lt;outputdir&gt; \
     -size &lt;size&gt; \

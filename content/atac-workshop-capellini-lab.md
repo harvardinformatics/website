@@ -5,6 +5,8 @@ Author: Michele Clamp
 Tags: Chip-Seq
 Summary: This tutorial provides useful tips for Chip-Seq experiment analysis.
 
+[TOC]
+
 ## Notes
 The sbatch files will appear on the filesystem at
 
@@ -93,13 +95,13 @@ The raw fastq files are available on the cluster in
 ## Logging on and preparing the data
 
 1.  Log onto one of the cluster login nodes login.rc.fas.harvard.edu
-<div class="highlight"><pre>ssh login.rc.fas.harvard.edu</pre></div>
+<div class="codehilite"><pre>ssh login.rc.fas.harvard.edu</pre></div>
 
 1.  Change directory to our workshop directory `/n/regal/informatics/workshops/Capellini`
-<div class="highlight"><pre>cd /n/regal/informatics/workshops/Capellini</pre></div>
+<div class="codehilite"><pre>cd /n/regal/informatics/workshops/Capellini</pre></div>
 
 1.  Make your own working directory under the Users directory.  You can use your lab storage but regal should be the fastest disk we have.
-<div class="highlight"><pre>mkdir Users/mclamp</pre></div>
+<div class="codehilite"><pre>mkdir Users/mclamp</pre></div>
 
 ### Prepare the datasets for alignment. 
 
@@ -571,7 +573,7 @@ Exercise
 <li>Using your (or the supplied) annotatePeaks output file (either one) extract the entrezids into a file</li>
 <li>Run findGO.pl on this file using the mouse genome and write to a directory findGO </li>
 <li>Copy the findGO directory to your laptop and open the html file, e.g. I would do
-<div class="highlight"><pre>scp -r mclamp@sandy2:/n/regal/informatics/workshops/Capellini/Output/macs2/findGO findGO
+<div class="codehilite"><pre>scp -r mclamp@sandy2:/n/regal/informatics/workshops/Capellini/Output/macs2/findGO findGO
 open findGO/geneOntology.html</pre></div></li>
 </ul>
 Look at the enriched GO terms - do they make sense? 
