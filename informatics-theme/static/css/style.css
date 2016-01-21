@@ -79,7 +79,7 @@ p {
 }
 
 .container {
-	width: 90%;
+	width: 95%;
 }
 .subtitle {
 	font-weight: bold;
@@ -145,6 +145,11 @@ p {
     font-size: 6pt;
 }
 
+.label {
+	margin-left: 1em;
+	margin-right: 0.5em; 
+	padding: .4em .6em .4em .6em;
+}
 #aboutme {
     padding-top: 0px;
     padding-bottom: 5px;
@@ -180,6 +185,37 @@ p {
     margin-right: 3px;
 }
 
+#toc {
+	width: 30%;
+	position: relative;
+	float: left;
+	height: 100%;
+	padding: 0px 10px 0px 0px;
+	font-size: 12px;
+	display: none;
+}
+#toc ul {
+	margin: 0.5em;
+}
+#toc li {
+	list-style-type: none;
+}
+#toc a {
+	color: blue;
+}
+#toc-title {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0em 0em 1em 0.5em;
+}
+#toc-toggle:hover {
+	text-decoration: none;
+}
+.entry-content {
+    position: relative;
+    float: left;
+    width: 70%;
+}
 .entry-content a {
     text-decoration: none;
     border-bottom: 1px dotted;

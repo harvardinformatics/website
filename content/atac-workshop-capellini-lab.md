@@ -5,8 +5,6 @@ Author: Michele Clamp
 Tags: Chip-Seq
 Summary: This tutorial provides useful tips for Chip-Seq experiment analysis.
 
-[TOC]
-
 ## Notes
 The sbatch files will appear on the filesystem at
 

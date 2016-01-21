@@ -59,19 +59,19 @@ aaron_kitzmiller@harvard.edu
 
 ### Reuven Koblick
 
-![](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/Reuven-Koblick-1-e1354197782608.jpg "Reuven Koblick ")Senior web developer responsible for SPINAL development and maintenance.
+![Reuven Koblick](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/Reuven-Koblick-1-e1354197782608.jpg "Reuven Koblick ")Senior web developer responsible for SPINAL development and maintenance.
 
 rkoblick@fas.harvard.edu
 
 ### George Marnellos
 
-![](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/george-e1354285467436.jpeg "George Marnellos")  
+![George Marnellos](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/george-e1354285467436.jpeg "George Marnellos")  
 Senior Bioinformatics Scientist responsible for core sequencing analysis and general bioinformatics consultation.
 
 gmarnellos@fas.harvard.edu
 
 ### Tim Sackton
 
-![](http://informatics.fas.harvard.edu/wp-content/uploads/2014/10/sackton_cropped.jpg "Tim Sackton")Post-doctoral fellow working on Ratite phylogeny and the genomic basis for flight in birds. Joint appointment with Scott Edwards’ group.
+![Tim Sackton](http://informatics.fas.harvard.edu/wp-content/uploads/2014/10/sackton_cropped.jpg "Tim Sackton")Post-doctoral fellow working on Ratite phylogeny and the genomic basis for flight in birds. Joint appointment with Scott Edwards’ group.
 
 tsackton@oeb.harvard.edu

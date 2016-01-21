@@ -4,9 +4,14 @@ from __future__ import unicode_literals
 import os
 
 PLUGIN_PATHS = ['../pelican-plugins/']
-PLUGINS = ['tag_cloud.tag_cloud','interlinks','extract_toc','tipue_search']
-MD_EXTENSIONS = (['toc(permalink=true)','codehilite'])
-
+PLUGINS = ['tag_cloud.tag_cloud','interlinks','pelican-toc','tipue_search']
+MD_EXTENSIONS = (['codehilite'])
+TOC = {
+    'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
+                                # Expected format is a regular expression
+    'TOC_RUN'     : 'true'      # Default value for toc generation, if it does not evaluate
+                                # to 'true' no toc will be generated
+}
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
 SITEURL = ''
@@ -33,8 +38,9 @@ AUTHOR_FEED_RSS = None
 # Sidebar stuff, Link images are first
 LINKS = (('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard University', 'http://www.harvard.edu'),
          ('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
-         ('/images/odyssey_branding.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
+         ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
 
+SHOW_ARTICLE_AUTHOR = True
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
 #           ('Another social link', '#'),)
@@ -72,4 +78,6 @@ INTERLINKS = {
     'rcvpn' : 'https://vpn.rc.fas.harvard.edu',
     'access-and-login' : 'https://rc.fas.harvard.edu/docs/access-and-login.html',
 }
+
+DIRECT_TEMPLATES = ['search','index']
 
