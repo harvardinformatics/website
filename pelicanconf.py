@@ -4,8 +4,13 @@ from __future__ import unicode_literals
 import os
 
 PLUGIN_PATHS = ['../pelican-plugins/']
-PLUGINS = ['tag_cloud.tag_cloud','interlinks','pelican-toc','tipue_search']
-MD_EXTENSIONS = (['codehilite'])
+PLUGINS = ['tag_cloud.tag_cloud',
+           'interlinks',
+           'pelican-toc',
+           'tipue_search',
+           'rmd_reader',     
+           ]
+MD_EXTENSIONS = (['codehilite','fenced_code'])
 TOC = {
     'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
                                 # Expected format is a regular expression
