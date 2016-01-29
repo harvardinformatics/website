@@ -239,10 +239,22 @@ SLURM job took about 30 hours.
 
 #### 5  OPTIONAL: Blast searches against Uniref90 and additional processing
 
+Trinotate uses a customized version of the Uniref90 database. This can be downloaded from the Trinotate website into the $TRINOTATE_HOME folder created above:
 
-Run Blast searches against Uniref90; break the transcriptome into volumes of 3,000 sequences to runs jobs in parallel.
-Using the split_fasta.pl script:
-(Usage: split_fasta.pl <input_file> <output_volume_prefix> <num_sequences_per_volume>)
+	:::bash
+	$ wget https://data.broadinstitute.org/Trinity/Trinotate_v2.0_RESOURCES/uniprot_uniref90.trinotate_v2.0.pep.gz
+
+To rename, uncompress and index the Uniref90 database for Blast use:
+
+	:::bash
+	$ mv uniprot_uniref90.trinotate_v2.0.pep.gz uniprot_uniref90.trinotate.pep.gz
+	$ gunzip uniprot_uniref90.trinotate.pep.gz
+	$ makeblastdb -in uniprot_uniref90.trinotate.pep -dbtype prot
+
+The Blast indexing should take about 30 minutes.
+
+
+Break the transcriptome into volumes of 3,000 sequences to runs jobs in parallel, using the split_fasta.pl script (usage: split_fasta.pl <input_file> <output_volume_prefix> <num_sequences_per_volume>):
 
 	:::bash
 	$ split_fasta.pl $TRANS_DATA/mouse38_cdna.fa  $TRANS_DATA/mouse38_cdna.uniref90.vol  3000
@@ -268,7 +280,7 @@ Blastx of transcript nucleotide sequences against Uniref90. Run as a SLURM job a
 	TRANS_DATA=/path/to/trasncriptome/data
 	TRINOTATE_HOME=/path/to/trinotate/Trinotate-2.0.2
 
-	blastx -query $TRANS_DATA/mouse38_cdna.uniref90.vol.${SLURM_ARRAY_TASK_ID}.fasta -db $TRINOTATE_HOME/uniprot_sprot.trinotate.pep -num_threads 32 -max_target_seqs 1 -outfmt 6 > blastx.uniref90.vol.${SLURM_ARRAY_TASK_ID}.outfmt6  
+	blastx -query $TRANS_DATA/mouse38_cdna.uniref90.vol.${SLURM_ARRAY_TASK_ID}.fasta -db $TRINOTATE_HOME/uniprot_uniref90.trinotate.pep -num_threads 32 -max_target_seqs 1 -outfmt 6 > blastx.uniref90.vol.${SLURM_ARRAY_TASK_ID}.outfmt6  
 
 
 
@@ -301,7 +313,7 @@ Blastp of transcript TransDecoder peptide sequences against Uniref90. Run as a S
 	TRANS_DATA=/path/to/trasncriptome/data
 	TRINOTATE_HOME=/path/to/trinotate/Trinotate-2.0.2
 
-	blastp -query $TRABS_DATA/mouse38_pep.uniref90.vol.${SLURM_ARRAY_TASK_ID}.fasta  -db $TRINOTATE_HOME/uniprot_sprot.trinotate.pep -num_threads 32 -max_target_seqs 1 -outfmt 6 > blastp.uniref90.vol.${SLURM_ARRAY_TASK_ID}.outfmt6
+	blastp -query $TRABS_DATA/mouse38_pep.uniref90.vol.${SLURM_ARRAY_TASK_ID}.fasta  -db $TRINOTATE_HOME/uniprot_uniref90.trinotate.pep -num_threads 32 -max_target_seqs 1 -outfmt 6 > blastp.uniref90.vol.${SLURM_ARRAY_TASK_ID}.outfmt6
 
 
 Blastp jobs in this SLURM array took from about 8 to 16 hours (not inlcuding any time the jobs may have spent in submission queue, job restarts, etc.).
