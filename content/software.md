@@ -4,10 +4,10 @@ Category: Software
 Author: Aaron Kitzmiller
 Summary: Software support at FAS Informatics
 
-There is a lot of software supported by FAS Informatics.  
+FAS Informatics deploys a significant portion of the software available on the 
+[Odyssey cluster](http://portal.rc.fas.harvard.edu/apps/modules/).
 
-We do kind of a lot of work with sequencing tools.  For example, Trinity.  And Blast!
+In addition, there is significant in-house expertise with modern bioinformatics tools 
+and pipelines like [Trinity](tag/trinity.html) and [RSEM](tag/rsem.html)
 
-We also do public databases.  
-
-MiniLIMS is kind of a big deal as well.
+Data management services are primarily through the [MiniLIMS](/tag/minilims.html) and up-coming [IggyBase](https://github.com/harvardinformatics/iggybase) LIMS platform.

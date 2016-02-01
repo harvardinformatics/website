@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %} Events list - {{ SITENAME }}{% endblock %}
+
+{% block content %}
+
+    {% if events_list %}
+    <div class="calendar-link"><a href="/calendar.ics">Calendar (ics)</a></div>
+    <div class="post-list">
+    {% for evstart, evend, event in events_list %}
+        <div class="event-item">
+    		<div class="event-title">
+          <a href="../{{event.slug}}.html">
+            {{event['title']}}
+          </a>
+        </div>
+        <p>
+        {% if evstart.date() == evend.date() %}
+        {{evstart|strftime('%B %d, %Y %-I:%M %p')}} to {{evend|strftime('%-I:%M %p')}}
+        {% else %}
+        {{evstart|strftime('%B %d, %Y %-I:%M %p')}} to {{evend|strftime('%B %d, %Y %-I:%M %p')}}
+        {% endif %}
+        </p>
+
+        {% if event.location %}
+        <p>Location: {{event.location}}</p>
+        {% endif %}
+
+        <p>{{event['summary']}}</p>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+{% endblock %}

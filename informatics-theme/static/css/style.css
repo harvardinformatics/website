@@ -383,6 +383,20 @@ figure.floatcenter, .align-center {
 	margin: 2em;
 }
 
+.calendar-link {
+	margin: 2em;
+	text-align: right;
+}
+
+.event-title{
+	font-size: 18px;
+	width: 100%;
+	font-weight: bold;
+}
+.event-item {
+	margin-top: 3em; 
+}
+
 /* Solutions for mobile and small screens  */
 @media (max-width: 650px) {
     #banner h1{

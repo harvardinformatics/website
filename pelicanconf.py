@@ -11,8 +11,14 @@ PLUGINS = ['tag_cloud.tag_cloud',
            'pelican-toc',
            'tipue_search',
            'rmd_reader',
-           'pin_to_top',  
+           'pin_to_top',
+           'events',
            ]
+
+PLUGIN_EVENTS = {
+'ics_fname': 'calendar.ics',
+}
+
 KNITR_OPTS_CHUNK = {
     'fig.path': 'images/', 
 }
