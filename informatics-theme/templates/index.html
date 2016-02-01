@@ -1,7 +1,55 @@
-{% extends "article_list.html" %}
+{% extends "base.html" %}
 
 {% block canonical_rel %}<link rel="canonical" href="{{ SITEURL }}">{% endblock %}
 
 {% block banner %}
 	{% include 'includes/banner.html' %}
+{% endblock %}
+
+{% block content %}
+
+<p>
+FAS Informatics and Scientific Applications does a lot of stuff.  
+</p>
+<p>
+Seriously.  Lots of stuff.  Recent posts are below.
+</p>
+
+    {% if articles %}
+        {% for article in (articles_page.object_list if articles_page else articles) %}
+            {% if article.date < CUTOFF_DATE %}
+        		{% if article.frontpage %}
+	        		<article>
+	        			<h1><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
+	                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+	                    <div class="well well-sm">
+	                        {% include "includes/article_info.html" %}
+	                    </div>
+	                {% endif %}
+	                {{ article.content }}
+	                {% include 'includes/comment_count.html' %}
+	        		</article>
+	        		<hr/>
+            {% if loop.length > 1 %}
+                <div id="content" class="body">
+            {% endif %}
+        		{% else %}
+		            <article>
+		                <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+		                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+		                    <div class="well well-sm">
+		                        {% include "includes/article_info.html" %}
+		                    </div>
+		                {% endif %}
+		                <div class="summary">{{ article.summary }} <a style="float: right" href="{{ SITEURL }}/{{ article.url }}">more ...</a>
+		                    {% include 'includes/comment_count.html' %}
+		                </div>
+		            </article>
+		            <hr/>
+            {% endif %}
+            {% endif %}
+        {% endfor %}
+               </div>
+    {% endif %}
+
 {% endblock %}

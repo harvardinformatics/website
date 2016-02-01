@@ -54,18 +54,18 @@ code {
 	color: #c7254e;
 }
 h1 {
-	font-size: 32px;
+	font-size: 28px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 
 h2 {
-	font-size: 25px;
+	font-size: 22px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 h3,h4 {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	margin-top: 1.5em;
 }
@@ -367,6 +367,20 @@ figure.floatcenter, .align-center {
 	font-size: 16px;
 	font-family: 'Andale Mono', 'Courier New', monospace;
 	background-color: #f3f3f3;
+}
+
+.team-photo {
+	max-width: 200px; 
+	position: relative; 
+	float: left; 
+	margin: 1em;	
+}
+
+.team-blurb {
+	max-width: 300px; 
+	position: relative; 
+	float: left; 
+	margin: 2em;
 }
 
 /* Solutions for mobile and small screens  */

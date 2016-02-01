@@ -1,6 +1,7 @@
 Title: MiniLIMS at FAS
-Date: 2015-10-06 11:00
-Category: LIMS
+Date: 2016-01-01
+Category: Software
+Tags: LIMS, MiniLIMS
 Summary: We have 5 Minilims installations at FAS that support sample submission, tracking, billing and (in some cases) automatic analysis and delivery of results.
 
 

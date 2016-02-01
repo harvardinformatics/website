@@ -1,6 +1,6 @@
 Title: Demultiplexing FASTQ files with barcode collision
 Date: 2014-06-02 00:00
-Category: Blog
+Category: Software
 Tags: Next-Gen Sequencing
 Summary: Multiplexing allows several samples to be sequenced in the same lane, but there can be problems with very short barcodes.  
 

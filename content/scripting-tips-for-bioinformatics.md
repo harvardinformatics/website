@@ -1,6 +1,6 @@
 Title: Scripting Tips for Bioinformatics
 Date: 2014-02-21 00:00
-Category: Blog
+Category: Software
 Tags: Linux
 Summary: Linux command line scripting tips  
 

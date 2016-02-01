@@ -1,6 +1,6 @@
 Title: Informatics Training - November 2015
 Date: 2015-10-27 00:00
-Category: Blog
+Category: Tutorials
 Tags: RNA-Seq Analysis
 Summary: We are presenting 3 new workshops in November 2015.  These are aimed at people completely new to unix and the command line.
 

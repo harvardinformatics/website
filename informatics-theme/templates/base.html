@@ -135,16 +135,16 @@
                         </li>
                     {% endfor %}
                 {% endif %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            {% if 'tipue_search' in PLUGINS %}
+              <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}">Archives</a></li>
               <li><span>
                 <form class="navbar-search" action="/search.html">
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            {% if 'tipue_search' in PLUGINS %}
             {% endif %}
-              <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -153,7 +153,7 @@
 <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
     <div class="row">
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-8">
         {% else %}
         <div class="col-sm-12">
         {% endif %}
@@ -171,7 +171,7 @@
         {% endblock %}
         </div>
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-4 hidden-sm" id="sidebar">
+        <div class="col-lg-4 col-md-4 hidden-sm" id="sidebar">
             <aside>
             {% if ABOUT_ME %}
                 {% include 'includes/aboutme.html' %}

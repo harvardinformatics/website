@@ -1,6 +1,6 @@
 Title: Trinotate workflow example on Odyssey
 Date: 2015-11-25 00:00
-Category: Blog
+Category: Software
 Tags: Next-Gen Sequencing Transcriptome Trinotate
 Summary: An example of running the Trinotate suite of tools to annotate a given transcriptome (in this case the mouse transcriptome).
 

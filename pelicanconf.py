@@ -2,14 +2,20 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 import os
+from datetime import datetime
+from dateutil.tz import tzlocal
 
 PLUGIN_PATHS = ['../pelican-plugins/']
 PLUGINS = ['tag_cloud.tag_cloud',
            'interlinks',
            'pelican-toc',
            'tipue_search',
-           'rmd_reader',     
+           'rmd_reader',
+           'pin_to_top',  
            ]
+KNITR_OPTS_CHUNK = {
+    'fig.path': 'images/', 
+}
 MD_EXTENSIONS = (['codehilite','fenced_code'])
 TOC = {
     'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
@@ -19,9 +25,9 @@ TOC = {
 }
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
-SITEURL = ''
+SITEURL = 'http://localhost:8000'
 TAGS_URL = 'tags.html'
-PATH = 'content'
+# PATH = 'content2'
 BANNER = True
 BANNER_ALL_PAGES = False
 DISPLAY_PAGES_ON_MENU = True
@@ -35,14 +41,15 @@ PYGMENTS_STYLE = 'github'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
+FEED_ALL_RSS = 'rss.xml'
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Sidebar stuff, Link images are first
-LINKS = (('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard University', 'http://www.harvard.edu'),
-         ('https://lh5.googleusercontent.com/-5HgubPx3b20/AAAAAAAAAAI/AAAAAAAAE1U/HXqd-gt9HwI/s0-c-k-no-ns/photo.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
+LINKS = (('/images/harvard.jpg','Harvard University', 'http://www.harvard.edu'),
+         ('/images/harvard.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
          ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
 
 SHOW_ARTICLE_AUTHOR = True
@@ -57,6 +64,7 @@ TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
 
 DISPLAY_CATEGORIES_ON_SIDEBAR = False
+DISPLAY_CATEGORIES_ON_MENU = True
 
 DEFAULT_PAGINATION = 10
 
@@ -86,3 +94,4 @@ INTERLINKS = {
 
 DIRECT_TEMPLATES = ['search','index','archives','tags']
 
+CUTOFF_DATE = datetime(2090, 1, 1, 0, 0, 0, tzinfo=tzlocal())

@@ -1,6 +1,6 @@
 Title: Transcriptome assembly and quantification with Trinity, Bowtie and RSEM
 Date: 2013-12-07 00:00
-Category: Blog
+Category: Software
 Tags: RNA-Seq Analysis,De Novo Assembly,Trinity,Bowtie,RSEM
 Summary: Assembly and quantification of transcriptome data with Trinity, Bowtie, and RSEM
 
