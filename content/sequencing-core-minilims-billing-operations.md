@@ -1,5 +1,5 @@
 Title: Sequencing Core - MiniLIMS Billing Operations
-Date: 2016-01-01
+Date: 2015-01-01
 Category: Tutorials
 Tags: Bauer Core, MiniLIMS
 Author: Michele Clamp

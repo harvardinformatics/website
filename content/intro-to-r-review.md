@@ -3,7 +3,7 @@ Date: 2016-01-01 13:51
 Category: Tutorials
 Author: Tim Sackton
 Tags: R
-Summary: This tutorial is intended for R
+Summary: This is a review of some R basics.
 
 This document and the data in this example can be found at:
 

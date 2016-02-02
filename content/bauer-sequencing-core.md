@@ -37,6 +37,7 @@ Other bioinformatics support:
 
 ## LIMS Procedures
 
+* [Bauer Core MiniLIMS](https://bauer-minilims.rc.fas.harvard.edu/minilims)
 * [Add a new sequencing price item](/adding-a-new-sequencing-price.html)
 * [Pre-billing checks HOWTO]()
 * [Sequencing Billing operations HOWTO]()

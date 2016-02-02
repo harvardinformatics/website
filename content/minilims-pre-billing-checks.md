@@ -1,5 +1,5 @@
 Title: Minilims - Pre-Billing Checks
-Date: 2016-01-01
+Date: 2015-01-01
 Category: Tutorials
 Tags: MiniLIMS
 Author: Michele Clamp

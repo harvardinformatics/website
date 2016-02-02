@@ -1,8 +1,11 @@
-Title: Harvard FAS Tutorials
+Title: Harvard FAS Tutorials and Training
 Date: 2999-01-01
 Category: Tutorials
 Author: Michele Clamp
 Summary: Intro page.
-Pin: true
 
-This set of articles includes both the web version of tutorials provided by FAS Informatics during live training as well as text only.  Most articles are pretty long.
+FAS Informatics provides a number of training sessions on everything from [basic Linux]() to [transcript assembly]().  
+
+Materials for training sessions, analysis tutorials, HOWTOs, and short help documents can be found below.
+
+Be sure to check out the training available from [Research Computing](http://rc.fas.harvard.edu/training) as well.

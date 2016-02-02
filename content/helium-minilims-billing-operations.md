@@ -17,9 +17,9 @@ The Invoices are generated using the Invoice Generator link in the left hand sid
 
 ## Monthly Process
 
-1.  Upload the Helium_Node_Readings. An email is sent to me and informatics@fas.harvard.edu at the beginning of every month with the readings for every recovery node.   The email comes from RENO@harvard.edu and has a subject like
+1\.  Upload the Helium_Node_Readings. An email is sent to me and informatics@fas.harvard.edu at the beginning of every month with the readings for every recovery node.   The email comes from RENO@harvard.edu and has a subject like
 
-<pre>HARVARD UNIVERSITY ACS, Trend Interval Report, <span class="il">HE</span>.MONTH.METER.REPOR<wbr>T, 2/1/2015 09:15 AM</pre>
+<div class="codehilite"><pre>HARVARD UNIVERSITY ACS, Trend Interval Report, <span class="il">HE</span>.MONTH.METER.REPOR<wbr>T, 2/1/2015 09:15 AM</pre></div>
 
 a) Download the report from email and scp it to helium.rc.fas.harvard.edu 
 
@@ -49,8 +49,12 @@ If all looks good then add the -s option to save.
 
 A healthy looking set of readings looks like this 
 
-
-[![Screenshot 2015-02-02 11.57.09](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-11.57.09-300x126.png)](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-11.57.09.png)         
+<figure>
+	<a class="img" href="/images/helium1.png">
+    		<img class="img-responsive" src="/images/helium1.png"></img>
+	</a>
+    <figcaption>Figure 1</figcaption>
+</figure>
 
 
 f) Enter Emergency Dewars For a Linde dewar you need to enter a dewar request and set the status to DELIVERED. For each Harvard emergency dewar you need to enter a Helium_Dewar_Request and also a Helium_Dewar_Reading to record the weight.  We need both in order to bill correctly. The emergency dewar info is usually emailed in the format
@@ -78,18 +82,36 @@ f) Enter Emergency Dewars For a Linde dewar you need to enter a dewar request an
 * Press save. You now need to enter the weight reading. 
 * Type in the the dewar name which is something like HuHe100L14 (case is important and Shanna generally has a hypen before the last number which is not needed). This is what a successful request looks like after saving.
 
-[![Screenshot 2015-02-02 12.23.52](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.23.52-300x232.png)](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.23.52.png) 
+<figure>
+	<a class="img" href="/images/helium2.png">
+    		<img class="img-responsive" src="/images/helium2.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
           
+
 * Now we enter the weight reading.  Press 'Scan Dewar' on the left hand sidebar. 
 * Type in the the dewar name which is something like HuHe100L14 (case is important and Shanna generally has a hyphen before the last number which is not needed). 
 * Press the 'Record Weight' button. 
 
-[![Screenshot 2015-02-02 12.29.24](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.29.24-300x276.png)](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.29.24.png) 
+
+<figure>
+	<a class="img" href="/images/helium3.png">
+    		<img class="img-responsive" src="/images/helium3.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
                 
+
 * Enter the dewar request number,  the date the weight was read (the delivery date), set the status to DEWAR_DELIVERED_WEIGHT and enter the actual weight.  (Do not press the update button - this tries to automatically read the weight from the scale and we're not attached to it). 
 
 A successful form looks like this 
 
-[![Screenshot 2015-02-02 12.26.27](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.26.27-300x164.png)](http://informatics.fas.harvard.edu/wp-content/uploads/2015/02/Screenshot-2015-02-02-12.26.27.png)         
+<figure>
+	<a class="img" href="/images/helium4.png">
+    		<img class="img-responsive" src="/images/helium4.png"></img>
+	</a>
+    <figcaption></figcaption>
+</figure>
 
 Press the 'Save' button to save.

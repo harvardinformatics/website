@@ -1,5 +1,5 @@
 Title: Adding a new Sequencing Price
-Date: 2016-01-01
+Date: 2015-01-01
 Category: Tutorials
 Tags: Next-Gen Sequencing, Bauer Core, MiniLIMS
 Author: Michele Clamp
