@@ -1,7 +1,7 @@
 Title: Trinotate workflow example on Odyssey
 Date: 2015-11-25 00:00
 Category: Software
-Tags: Next-Gen Sequencing Transcriptome Trinotate
+Tags: Next-Gen Sequencing, Transcriptome, Trinotate
 Summary: An example of running the Trinotate suite of tools to annotate a given transcriptome (in this case the mouse transcriptome).
 
 [Trinotate](https://trinotate.github.io/) is a suite for the functional annotation of transcriptomes, particularly de novo assembled transcriptomes. It uses a number of different well referenced methods for functional annotation, including homology search against sequence databases (BLAST+/SwissProt), protein domain identification (HMMER/PFAM), and comparison to currently curated annotation databases (like eggNOG, and Gene Ontology terms).
