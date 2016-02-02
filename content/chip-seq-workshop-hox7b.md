@@ -2,7 +2,7 @@ Title: Chip-Seq Workshop - Hox7b
 Date: 2015-01-01
 Category: Tutorials
 Author: Michele Clamp
-Tags: Chip-Seq
+Tags: Chip-Seq, Workshop
 Summary: This tutorial provides useful tips for Chip-Seq experiment analysis.
 
 ## Notes
@@ -16,13 +16,13 @@ The output files will appear on the filesystem at
 when the tutorials are run
 
 ## Prerequisites
-<ul>
-<li>Ability to login to odyssey (ssh, openauth)
-<li>Knowledge of basic command line commands (ls, cd, cat, less, nano, mkdir, |, >)
-<li>Knowledge of basic script loops
-<li>Knowledge of slurm batch scripts
-<li>Ability to transfer files to/from the cluster
-</ul>
+
+* Ability to login to odyssey (ssh, openauth)
+* Knowledge of basic command line commands (ls, cd, cat, less, nano, mkdir, |, >)
+* Knowledge of basic script loops
+* Knowledge of slurm batch scripts
+* Ability to transfer files to/from the cluster
+
 
 ## Chip-Seq Summary
 Chip-seq, or Chromatin Immunoprecipitation Sequencing, is used to probe DNA-protein interactions. First, DNA in whole cells is reversibly cross-linked to bound proteins with a cross-linking agent such as formaldehyde. Next, the DNA is isolated and sonicated to produce small fragments. Fragments containing the protein of interest are isolated via the addition of a protein-specific antibody and chromatin immunoprecipitation. Crosslinks are reversed and the isolated DNA is purified. Finally, strand-specific adapters are ligated and the library is amplified.
