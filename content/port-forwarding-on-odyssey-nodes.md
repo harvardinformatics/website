@@ -38,8 +38,8 @@ On a shared system like Odyssey, notebooks should be executed on compute hosts r
 
 This screencast demonstrates how to use the port forwarding plugin from an [NX desktop on Odyssey](https://rc.fas.harvard.edu/resources/access-and-login/#Consider_an_NX_remote_desktop_for_graphical_applications_like_Matlab_and_RStudio "NX desktops on Odyssey"). 
 
-[embed]http://youtu.be/dVXJRm6GLY4[/embed] 
+[NX screencast](http://youtu.be/dVXJRm6GLY4) 
 
 If instead, you'd like to connect directly to your laptop / desktop, this screencast will show you how. 
 
-[embed]http://youtu.be/ITy-Ow77A5g?list=UUDslFRDz5P9-069ktbuEkRQ[/embed]
+[X11 screencast](http://youtu.be/ITy-Ow77A5g?list=UUDslFRDz5P9-069ktbuEkRQ)
