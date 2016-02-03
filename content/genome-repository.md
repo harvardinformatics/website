@@ -7,7 +7,7 @@ Summary: Current status of public genome files
 
 <script type="text/javascript">
 //<![CDATA[
-$.get("/scripts/get_status.php", function(data) {
+$.get("/scripts/genome_repo/get_status.php", function(data) {
 	  console.log( data );
 	  $("#gr_status").html(data);
 	});
