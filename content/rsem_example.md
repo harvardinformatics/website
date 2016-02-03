@@ -65,8 +65,9 @@ To extract fastq files from the GEO data, use NCBI program toolkit. It is alread
 	$ source new-modules.sh
 	$ module load sratoolkit/0.2.3.4-2.bib-fasrc02
 
-The fastq-dump command produces two compressed fastq files for each dataset, for the forward and reverese reads. In this example, this is done with a SLURM job-array:
+The fastq-dump command produces two compressed fastq files for each dataset, for the forward and reverse reads. In this example, this is done with a SLURM job-array:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 1
 	#SBATCH -N 1
@@ -119,6 +120,7 @@ The human transcriptome data can be copied from the Informatics reference genome
 
 First process the reference transcriptome fasta file downloaded to build various index and other auxiliary files that RSEM needs; this is done with the RSEM "rsem-prepare-reference" function, which we run here as a SLURM job with the following script:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 1
 	#SBATCH -N 1
@@ -148,6 +150,7 @@ Now we can quantify abundances of the transcripts in the RNA-seq datasets with t
 
 We run this as a SLURM job-array:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 32
 	#SBATCH -N 1
