@@ -6,12 +6,12 @@ Tags: Genome Databases
 Summary: Current status of public genome files
 
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
 $.get("/scripts/get_status.php", function(data) {
 	  console.log( data );
 	  $("#gr_status").html(data);
 	});
-]]>
+//]]>
 </script>
 
 <div id="gr_status"></div>
