@@ -31,7 +31,7 @@ TOC = {
 }
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
-SITEURL = 'http://localhost:8000'
+SITEURL = 'http://informatics.fas.harvard.edu'
 TAGS_URL = 'tags.html'
 # PATH = 'content2'
 BANNER = True
