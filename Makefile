@@ -14,7 +14,7 @@ FTP_TARGET_DIR=/
 
 SSH_HOST=informatics1.rc.fas.harvard.edu
 SSH_PORT=22
-SSH_USER=mclamp
+SSH_USER?=$(USER)
 SSH_TARGET_DIR=/var/www/html
 
 S3_BUCKET=my_s3_bucket
