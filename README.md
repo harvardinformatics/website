@@ -4,7 +4,7 @@ Website markdown files
 
 ### Install pelican and markdown (python 2.7 required)
 
-    pip install pelican markdown
+    pip install pelican markdown beautifulsoup4 icalendar
 
 ### Install the pelican plugins (the pelicanconf.py file assumes it is cloned at the same level as this repo)
 
@@ -28,3 +28,9 @@ If clone --recursive does not work (you might see a complaint about a non-existe
 
 ### Should be visible from localhost:8000
 
+
+### Making live on the website
+
+
+For updating the web site, check out the files, make your edits, and do a make rsync_upload
+You'll want to set SSH_USER to your username
