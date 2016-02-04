@@ -4,6 +4,7 @@ Author: Michele Clamp
 Category: Tutorials
 Tags: Unix,R, Workshop
 Summary: We are presenting 3 workshops in February 2016.  These are aimed at people completely new to unix and the command line.
+Frontpage: True
 
 ![Introduction to Unix]({filename}/images/intro-to-unix-banner-feb-2016.png)
 
