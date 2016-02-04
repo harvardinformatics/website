@@ -3,7 +3,6 @@ Date: 2016-10-06
 Category: Software
 Tags: Jalview
 Summary: Jalview appears at ISMB
-Frontpage: True
 
 ![JalView at ISMB]({filename}/images/jalview.jpg)
 
