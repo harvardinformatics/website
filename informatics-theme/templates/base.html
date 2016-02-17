@@ -62,10 +62,7 @@
     {% else %}
         <link rel="stylesheet" href="{{ SITEURL }}/theme/css/bootstrap.min.css" type="text/css"/>
     {% endif %}
-    <link href="{{ SITEURL }}/theme/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="{{ SITEURL }}/theme/css/pygments/{{ PYGMENTS_STYLE|default('native') }}.css" rel="stylesheet">
-    {% if 'tipue_search' in PLUGINS %}
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>    {% if 'tipue_search' in PLUGINS %}
     <link href="{{ SITEURL}}/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
     {% endif %}
     {% if DOCUTIL_CSS %}
