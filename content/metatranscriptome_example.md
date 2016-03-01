@@ -104,7 +104,7 @@ The fastq-dump command compressed fastq files. In this example, this is done wit
 
 	srafile=SRR1206356
 
-	fastq-dump --gzip  -O $METATRANS_DIR  $METATRANS_DIR/$srafile.sra
+	fastq-dump --defline-seq '@$sn[_$rn]/$ri' --gzip  -O $METATRANS_DIR  $METATRANS_DIR/$srafile.sra
 
 The fastq-dump processing of this should take a few minutes. For small .sra files, an interactive SLURM session would also have worked. For larger input files, use a SLURM job.
 
@@ -132,7 +132,7 @@ Check quality statistics of reads using FastQC. This is done here using a SLURM 
 	srafile=SRR1206356
 
 	mkdir $METATRANS_DIR/fastqc_out
-	fastqc --casava --noextract --nogroup --outdir $METATRANS_DIR/fastqc_out $srafile.fastq.gz
+	fastqc --casava --noextract --nogroup --outdir $METATRANS_DIR/fastqc_out ${srafile}_1.fastq.gz
 
 The FastQC results can be viewed in .html results file which is found in the output folder we created: $METATRANS_DIR/fastqc_out
 
@@ -155,7 +155,7 @@ If there are many reads with low quality bases, trim with Trimmomatic using the 
 	srafile=SRR1206356
 
 	java -jar $TRIMMOMATIC_HOME/trimmomatic-0.35.jar SE -threads 8 -phred33 \
-	 $METATRANS_DIR/$srafile.fastq.gz $METATRANS_DIR/$srafile.trimmed.fastq.gz \
+	 $METATRANS_DIR/${srafile}_1.fastq.gz $METATRANS_DIR/${srafile}_1.trimmed.fastq.gz \
 	 ILLUMINACLIP:$TRIMMOMATIC_HOME/adapters/TruSeq2-SE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 
 
@@ -176,6 +176,7 @@ Run MetaPhlAn to profile the microbial composition of the metatranscriptome data
 	#SBATCH -J mpa_job
 	#SBATCH -t 100
 
+	source new-modules.sh
 	module load bowtie2
 
 	export PATH=/path/to/metaphlan2:$PATH
@@ -185,7 +186,7 @@ Run MetaPhlAn to profile the microbial composition of the metatranscriptome data
 
 	metaphlan2.py --input_type fastq -o abundance_profile.txt --mpa_pkl ${mpa_dir}/db_v20/mpa_v20_m200.pkl \
 	   --bowtie2db ${mpa_dir}/db_v20/mpa_v20_m200 --bowtie2out metagenome.bowtie2.bz2 \
-	   --nproc 8 <(gunzip -c $srafile.trimmed.fastq.gz)
+	   --nproc 8 <(gunzip -c ${srafile}_1.trimmed.fastq.gz)
 
 The script produces output file "abundance_profile.txt" (as specified in the metaphlan2.py command parameter "-o").
 The MetaPhlAn2 output (microbial abundance tables in tab-delimited format) contains the microbial species (Column 1) and their associated relative abundances (Column 2).
@@ -226,10 +227,41 @@ A screen capture of the generated html file is shown below.
 
 
 
+#### 5  Metatranscriptome assembly with Trinity
 
-#### 5 References
+To assemble transcripts from the metatranscriptome reads we can use Trinity. [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) is a method for efficient and robust de novo reconstruction of transcriptomes from RNA-seq data. In this example, we are running Trinity for single-end reads ("--single" parameter), 16 CPU cores ("--CPU" parameter), maximum memory of 50GB ("--max_memory" parameter) and minimum contig length 250bp ("--min_contig_length" parameter).
+Trinity writes out large intermediate files, so make sure you run the jobs on appropriate filesystems, like /n/regal as was mentioned above.
+
+	#!/bin/bash
+	#
+	#SBATCH -n 16
+	#SBATCH -N 1
+	#SBATCH --mem=50000
+	#SBATCH -p serial_requeue
+	#SBATCH -o trinity.out
+	#SBATCH -e trinity.err
+	#SBATCH -J trinity_job
+	#SBATCH -t 1400
+	
+	source new-modules.sh
+	module load trinity
+	
+	srafile=SRR1206356
+
+	Trinity --seqType fq --max_memory 50G --single ${srafile}_1.trimmed.fastq.gz --CPU 16 --min_contig_length 250 --output ${srafile}.trinity_results
+
+The results are in output folder with ".trinity_results" suffix; the main output is the Fasta with the assembled transcripts, "Trinity.fasta".
+
+In order to annotate these transcripts, you can use the [Trinotate](https://trinotate.github.io/) tool (from the same group who produced Trinity): an example workflow for Trinotate can be found in this [document](trinotate-workflow-example-on-odyssey.html). 
+
+
+#### 6 References
 
 Truong DT, Franzosa EA, Tickle TL, Scholz M, Weingart G, Pasolli E, Tett A, Huttenhower C and Segata N (2015). MetaPhlAn2 for enhanced metagenomic taxonomic profiling. Nature Methods 12, 902–903.
 
 Ondov BD, Bergman NH, and Phillippy AM (2011). Interactive metagenomic visualization in a Web browser. BMC Bioinformatics 12(1):385.
+
+Grabherr MG, Haas BJ, Yassour M, Levin JZ, Thompson DA, Amit I, Adiconis X, Fan L, Raychowdhury R, Zeng Q, Chen Z, Mauceli E, Hacohen N, Gnirke A, Rhind N, di Palma F, Birren BW, Nusbaum C, Lindblad-Toh K, Friedman N, Regev A (2011). Full-length transcriptome assembly from RNA-seq data without a reference genome. Nature Biotechnology 29(7):644-52. 
+
+
 
