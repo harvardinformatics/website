@@ -116,7 +116,7 @@ Check quality statistics of reads using FastQC. This is done here using a SLURM 
 
 	#!/bin/bash   
 	#
-	#SBATCH -n 8  
+	#SBATCH -n 1  
 	#SBATCH -N 1  
 	#SBATCH -t 50  
 	#SBATCH -p serial_requeue 
