@@ -73,9 +73,23 @@ We are small in number and try to cover the needs of as many people across campu
 
 ### Aaron Kitzmiller
 <div>
-Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
-
-[aaron_kitzmiller at harvard](aaron_kitzmiller@harvard.edu)
+      <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/aaron.jpg">
+                                <img class="img-responsive" src="/images/aaron.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
+                </p>
+                <p>
+                 <a href="mailto:aaron_kitzmiller@harvard.edu">aaron_kitzmiller at harvard</a>
+                </p>
+        </div>
+        <div style="clear: both;"></div>
 </div>
 
 ### Reuven Koblick
