@@ -99,27 +99,6 @@ Senior Scientific Computing Associate responsible for software engineering, web 
 	<div style="clear: both;"></div>
 </div>
 
-### George Marnellos
-<div>
-	<div class="team-photo">
-		<figure>
-			<a class="img" href="/images/george.jpeg">
-		    		<img class="img-responsive" src="/images/george.jpeg"></img>
-			</a>
-		    <figcaption></figcaption>
-		</figure>
-	</div>
-	<div class="team-blurb">
-		<p>
-		Senior Bioinformatics Scientist responsible for core sequencing analysis and general bioinformatics consultation.
-		</p>
-		<p>
-		<a href="mailto:gmarnellos@fas.harvard.edu">gmarnellos at harvard</a>
-		</p>
-	</div>
-	<div style="clear: both;"></div>
-</div>
-
 ### Tim Sackton
 <div>
 	<div class="team-photo">
