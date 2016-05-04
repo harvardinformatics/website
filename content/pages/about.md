@@ -82,7 +82,7 @@ Senior Scientific Computing Associate responsible for software engineering, web 
 <div>
 	<div class="team-photo">
 		<figure>
-			<a class="img" href="/images/reuven.jpg">
+			<a class="img" href="/images/reuven.jpg" width="100">
 		    		<img class="img-responsive" src="/images/reuven.jpg" width="100"></img>
 			</a>
 		    <figcaption></figcaption>
