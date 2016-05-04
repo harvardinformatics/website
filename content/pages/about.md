@@ -111,7 +111,7 @@ Senior Scientific Computing Associate responsible for software engineering, web 
 	</div>
 	<div class="team-blurb">
 		<p>
-		Post-doctoral fellow working on Ratite phylogeny and the genomic basis for flight in birds. Joint appointment with Scott Edwards’ group.
+		Senior Bioinformatics Scientist and also working on Ratite phylogeny and the genomic basis for flight in birds with Scott Edwards\; group.
 		</p>
 		<p>
 		<a href="mailto:tsackton@oeb.harvard.edu">tsackton at harvard</a>
