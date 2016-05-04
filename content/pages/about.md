@@ -125,19 +125,18 @@ Senior Scientific Computing Associate responsible for software engineering, web 
         <div class="team-photo">
                 <figure>
                         <a class="img" href="/images/meghan.png">
-                                <img class="img-responsive" src="/images/meghan.png"></img>
+                          <img class="img-responsive" src="/images/meghan.png"></img>
                         </a>
                     <figcaption></figcaption>
                 </figure>
         </div>
         <div class="team-blurb">
                 <p>
-Software Engineer working on development of an application for laboratory sample tracking (Iggybase). BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
+                Software Engineer working on development of an application for laboratory sample tracking (Iggybase). BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
                 </p>
                 <p>
                 <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
-
                 </p>
         </div>
-        <div style="clear: both;"></div>
+        <div style="clear:both;"></div>
 </div>
