@@ -73,17 +73,31 @@ We are small in number and try to cover the needs of as many people across campu
 
 ### Aaron Kitzmiller
 <div>
-Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
-
-[aaron_kitzmiller at harvard](aaron_kitzmiller@harvard.edu)
+      <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/aaron.jpg">
+                                <img class="img-responsive" src="/images/aaron.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
+                </p>
+                <p>
+                 <a href="mailto:aaron_kitzmiller@harvard.edu">aaron_kitzmiller at harvard</a>
+                </p>
+        </div>
+        <div style="clear: both;"></div>
 </div>
 
 ### Reuven Koblick
 <div>
 	<div class="team-photo">
 		<figure>
-			<a class="img" href="/images/reuven.jpg">
-		    		<img class="img-responsive" src="/images/reuven.jpg"></img>
+			<a class="img" href="/images/reuven.png">
+		    		<img class="img-responsive" src="/images/reuven.png"></img>
 			</a>
 		    <figcaption></figcaption>
 		</figure>
@@ -99,27 +113,6 @@ Senior Scientific Computing Associate responsible for software engineering, web 
 	<div style="clear: both;"></div>
 </div>
 
-### George Marnellos
-<div>
-	<div class="team-photo">
-		<figure>
-			<a class="img" href="/images/george.jpeg">
-		    		<img class="img-responsive" src="/images/george.jpeg"></img>
-			</a>
-		    <figcaption></figcaption>
-		</figure>
-	</div>
-	<div class="team-blurb">
-		<p>
-		Senior Bioinformatics Scientist responsible for core sequencing analysis and general bioinformatics consultation.
-		</p>
-		<p>
-		<a href="mailto:gmarnellos@fas.harvard.edu">gmarnellos at harvard</a>
-		</p>
-	</div>
-	<div style="clear: both;"></div>
-</div>
-
 ### Tim Sackton
 <div>
 	<div class="team-photo">
@@ -132,11 +125,32 @@ Senior Scientific Computing Associate responsible for software engineering, web 
 	</div>
 	<div class="team-blurb">
 		<p>
-		Post-doctoral fellow working on Ratite phylogeny and the genomic basis for flight in birds. Joint appointment with Scott Edwards’ group.
+		Senior Bioinformatics Scientist and also working on Ratite phylogeny and the genomic basis for flight in birds with Scott Edwards' group.
 		</p>
 		<p>
 		<a href="mailto:tsackton@oeb.harvard.edu">tsackton at harvard</a>
 		</p>
 	</div>
 	<div style="clear: both;"></div>
+</div>
+
+### Meghan Porter-Mahoney
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/meghan.png">
+                          <img class="img-responsive" src="/images/meghan.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Software Engineer working on development of an application for laboratory sample tracking (Iggybase). BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
+                </p>
+                <p>
+                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
 </div>

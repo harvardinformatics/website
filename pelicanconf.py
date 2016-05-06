@@ -16,7 +16,7 @@ PLUGINS = ['tag_cloud.tag_cloud',
            ]
 
 PLUGIN_EVENTS = {
-'ics_fname': 'calendar.ics',
+ 'ics_fname': 'calendar.ics',
 }
 
 KNITR_OPTS_CHUNK = {
