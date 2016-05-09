@@ -579,13 +579,13 @@ Homer motif finding usage
 
 Either wait for the jobs to run or look at the pre-run output in
 
-<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2/macs2_multi/macs2_multi_peaks.narrowPeak_homer_50bp_7mer</pre></div>
+<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2/macs2_all/macs2_all_peaks.narrowPeak_homer_50bp_7mer</pre></div>
 	
 or for the 100bp region
 
-<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2_multi/macs2_multi_peaks.narrowPeak_homer_100bp_7mer</pre></div>
+<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2_all/macs2_all_peaks.narrowPeak_homer_100bp_7mer</pre></div>
 
-3. Transfer the output directory to your laptop and look at the html output.   Considering the protein used in this experiment are the results understandable?   Do the differences between the 50bp and 100bp region make sense.
+3. Transfer the output directory to your laptop and look at the html output.   Considering the protein used in this experiment are the results understandable?   Do the differences between the 50bp and 100bp region make sense?
 
 4. How would you construct an sbatch file to search for motifs of multiple lengths?
 
@@ -605,7 +605,8 @@ The motif reported in the paper is GCCNGGC.  How can we search for this motif in
         &lt;outputdir&gt; \
         -size &lt;size&gt; \
         -p &lt;threads&gt; \
-       -find &lt;motiffile&gt;
+       -find &lt;motiffile&gt; \
+       -preparsedDir .
 </pre></div>
 
 ### Exercises 5
@@ -632,7 +633,7 @@ Now we can edit the HOXB7.motif file to edit the probabilites to make the middle
 Then we can run findMotifsGenome.pl with this file to find candidates.
 
 
-<div class="codehilite"><pre>findMotifsGenome.pl  macs2_peaks.narrowPeak hg19 macs2_homer_200_HOXB7 -size 200 -find HOXB7.motif  -p 16 &gt; macs2_homer_200_HOXB7.out</pre></div>
+<div class="codehilite"><pre>findMotifsGenome.pl  macs2_peaks.narrowPeak hg19 macs2_homer_200_HOXB7 -size 200 -find HOXB7.motif  -p 16 -preparsedDir . &gt; macs2_homer_200_HOXB7.out</pre></div>
 
 
 ### Exercises 6
