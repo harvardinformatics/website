@@ -83,8 +83,8 @@ Broad peaks (chromatin mods e.g. H3H27me3 M3K36me3)
 These are essential to reduce false positives as there is always some signal on open chromatin and there is a correlation between the number of reads found in protein-bound regions and non protein bound regions.  These artefacts originate from a number of sources including :
 
  * Copy number variation
- * Non-uniform fragmentation (?)
- * Non-specific pull-down (?)
+ * Non-uniform fragmentation
+ * Non-specific pull-down
  * Incorrect mapping of repetitive genomic regions
  * GC sequencing bias (http://beads.sourceforge.net [Cheung et al 2011])
  * Larger genomes have more problems.
@@ -115,7 +115,7 @@ Single ended 50bp reads are good for ChIP-Seq.    We don't need the extra cost o
 </figure>
 
 
-Strand-specific reads help to distinguish signal from noise, as true signal will consist of two peaks of equal magnitude, but on opposite strands. This is due to the fact that reads can originate from either end of DNA fragments, and DNA fragments are usually much longer than reads. This characteristic peak profile is shown in Figure 2.
+Strand-specific reads help to distinguish signal from noise, as true signal will consist of two peaks of equal magnitude, but on opposite strands. This is due to the fact that reads can originate from either end of DNA fragments, and DNA fragments are usually much longer than reads. This characteristic peak profile is shown in Figure 3.
 
 <figure>
 	<a class="img" href="/images/chipseq/read_peak_profile.png">
@@ -308,9 +308,9 @@ Also see <a href="https://rc.fas.harvard.edu/docs/running-jobs.html">here</a> f
 
 There are example Slurm scripts in 
 
-	<pre>/n/regal/informatics/workshops/ChIP-Seq/Slurm</pre>
+<pre>/n/regal/informatics/workshops/ChIP-Seq/Slurm</pre>
 
-### Exercises
+### Exercises 1
 
 * Make a trimmomatic directory in your Output directory and change into it.  This is good practice as it keeps things neat and tidy.
 * Copy over the example trimmomatic slurm script to your Slurm directory
@@ -326,7 +326,7 @@ There are example Slurm scripts in
 
 * Use the squeue command to check on your jobs.
 
-When you have your jobs successfully in the queue we'll let them stay there.   They take too long to run for us to wait for them so we'll move on.
+When you have your jobs successfully in the queue we'll let them stay there.   They take too long to run for us to wait for them so we'll take a look at the pre-computed output.
 
 We've provided output files for each of the steps in 
 
@@ -396,10 +396,10 @@ samtools index $j.bam                             # Index the bam
 This will produce a .bam alignment file and a .bam.bai index file.    The job error file will contain some statistics on the alignment.
 
 
-###Exercises:
+### Exercises 2
 
  * Make a bowtie2 directory in your Output directory (tidiness first!) and cd into it.
- * Copy over the bowtie2_SE slurm script from the workshops directory and edit it to change the email.
+ * Copy over the bowtie2_SE slurm script from the workshop Slurm directory and edit it to change the email.
  * Test the script using 
 
 <pre>bash sbatch.bowtie2_SE.sh myfile.fastq</pre>
@@ -494,12 +494,12 @@ More parameters and their descriptions are at
 ## MACS2 Slurm Submission
 
 ### Suggestions for MACS sbatch files
-<table>
-<tr><td>Running time</td><td>~1 hour per 10 million aligned reads</td></tr>
+<table><tbody>
+<tr><td>Running time </td><td>~1 hour per 10 million aligned reads</td></tr>
 <tr><td>Memory needs</td><td>~2G per 10 million reads</td></tr>
 <tr><td>Module</td><td><a href="https://portal.rc.fas.harvard.edu/apps/modules/macs2/2.1.0.20140616-fasrc01">macs2/2.1.0.20140616-fasrc01</a></td></tr>
 <tr><td>Queue</td><td>serial_requeue usually schedules pretty quickly but jobs can get cancelled.</td></tr>
-</table>
+</tbody></table>
 
 ## Output files
 
@@ -510,12 +510,12 @@ You can load it to UCSC genome browser or IGV. The 5th column in this file is th
 Other output formats are described at
 [https://github.com/taoliu/MACS/blob/macs_v1/README.rst#output-files](https://github.com/taoliu/MACS/blob/macs_v1/README.rst#output-files)
 
-## Exercise 1 - Peak Calling
+## Exercises 3 - Peak Calling and visualization
 
-1.  Construct an sbatch submission script for 1 treatment and control file and submit. 
-1.  Construct an sbatch submission script for all treatment and all control files and submit
-1.  Use `squeue -u <username>` to check the jobs are submitted and either pending or running.   Look at the error files if if fails to run.
-1.  Look at the output   (see /n/regal/informatics/workshops/ChIP-Seq/Output/macs2/ for pre-computed output)
+1. Make a macs2 directory in your user space for the macs2 output.
+2. Copy over and edit the macs2 Slurm script from the workshop directory.
+3. Construct an sbatch submission script for the 4  treatment and  4 control files.  Test on the command line and then submit. 
+4.  Look at the output   (see /n/regal/informatics/workshops/ChIP-Seq/Output/macs2/ for pre-computed output)
     <ul><li>Download the peaks file, wig or bdg files and your bam files and indices to your laptop</li>
 	   <li>Load up your bam files/wigs etc into IGV</li>
 	   <li>Zoom and scroll through some peaks.   Look at some high scoring peaks and some low scoring peaks.  Is this what you expect?   Is there anything different (bar the obvious) between the high scoring and the low scoring peaks.</li><li>Extra:  The output files AF1.bed, AF2.bed from the HOXB7 paper are in the output directory.  Load these into IGV  and compare to your peaks.   How similar are they?   Can you write a command line to find the intersection between your results and the paper's results?</li><li>Extra:  Using the bedtools module  `bedtools2/2.25.0-fasrc01` use the bedtools intersect command to compare the AF1.bed and AF2.bed files to your results.
@@ -547,12 +547,12 @@ Homer motif finding usage
 [http://homer.salk.edu/homer/ngs/peakMotifs.html](http://homer.salk.edu/homer/ngs/peakMotifs.html)
 
 <pre>
-	findMotifsGenome.pl <mypeakfile>  \
-	    <mygeneome|mygenomefile>  \
-	    <outputdir> \
-	    -size <regionsize> \
-	    -p <threads> \
-	    -len <len1>,<len2>,<len3>
+	findMotifsGenome.pl &lt;mypeakfile&gt; \
+	    &lt;mygeneome|mygenomefile&gt;  \
+	    &lt;outputdir&gt; \
+	    -size &lt;regionsize&gt; \
+	    -p &lt;threads&gt; \
+	    -len &lt;len1&gt;,&lt;len2&gt;,&lt;len3
 </pre>
 <table>
 	<tr><td><code>mypeakfile</code></td><td>the peak file from the macs output (.narrowpeak)</td></tr>
@@ -570,7 +570,7 @@ Homer motif finding usage
 
 <div class="codehilite"><pre>module load homer</pre></div>
 
-### Exercises
+### Exercises 4 
 
 1. Construct and submit an sbatch file to find motifs on the MACS peaks for a motif of length 7 in a region of 50bp. Use multiple threads (16 is good),  1Gb memory and 30 mins run time.
 
@@ -607,7 +607,7 @@ The motif reported in the paper is GCCNGGC.  How can we search for this motif in
        -find &lt;motiffile&gt;
 </pre></div>
 
-### Exercises
+### Exercises 5
 
 We need to generate a motif file but we don't have a consensus.  Let's run with a fake consensus to generate a template.
 
@@ -634,7 +634,7 @@ Then we can run findMotifsGenome.pl with this file to find candidates.
 <div class="codehilite"><pre>findMotifsGenome.pl  macs2_peaks.narrowPeak hg19 macs2_homer_200_HOXB7 -size 200 -find HOXB7.motif  -p 16 &gt; macs2_homer_200_HOXB7.out</pre></div>
 
 
-### Exercises
+### Exercises 6
 
 1.  Run the seq2profile.pl command on the login node (no need for a slurm command for this).
 
@@ -644,8 +644,6 @@ Then we can run findMotifsGenome.pl with this file to find candidates.
 
 To save time the output is in :
 
-
 <div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2_all/macs2_homer_200_HOXB7</pre></div>
-
 
 How do your results compare to the results in the paper?     What do you think is different?
