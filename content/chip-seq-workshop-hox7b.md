@@ -319,7 +319,8 @@ There are example Slurm scripts in
 
 <pre> bash sbatch.Trimmomatic_SE.sh myfile.fastq</pre>
 
-  If this doesn't exit immediately you probably have the right syntax so you're good to submit to slurm.
+If this doesn't exit immediately you probably have the right syntax so you're good to submit to slurm.
+
 * Submit a slurm job for each of the fastq files using a for loop.  The submit syntax is: 
 
 <pre>sbatch sbatch.Trimmomatic_SE.sh myfile.fastq</pre>
@@ -505,7 +506,7 @@ More parameters and their descriptions are at
 
 The main output file is  NAME_peaks.narrowpeaks which is a  BED format file which contains the peak locations.   This will be the file you use as input for the motif analysis.
 
-You can load it to UCSC genome browser or IGV. The 5th column in this file is the -10*log10pvalue of peak region.
+You can now load it into IGV. The 5th column in this file is the -10*log10pvalue of each peak region.
 
 Other output formats are described at
 [https://github.com/taoliu/MACS/blob/macs_v1/README.rst#output-files](https://github.com/taoliu/MACS/blob/macs_v1/README.rst#output-files)
@@ -574,23 +575,23 @@ Homer motif finding usage
 
 1. Construct and submit an sbatch file to find motifs on the MACS peaks for a motif of length 7 in a region of 50bp. Use multiple threads (16 is good),  1Gb memory and 30 mins run time.
 
-2. Construct and submit an sbatch file to find motifs on the MACS peaks for motifs of lengths 7 in a region of 200bp.  Use multiple threads, 1Gb memory and 30 mins run time.
+2. Construct and submit an sbatch file to find motifs on the MACS peaks for motifs of lengths 7 in a region of 100bp.  Use multiple threads, 1Gb memory and 30 mins run time.
 
 Either wait for the jobs to run or look at the pre-run output in
 
 <div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2/macs2_multi/macs2_multi_peaks.narrowPeak_homer_50bp_7mer</pre></div>
 	
-or for the 200bp region
+or for the 100bp region
 
 <div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2_multi/macs2_multi_peaks.narrowPeak_homer_100bp_7mer</pre></div>
 
-3. Transfer the output directory to your laptop and look at the html output.   Considering the protein used in this experiment are the results understandable?   Do the differences between the 50bp and 200bp region make sense.
+3. Transfer the output directory to your laptop and look at the html output.   Considering the protein used in this experiment are the results understandable?   Do the differences between the 50bp and 100bp region make sense.
 
 4. How would you construct an sbatch file to search for motifs of multiple lengths?
 
 ## Using Homer to search for a particular motif
 
-The motif reported in the paper is GCCNGGC.  How can we search for this motif in out data?
+The motif reported in the paper is GCCNGGC.  How can we search for this motif in our data?
 
 
 1. First we generate a motif file for our motif (no need for a slurm script for this)
@@ -644,6 +645,6 @@ Then we can run findMotifsGenome.pl with this file to find candidates.
 
 To save time the output is in :
 
-<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2_all/macs2_homer_200_HOXB7</pre></div>
+<div class="codehilite"><pre>/n/regal/informatics/workshops/ChIP-Seq/Output/macs2/macs2_homer_200_HOXB7</pre></div>
 
 How do your results compare to the results in the paper?     What do you think is different?
