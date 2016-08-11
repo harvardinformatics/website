@@ -62,10 +62,7 @@
     {% else %}
         <link rel="stylesheet" href="{{ SITEURL }}/theme/css/bootstrap.min.css" type="text/css"/>
     {% endif %}
-    <link href="{{ SITEURL }}/theme/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="{{ SITEURL }}/theme/css/pygments/{{ PYGMENTS_STYLE|default('native') }}.css" rel="stylesheet">
-    {% if 'tipue_search' in PLUGINS %}
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>    {% if 'tipue_search' in PLUGINS %}
     <link href="{{ SITEURL}}/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
     {% endif %}
     {% if DOCUTIL_CSS %}
@@ -96,6 +93,7 @@
     <script type="text/javascript" src="/theme/js/d3.min.js"></script>
     <script type="text/javascript" src="/theme/js/D3ChordChart.js"></script>
     <script type="text/javascript" src="/theme/js/jquery.MinilimsStatusBox.js"></script>
+    <script type="text/javascript" src="/theme/js/informatics.js"></script>
     
 
 </head>
@@ -134,16 +132,16 @@
                         </li>
                     {% endfor %}
                 {% endif %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            {% if 'tipue_search' in PLUGINS %}
+              <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}">Archives</a></li>
               <li><span>
-                <form class="navbar-search" action="/search">
+                <form class="navbar-search" action="/search.html">
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            {% if 'tipue_search' in PLUGINS %}
             {% endif %}
-              <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -152,7 +150,7 @@
 <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
     <div class="row">
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-8">
         {% else %}
         <div class="col-sm-12">
         {% endif %}
@@ -170,7 +168,7 @@
         {% endblock %}
         </div>
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-4 hidden-sm" id="sidebar">
+        <div class="col-lg-4 col-md-4 hidden-sm" id="sidebar">
             <aside>
             {% if ABOUT_ME %}
                 {% include 'includes/aboutme.html' %}

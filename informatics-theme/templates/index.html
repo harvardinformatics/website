@@ -1,7 +1,62 @@
-{% extends "article_list.html" %}
+{% extends "base.html" %}
 
 {% block canonical_rel %}<link rel="canonical" href="{{ SITEURL }}">{% endblock %}
 
 {% block banner %}
 	{% include 'includes/banner.html' %}
+{% endblock %}
+
+{% block content %}
+
+<p>
+The FAS Informatics and Scientific Applications group provides data management, 
+analysis, <a href="/category/tutorials.html">training</a>, and <a href="/category/software.html">software support</a> 
+for faculty and staff of Harvard FAS. 
+</p>
+<p>
+In addition to individual staff, FAS Informatics is a key partner to the other 
+<a href="/category/cores.html">FAS Core Facilities</a>, providing LIMS support with the 
+<a href="/tag/minilims.html">MiniLIMS platform</a> along with analysis and other software tools. 
+</p>
+<p>
+	For upcoming events like <a href="/tag/journal-club.html">our journal club</a>, or training sessions, 
+	see the <a href="/pages/events-list.html">event listing.</a>
+</p>
+
+     <div id="content" class="body">
+     {% if articles %}
+        {% for article in (articles_page.object_list if articles_page else articles) %}
+            {% if article.date < CUTOFF_DATE %}
+        		{% if article.frontpage %}
+	        		<article>
+	        			<h1><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
+	                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+	                    <div class="well well-sm">
+	                        {% include "includes/article_info.html" %}
+	                    </div>
+	                {% endif %}
+	                {{ article.content }}
+	                {% include 'includes/comment_count.html' %}
+	        		</article>
+	        		<hr/>
+       		{% else %}
+		            <article>
+		                <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+		                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+		                    <div class="well well-sm">
+		                        {% include "includes/article_info.html" %}
+		                    </div>
+		                {% endif %}
+		                <div class="summary">{{ article.summary }} <a style="float: right" href="{{ SITEURL }}/{{ article.url }}">more ...</a>
+		                    {% include 'includes/comment_count.html' %}
+		                </div>
+		            </article>
+		            <hr/>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div style="clear:both"></div>
+    </div>
+
 {% endblock %}

@@ -1,6 +1,6 @@
 Title: Kallisto example on Odyssey
 Date: 2015-12-15 00:00
-Category: Blog
+Category: Software
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, Kallisto
 Summary: An example of quantifying RNA-seq expression with Kallisto on Odyssey cluster
 

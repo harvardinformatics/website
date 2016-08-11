@@ -14,7 +14,7 @@ Use the entrance on the southwest corner of the building (marked in the map belo
 
 If you are planning to drive, please be advised that on-street parking is very limited and University-owned lots require a pre-paid day [permit](https://www2.uos.harvard.edu/cgi-bin/permit/purchase.pl). We strongly urge using public transportation.
 
-[<img src="http://rc.fas.harvard.edu/wp-content/uploads/2011/10/RC-Map-Small.jpg" width="432" height="344" />](http://rc.fas.harvard.edu/?attachment_id=4941)
+![Map](/images/map.jpg)
 
 ###Directions
 **By Public Transportation**
@@ -40,38 +40,96 @@ There are also commercial parking garages in Harvard Square, however the Divisio
 **University Day-Permit Parking**
 Limited parking is available for department visitors in nearby University-operated parking garages. Day permits can be purchased up to 2 weeks in advance, which is highly recommended as the lots fill-up quickly, in person (at the Harvard Parking Office at 3 Bow Street) or [online](https://www2.uos.harvard.edu/cgi-bin/permit/purchase.pl). Daily permits are $14.00. All major credit cards are accepted, and all sales are final (no refunds or exchanges). If you wish to purchase a permit online, we recommend requesting a permit for the 52 Oxford Street Garage (Monday-Friday, 7:00am-11:30pm) or 10 Everett Street (Monday-Friday, 7:15am-11:00pm).
 
+## Services
+
+The Informatics group provides bioinformatics analysis support for all users of the Core Sequencing facility and to FAS faculty groups regardless of the origin of their data.    In addition we have the responsibility for sample submission, tracking, scheduling and billing services for many of the core instrument facilities across FAS.
+
+We are small in number and try to cover the needs of as many people across campus as possible.  This means, however, that we can’t provide in-depth or long-term analysis services for single groups.   In these cases we encourage PIs to budget for a bioinformatics post-doc in their grant applications.   We are very happy to provide letters of support and text detailing our expertise,  and outlining possible analyses in grant applications.   Additionally James Cuff in Research Computing is happy to provide letters of support for computational hardware.
+
 
 ## Team
 
 ### Michele Clamp
 
-### [![Photo on 3-12-15 at 4.56 PM #2](http://informatics.fas.harvard.edu/wp-content/uploads/2013/12/Photo-on-3-12-15-at-4.56-PM-21-300x296.jpg)](http://informatics.fas.harvard.edu/wp-content/uploads/2013/12/Photo-on-3-12-15-at-4.56-PM-21.jpg)
-
-Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
-
-michele_clamp@harvard.edu
+<div>
+	<div class="team-photo">
+		<figure>
+			<a class="img" href="/images/michele.jpg">
+		    		<img class="img-responsive" src="/images/michele.jpg"></img>
+			</a>
+		    <figcaption></figcaption>
+		</figure>
+	</div>
+	<div class="team-blurb">
+		<p>
+		Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
+		</p>
+		<p>
+		 <a href="mailto:michele_clamp@harvard.edu">michele_clamp at harvard</a>
+		</p>
+	</div>
+	<div style="clear: both;"></div>
+</div>
 
 ### Aaron Kitzmiller
-
-Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
-
-aaron_kitzmiller@harvard.edu
-
-### Reuven Koblick
-
-![](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/Reuven-Koblick-1-e1354197782608.jpg "Reuven Koblick ")Senior web developer responsible for SPINAL development and maintenance.
-
-rkoblick@fas.harvard.edu
-
-### George Marnellos
-
-![](http://informatics1.rc.fas.harvard.edu/wp-content/uploads/2012/11/george-e1354285467436.jpeg "George Marnellos")  
-Senior Bioinformatics Scientist responsible for core sequencing analysis and general bioinformatics consultation.
-
-gmarnellos@fas.harvard.edu
+<div>
+      <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/aaron.jpg">
+                                <img class="img-responsive" src="/images/aaron.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
+                </p>
+                <p>
+                 <a href="mailto:aaron_kitzmiller@harvard.edu">aaron_kitzmiller at harvard</a>
+                </p>
+        </div>
+        <div style="clear: both;"></div>
+</div>
 
 ### Tim Sackton
+<div>
+	<div class="team-photo">
+		<figure>
+			<a class="img" href="/images/tim.jpg">
+		    		<img class="img-responsive" src="/images/tim.jpg"></img>
+			</a>
+		    <figcaption></figcaption>
+		</figure>
+	</div>
+	<div class="team-blurb">
+		<p>
+		Senior Bioinformatics Scientist and also working on Ratite phylogeny and the genomic basis for flight in birds with Scott Edwards' group.
+		</p>
+		<p>
+		<a href="mailto:tsackton@oeb.harvard.edu">tsackton at harvard</a>
+		</p>
+	</div>
+	<div style="clear: both;"></div>
+</div>
 
-![](http://informatics.fas.harvard.edu/wp-content/uploads/2014/10/sackton_cropped.jpg "Tim Sackton")Post-doctoral fellow working on Ratite phylogeny and the genomic basis for flight in birds. Joint appointment with Scott Edwards’ group.
-
-tsackton@oeb.harvard.edu
+### Meghan Porter-Mahoney
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/meghan.png">
+                          <img class="img-responsive" src="/images/meghan.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Software Engineer working on development of an application for laboratory sample tracking (Iggybase). BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
+                </p>
+                <p>
+                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>

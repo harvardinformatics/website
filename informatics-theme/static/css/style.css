@@ -1,7 +1,7 @@
 body {
     padding-top: 70px;
-    font-size: 16px;
-    font-family: FontAwesome;
+    font-size: 14px;
+    font-family: 'Lato','Helvetica Neue', Arial, sans-serif;
 }
 
 ul, ol {
@@ -54,18 +54,18 @@ code {
 	color: #c7254e;
 }
 h1 {
-	font-size: 32px;
+	font-size: 28px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 
 h2 {
-	font-size: 25px;
+	font-size: 22px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 h3,h4 {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	margin-top: 1.5em;
 }
@@ -79,7 +79,7 @@ p {
 }
 
 .container {
-	width: 90%;
+	width: 95%;
 }
 .subtitle {
 	font-weight: bold;
@@ -145,6 +145,11 @@ p {
     font-size: 6pt;
 }
 
+.label {
+	margin-left: 1em;
+	margin-right: 0.5em; 
+	padding: .4em .6em .4em .6em;
+}
 #aboutme {
     padding-top: 0px;
     padding-bottom: 5px;
@@ -180,6 +185,37 @@ p {
     margin-right: 3px;
 }
 
+#toc {
+	width: 30%;
+	position: relative;
+	float: left;
+	height: 100%;
+	padding: 0px 10px 0px 0px;
+	font-size: 12px;
+	display: none;
+}
+#toc ul {
+	margin: 0.5em;
+}
+#toc li {
+	list-style-type: none;
+}
+#toc a {
+	color: blue;
+}
+#toc-title {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0em 0em 1em 0.5em;
+}
+#toc-toggle:hover {
+	text-decoration: none;
+}
+.entry-content {
+    position: relative;
+    float: left;
+    width: 90%;
+}
 .entry-content a {
     text-decoration: none;
     border-bottom: 1px dotted;
@@ -328,9 +364,37 @@ figure.floatcenter, .align-center {
 .codehilite > pre {
 	border: none;
 	padding: 18px;
-	font-size: 16px;
+	font-size: 12px;
 	font-family: 'Andale Mono', 'Courier New', monospace;
 	background-color: #f3f3f3;
+}
+
+.team-photo {
+	max-width: 200px; 
+	position: relative; 
+	float: left; 
+	margin: 1em;	
+}
+
+.team-blurb {
+	max-width: 300px; 
+	position: relative; 
+	float: left; 
+	margin: 2em;
+}
+
+.calendar-link {
+	margin: 2em;
+	text-align: right;
+}
+
+.event-title{
+	font-size: 18px;
+	width: 100%;
+	font-weight: bold;
+}
+.event-item {
+	margin-top: 3em; 
 }
 
 /* Solutions for mobile and small screens  */

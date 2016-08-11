@@ -3,7 +3,7 @@ Date: 2016-01-01 13:51
 Category: Tutorials
 Author: Tim Sackton
 Tags: R
-Summary: This tutorial is intended for R
+Summary: This is a basic introduction to the R programming language.  The tutorial is not specific to Linux or the Odyssey cluster.
 
 R is a functional programming language, which means that most of what one does is apply functions to objects.
 

@@ -1,6 +1,6 @@
 Title: De Novo Assembly: Trinity vs. Oases
 Date: 2014-01-21 00:00
-Category: Blog
+Category: Software
 Tags: RNA-Seq Analysis,De Novo Assembly,Trinity,Oases
 Summary: Oases and Trinity are two frequently used software packages for assembling short reads into transcripts. Both tools contain several complex steps and are difficult to evaluate on the basis of algorithm alone. For this reason, we compare the transcripts these tools create.
 

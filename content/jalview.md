@@ -1,6 +1,6 @@
 Title: JalView at ISMB 2015
-Date: 2016-10-06
-Category: Blog
+Date: 2016-01-01
+Category: Software
 Tags: Jalview
 Summary: Jalview appears at ISMB
 

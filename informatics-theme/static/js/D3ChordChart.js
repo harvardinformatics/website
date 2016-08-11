@@ -92,7 +92,7 @@
        var url = "../../misc/getChordData.php?startdate="+obj.startdate;
 
        if (obj.source) {
-          url = "http://informatics.fas.harvard.edu/scripts/minilims/chord.php?source="+obj.source+"&startdate="+obj.startdate;
+          url = "/scripts/minilims/chord.php?source="+obj.source+"&startdate="+obj.startdate;
        }
        console.log("URL " + url);
       var aj = $.ajax({	

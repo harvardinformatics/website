@@ -1,8 +1,11 @@
 Title: Intermediate Unix Workshop
-Date: 2015-10-13
+Date: 2015-10-13 13:51
 Category: Tutorials
 Author: mclamp@harvard.edu
+Tags: Linux, Workshop
 Summary: This tutorial is intended for people who are familiar with the basics of unix but want to learn more about manipulating files and running commands.
+
+
 
 
 ## 1. Introduction and prerequisites
@@ -79,7 +82,7 @@ Common mistakes include:
 The RC documentation has info on how to use winscp here
 [https://rc.fas.harvard.edu/resources/documentation/transferring-data/copying-data-to-and-fromodyssey-using-scp](https://rc.fas.harvard.edu/resources/documentation/transferring-data/copying-data-to-and-fromodyssey-using-scp)
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises
 <ul>
 <li>Transfer the /n/regal/informatics/workshops/Intermediate_Unix/Data/seq directory used above to your local machine. Try and get the command right first time and use pwd/cut and paste to minimize typing.</li>
@@ -242,8 +245,7 @@ If you have submitted something and you want to remove it from the queue use the
     :::bash
     scancel <jobid>
 
-
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises
 <ul>
 <li>Copy a template slurm submission script from
@@ -290,7 +292,7 @@ Find is a sophisticated recursive directory search which can locate files based 
 Basic syntax is :
 
     :::bash
-    find <dir> -name <name pattern>
+    find \<dir\> -name \<name pattern\>
 
 
 This will list all found files.
@@ -321,7 +323,7 @@ Another usage for find is finding files that are newer or older than a certain t
 
 Will find all files below the current directory modified more than 7 days ago. Use -7 for less than 7 days ago.
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises :
 <ul>
 <li> Find all files in your home directory older than 1 day</li>
@@ -340,7 +342,7 @@ You can feed the output of one command to the input of another using the | chara
 For example you can run three commands one after the other 
 
     :::bash
-    <cmd1> | <cmd2> | <cmd3>
+    \<cmd1\> | \<cmd2\> | \<cmd3\>
 
 This is best illustrated with some examples:
 
@@ -405,7 +407,7 @@ If we want to feed input into samtools directly without using the myfile.sam fil
     :::bash
     bowtie2 –x hg19 –U myfile.fq –p 32 | samtools view –v –S -
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises :
 <ul>
 <li> Find how many chr14 lines there are in
@@ -416,7 +418,7 @@ and use pipe and another command to find the 10th row containing chr20 </li>
 </ul>
 </div>
 
-## 7. The sort command
+## 8. The sort command
 
 When we create data output files we often want to manipulate the contents by sorting. The unix `sort` command can be used to sort files very easily and in many different ways.
 
@@ -438,7 +440,7 @@ There are a lot of useful options to sort.  The most useful are :
 
 
 
-### Example 7.1
+### Example 8.1
 
     :::bash
     sort -nk2 AF1.bed # sorts the file by the 2nd column
@@ -450,7 +452,7 @@ We can have multiple column options
     sort -k1,1 -k2,2n AF1.bed # sorts the file by chromosome first and then start coord
 
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises :
 <ul>
 <li> Find the highest scoring 10 entries in the AF1.bed file (score is the 5th column)</li>
@@ -472,7 +474,7 @@ The sort command by default uses the /tmp/ directory to store intermediate files
 
 Of course you still have to have enough space in the new directory (use the `df –h` command to check)
 
-## 8. Searching for strings – grep
+## 9. Searching for strings – grep
 
 `grep` is a fantastic command for searching through files and directories. The basic syntax is :
 
@@ -505,7 +507,7 @@ Extra :
 Information about more complicated searching using regular expressions and egrep can be found here:
 [http://ryanstutorials.net/linuxtutorial/grep.php](http://ryanstutorials.net/linuxtutorial/grep.php)
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises :
 <ul>
 <li> Find how many bed peaks (rows) there are in the AF2.bed file for chr10</li>
@@ -514,7 +516,7 @@ Exercises :
 </div>
 
 
-## 9. Manipulating file contents – awk
+## 10. Manipulating file contents – awk
 
 This is where things really get powerful. Awk is a ‘pattern scanning and processing’ utility. It lets you search and filter files based on column and pattern. The basic syntax is:
 
@@ -590,7 +592,7 @@ This counts how often each chromosome appears in the bed file.
 
 There’s much more to awk but these commands will get you a long way. Let’s now do something useful :
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises:
 <ul>
 <li>Find how many entries there are in the AF1.bed file for each chromosome</li>
@@ -600,7 +602,7 @@ Exercises:
 </div>
 
 
-## 10. Perl regular expressions
+## 11. Perl regular expressions
 
 Perl is a complete programming language but there is one aspect of it that is really useful on the command line. This is it’s ability to search and replace strings on the fly.
 
@@ -677,7 +679,7 @@ And of course we can use pipes
 
 This will print out all the column 1 chromosome labels for scores > 200 and strip of the chr string
 
-<div class="exercises">
+<div style="color:red; margin: 50px">
 Exercises:
 <ul>
 <li>1. Convert a fastq file to fasta format using one line. Use the
@@ -693,10 +695,10 @@ Quality line
 
 Fasta format looks like
 <pre style="margin-top: 20px">
->header line here
-GGTTATTAGGGTGGCAGAGCCAGGAAATTGCGT
->another header line
-CCTCTAAGGCGGGCCACTGTGCCAAATTCTCTA
+\>header line here<br>
+GGTTATTAGGGTGGCAGAGCCAGGAAATTGCGT<br>
+\>another header line<br>
+CCTCTAAGGCGGGCCACTGTGCCAAATTCTCTA<br>
 </li>
 <li>2. Extract the index strings from the fastq file and estimate the frequency distribution
 (Use the /n/regal/informatics/workshops/Intermediate_Unix/DF_2.R1.fastq file)

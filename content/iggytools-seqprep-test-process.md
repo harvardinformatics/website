@@ -1,6 +1,7 @@
 Title: Iggytools SeqPrep test process
 Date: 2015-01-03 11:00
-Category: LIMS
+Category: Software
+Tags: Next-Gen Sequencing
 Summary: Procedure for testing the SeqPrep code
 
 1. Testing seqprep needs some raw run directories which tend to be quite big so aren’t in the main github repo.  These are currently sitting on the system in <span style="line-height: 1.714285714; font-size: 1rem;"> /n/informatics/git/testdata/</span>

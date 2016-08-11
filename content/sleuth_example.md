@@ -1,6 +1,6 @@
 Title: Sleuth example on Odyssey
 Date: 2015-12-10 00:00
-Category: Blog
+Category: Software
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq, Differential Expression, Sleuth
 Summary: An example of running a Sleuth analysis on Odyssey cluster
 
