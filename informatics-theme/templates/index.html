@@ -23,7 +23,8 @@ In addition to individual staff, FAS Informatics is a key partner to the other
 	see the <a href="/pages/events-list.html">event listing.</a>
 </p>
 
-    {% if articles %}
+     <div id="content" class="body">
+     {% if articles %}
         {% for article in (articles_page.object_list if articles_page else articles) %}
             {% if article.date < CUTOFF_DATE %}
         		{% if article.frontpage %}
@@ -38,10 +39,7 @@ In addition to individual staff, FAS Informatics is a key partner to the other
 	                {% include 'includes/comment_count.html' %}
 	        		</article>
 	        		<hr/>
-            {% if loop.length > 1 %}
-                <div id="content" class="body">
-            {% endif %}
-        		{% else %}
+       		{% else %}
 		            <article>
 		                <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
 		                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
@@ -54,10 +52,11 @@ In addition to individual staff, FAS Informatics is a key partner to the other
 		                </div>
 		            </article>
 		            <hr/>
-            {% endif %}
+                {% endif %}
             {% endif %}
         {% endfor %}
-               </div>
     {% endif %}
+    <div style="clear:both"></div>
+    </div>
 
 {% endblock %}
