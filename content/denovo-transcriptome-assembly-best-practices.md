@@ -16,7 +16,7 @@ Not infrequently, Harvard researchers have come to us with assembly problems....
 Examining the base quality distribution, kmer frequencies and adapter contamination by position in the read is an important first step to understanding the underlying quality of your data. For example, an  increase in adapter frequency as one moves along a read is indicative of incomplete removal of adapter sequence during demultiplexing, a rather common occurrence. In addition, the presence of over-represented sequences can be indicative of adapter contamination, rRNA reads, or perhaps other exongenous contamination.
 
 Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to examine quality metrics from your reads. An example slurm submission script is as follows: 
-        
+                        
         #!/bin/bash 
         #SBATCH -p serial_requeue       # Partition to submit to 
         #SBATCH -n 16                   # Number of cores 
@@ -40,12 +40,13 @@ Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to exami
         fastqc --outdir fastqc_$j $1  2>&1 > $j.fastqc.sbatch.out
 
 The above script uses a command line argument, specified by $1, which would be the name of the fastq file. Thus, job submission would look something like:
-        
-        sbatch myfastqcscript.sh mypurpleunicorn_1.fastq  
+         
+        :::bash
+        $ sbatch myfastqcscript.sh mypurpleunicorn_1.fastq  
 
 Outputs will include an html format report, and text files summarizing various quality metric information. Note, in the above script and those below, we use the practice of first loading new-modules to create access to the current module set, then purging any modules that might have gotten loaded from your .bash_profile or .bashrc file to avoid any conflicts, then loading any required modules for the current analysis. 
 
-#### 2  Removing erroneous k-mers from Illumina paired-end reads
+#### 3  Removing erroneous k-mers from Illumina paired-end reads
 
 Because the current state of the art transcriptome assemblers use a DeBruijn Graph approach that constructs graphs from kmers, erroneous k-mers can adversely impact assemblies. Because rare k-mers are likely due to sequencing errors, correcting reads such that rare k-mers are corrected to a more frequently occurring can improve assemblies. In theory, lowly expressed transcripts may lead to the occurence of biologically real, rare kmers that will get flagged as errors. However, assembly tools will generally do not do a good job of assembling lowly expressed transcripts anyway. Thus, in our opinion the benefits of rooting out errors that will impact the assembly of many transcripts outweigh any adverse effects on reconstruction of lowly expressed transcripts whose assembly will already be compromised by low read coverage. 
 
@@ -57,7 +58,7 @@ First, install a local version of rCorrector. cd into the directory within your 
         $ make
 
 Then, make a directory in which to run rCorrector, and create symlinks from your fastq files to this directory (to keep your raw data safe). Then, execute an sbatch script:
-
+                
         #!/bin/bash 
         #SBATCH -N 1
         #SBATCH -n 12
@@ -89,11 +90,11 @@ Reads with erroneous kmers that cannot be fixed will also be flagged, e.g.
         +
         BC@FFFDFGHGHHJJJJJJJJBHIICGIIJJIGHIJJJJIJJJJIIJHHHHEBFD9AB9?BD8@BDDDDDDDDDEEDDCDCCCDDD@DDDDD9?########################################################
 
-#### 3  Discard read pairs for which one of the reads is deemed unfixable
+#### 4  Discard read pairs for which one of the reads is deemed unfixable
 
 Such unfixable reads are often riddled with Ns, or represent other low complexity sequences. Why risk having junk incorporated into your assembly, and why spend compute time on reads that can only hurt the assembly? No good reason, so remove them. We provide a python script for achieving this task. It also strips the "cor" tag from the headers of corrected sequences, as these can cause problems for downstream tools, particularly if you are using data from SRA. Ask not why...it will only give you a headache. 
        
-        #!/bin/sh
+        #!/bin/bash
         #SBATCH -J rmunfix_$1                # Job name
         #SBATCH -n 1                         # Use 1 core for the job
         #SBATCH -t 03:00:00                  # Runtime in HH:MM:SS
@@ -114,7 +115,7 @@ Such unfixable reads are often riddled with Ns, or represent other low complexit
          
        # where $1 and $2 are cmd line arguments for names of R1 and R2 fastq files, respectively.
 
-#### 4   Trim adapter and low quality bases from fastq files
+#### 5   Trim adapter and low quality bases from fastq files
 
 The Illumina demultiplexing pipeline may incompletely remove adapter sequences, and when the insert sizes for a give read pair lead to overlaps between the sequenced bases, sequencing for one read can extend into the adapter of the other. These bases, as well as low quality bases should be trimmed prior to running Trinity. However, there is evidence that excessive quality trimming (by setting a high base quality threshold) can negatively impact assemblies (CITE McMANES). Based upon these findings, we recommend filtering out bases with qualities below phred 5. 
 
@@ -125,43 +126,43 @@ While Trimmomatic is commonly used for adapter and quality trimming, the adapter
        $ unzip trim_galore_v0.4.1.zip
 
 Then, make and output directory for your trimming results, and submit the trimming job with an sbatch script:
-
-      #!/bin/bash
-      #SBATCH -J trimglaore
-      #SBATCH -n 1                     # Use 1 cores for the job
-      #SBATCH -t 0-6:00                 # Runtime in D-HH:MM
-      #SBATCH -p serial_requeue         # Partition to submit to
-      #SBATCH --mem=3000               # Memory pool for all cores (see also --mem-per-cpu)
-      #SBATCH -o trimgalore_PE.%A.out  # File to which STDOUT will be written
-      #SBATCH -e trimgalore_PE.%A.err  # File to which STDERR will be written
-      #SBATCH --mail-type=ALL           # Type of email notification- BEGIN,END,FAIL,ALL
-      #SBATCH --mail-user=name@harvard.edu # Email to send notifications to
+        i
+        #!/bin/bash
+        #SBATCH -J trimglaore
+        #SBATCH -n 1                     # Use 1 cores for the job
+        #SBATCH -t 0-6:00                 # Runtime in D-HH:MM
+        #SBATCH -p serial_requeue         # Partition to submit to
+        #SBATCH --mem=3000               # Memory pool for all cores (see also --mem-per-cpu)
+        #SBATCH -o trimgalore_PE.%A.out  # File to which STDOUT will be written
+        #SBATCH -e trimgalore_PE.%A.err  # File to which STDERR will be written
+        #SBATCH --mail-type=ALL           # Type of email notification- BEGIN,END,FAIL,ALL
+        #SBATCH --mail-user=name@harvard.edu # Email to send notifications to
      
-      source new-modules.sh
-      module purge
-      module load cutadapt/1.8.1-fasrc01
+        source new-modules.sh
+        module purge
+        module load cutadapt/1.8.1-fasrc01
 
-      # $1 = R1 reads
-      # $2 = R2 reads
+        # $1 = R1 reads
+        # $2 = R2 reads
 
-      /your/path/to/trim_galore --paired --retain_unpaired --phred33 --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
+        /your/path/to/trim_galore --paired --retain_unpaired --phred33 --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
  
- Some of these options can be modified for your data set, e.g. if you are analyzing single end data, you obviously need none of the arguments specifying the handling of paired data, nor do you need to specify R1 and R2 reads! In addition, you may have reasons to change the minimum read length threshold, or the --strigency and -e parameters that pertain to adapter detection and filtering. In our experience, these settings have worked well. If you wish to re-purpose this script for trimming reads that you will then align to a genome, you can opt to be more stringent with respect to the minimum allowed base quality.
+Some of these options can be modified for your data set, e.g. if you are analyzing single end data, you obviously need none of the arguments specifying the handling of paired data, nor do you need to specify R1 and R2 reads! In addition, you may have reasons to change the minimum read length threshold, or the --strigency and -e parameters that pertain to adapter detection and filtering. In our experience, these settings have worked well. If you wish to re-purpose this script for trimming reads that you will then align to a genome, you can opt to be more stringent with respect to the minimum allowed base quality.
 
 Finally, if you have a lot of fastq files that you wish to run separately, in either the fastqc or trimming steps, one should consider writing a loop script that will iterate over files and submit sbatch submissions, rather than manually supplying command line arguments for one pair of reads at a time.
 
-#### 5 Map trimmed reads to a blacklist to remove unwanted (rRNA reads) OPTIONAL
+#### 6 Map trimmed reads to a blacklist to remove unwanted (rRNA reads) OPTIONAL
 
-In most cases, researchers will choose poly-A selection over ribo-depletion, either because of interest in coding sequence, or the finding that ribo-depletion can lead to bias in downstream analyses Lahens et al. 2014, Genome Biology(https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-6-r86). However, library prepration strategies using poly-A selection will typically not remove all of the rRNA, and we have seen frequencies of reads originating from rRNA post-selection to occasionally exceed 30%. Removing reads originating from rRNA will reduce Odyssey cluster usage, and assembly time. Equally important, you will have a more precise estimate of how many of your reads will actually go towards the assembly of mRNA transcripts.
+In most cases, researchers will choose poly-A selection over ribo-depletion, either because of interest in coding sequence, or the finding that ribo-depletion can lead to bias in downstream analyses [Lahens et al. 2014, Genome Biology](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-6-r86). However, library prepration strategies using poly-A selection will typically not remove all of the rRNA, and we have seen frequencies of reads originating from rRNA post-selection to occasionally exceed 30%. Removing reads originating from rRNA will reduce Odyssey cluster usage, and assembly time. Equally important, you will have a more precise estimate of how many of your reads will actually go towards the assembly of mRNA transcripts.
 
-Our recommendation is to first map your reads to an rRNA database, such as can be downloaded in fasta for from SILVA(https://www.arb-silva.de/). Then, one can run bowtie2 such as to maximize sensitivity of mapping, meaning you will maximize the number of reads you will consider as originating from rRNA, and thus worthy of being filtered out of your final read set for assembly. Once you build a bowtie2 index for the rRNA fasta database, see instructions at bowtie2(http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml), map your reads:
-
+Our recommendation is to first map your reads to an rRNA database, such as can be downloaded in fasta for from [SILVA](https://www.arb-silva.de/). Then, one can run bowtie2 such as to maximize sensitivity of mapping, meaning you will maximize the number of reads you will consider as originating from rRNA, and thus worthy of being filtered out of your final read set for assembly. Once you build a bowtie2 index for the rRNA fasta database, see instructions at [bowtie2 manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml), map your reads:
+        
         #!/bin/bash
         #SBATCH -N 1
         #SBATCH -n 12 #Number of cores
         #SBATCH -t 12:00:00  #Runtime in minutes
         #SBATCH -p serial_requeue  #Partition to submit to
-        #SBATCH --mem=24000  #Memory per node in MB
+        #SBATCH --mem=12000  #Memory per node in MB
         #SBATCH -e silvabt2_%A.e
         #SBATCH -o silvabt2_%A.o
  
@@ -181,20 +182,20 @@ Our recommendation is to first map your reads to an rRNA database, such as can b
 
 The reads you want to keep are those corresponding to the read pairs that did not align to the rRNA database, i.e. specified by $6 after the --un-conc-gz flag.
 
-#### 6 Run fastqc on your processed reads that pass qc and filtering from the above steps
+#### 7 Run fastqc on your processed reads that pass qc and filtering from the above steps
 
 Use the same sbatch submission format from step 2 (above). Ideally, there will be no trend in adapter contamination by cycle, and there will be increased evenness in kmer distributions, GC content, no over-represented sequences, etc. 
 
-#### 7 Remove remaining over-represented sequences OPTIONNAL
+#### 8 Remove remaining over-represented sequences OPTIONNAL
 
 Occasionally, over-represented sequeuences will be detected by fastqc even after running through the above steps. One should BLAST them to see what they are, and consider using a script to remove read pairs containing the over-represented sequences. Typically, these will be rRNAs that were not sufficiently represented in the SILVA database (e.g. 5S), or other more common rRNAs that your reads won't map to because it is too divergent from the organisms used to construct the database. We provide a simple python script to use the sequences flagged by fastqc(PUT HERE)
 
-#### 8 Run Trinity
+#### 9 Run Trinity
  
 We continue to evaluate other de novo transcriptome assemblers, but at present we recommend Trinity as it performs relatively well, uses compute resources efficiently, and has ongoing support from its developers, and the distribution includes scripts for conducting a number of downstream analyses for assembly quality evaluation and expression estimation. 
 
 Settings used for Trinity will depend upon a number of factors, including the sequencing strategy, whether libraries are stranded, and the size of the data set. For data sets with > 200 million reads after the filtering steps above, for computational considerations we recommend conducting in silico normalization. One can perform the normalization as part of the Trinity run, or do it separately using insilico_read_normalization.pl, the perl script provided as part of the Trinity package, found in the util directory. We suggest it may be more efficient to run the normalization separately, especially if a large amount of memory needs to be allocated to the assembly itself. Below is an example script for a Trinity job for a stranded paired-end library, generated using dUTP chemistry (hence the RF flag), without normalization as part of the job submission.
-
+        
         #!/bin/bash 
         #SBATCH -N 1
         #SBATCH -n 32
