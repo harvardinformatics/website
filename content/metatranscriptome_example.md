@@ -1,6 +1,6 @@
 Title: Metatranscriptome analysis example on Odyssey
 Date: 2016-02-08 00:00
-Category: Blog
+Category: Tutorials
 Tags: Next-Gen Sequencing Microbiome RNA-Seq Metatranscriptome 
 Summary: An example of preprocessing and analyzing microbiome RNA-seq data on the Odyssey cluster
 
