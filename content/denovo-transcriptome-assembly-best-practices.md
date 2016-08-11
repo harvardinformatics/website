@@ -55,7 +55,7 @@ We use [rCorrector](https://github.com/mourisl/Rcorrector), which besides being 
 First, install a local version of rCorrector. cd into the directory within your home where you install software, and make a clone of rCorrector using git:
 
        	:::bash
-	$ git clone git@github.com:mourisl/Rcorrector.git
+        $ git clone git@github.com:mourisl/Rcorrector.git
         $ make
 
 Then, make a directory in which to run rCorrector, and create symlinks from your fastq files to this directory (to keep your raw data safe). Then, execute an sbatch script:
