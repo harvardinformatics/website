@@ -92,27 +92,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear: both;"></div>
 </div>
 
-### Reuven Koblick
-<div>
-	<div class="team-photo">
-		<figure>
-			<a class="img" href="/images/reuven.png">
-		    		<img class="img-responsive" src="/images/reuven.png"></img>
-			</a>
-		    <figcaption></figcaption>
-		</figure>
-	</div>
-	<div class="team-blurb">
-		<p>
-		Senior web developer responsible for SPINAL development and maintenance.
-		</p>
-		<p>
-		<a href="mailto:rkoblick@fas.harvard.edu">rkoblick at harvard</a>
-		</p>
-    </div>
-	<div style="clear: both;"></div>
-</div>
-
 ### Tim Sackton
 <div>
 	<div class="team-photo">
