@@ -50,9 +50,10 @@ Outputs will include an html format report, and text files summarizing various q
 
 Because the current state of the art transcriptome assemblers use a DeBruijn Graph approach that constructs graphs from kmers, erroneous k-mers can adversely impact assemblies. Because rare k-mers are likely due to sequencing errors, correcting reads such that rare k-mers are corrected to a more frequently occurring can improve assemblies. In theory, lowly expressed transcripts may lead to the occurence of biologically real, rare kmers that will get flagged as errors. However, assembly tools will generally do not do a good job of assembling lowly expressed transcripts anyway. Thus, in our opinion the benefits of rooting out errors that will impact the assembly of many transcripts outweigh any adverse effects on reconstruction of lowly expressed transcripts whose assembly will already be compromised by low read coverage. 
 
-We use rCorrector(https://github.com/mourisl/Rcorrector), which besides being a top performer in side-by-side comparisons of kmer-based read error correction tools, includes tags in the fastq output that indicate whether the read has been corrected, or has been detected as containing an error, but is uncorrectable.
+We use [rCorrector](https://github.com/mourisl/Rcorrector), which besides being a top performer in side-by-side comparisons of kmer-based read error correction tools, includes tags in the fastq output that indicate whether the read has been corrected, or has been detected as containing an error, but is uncorrectable.
 
-First, install a local version of rCorrector. cd into the directory within your home where you install software, and make a clone of rCorrector using git.
+First, install a local version of rCorrector. cd into the directory within your home where you install software, and make a clone of rCorrector using git:
+
        	:::bash
 	$ git clone git@github.com:mourisl/Rcorrector.git
         $ make
