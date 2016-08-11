@@ -1,7 +1,7 @@
 Title: Analyzing public ChIP-seq data for orthologs of genes of interest
 Date: 2016-03-10 00:00
 Category: Tutorials
-Tags: Next-Gen Sequencing ChIP-Seq Peaks Orthologs 
+Tags: Next-Gen Sequencing, ChIP-Seq, Peaks, Orthologs 
 Summary: An example workflow for identifying orthologs of genes of interest from one organism by analyzing ChIP-seq data from another organism
 
 

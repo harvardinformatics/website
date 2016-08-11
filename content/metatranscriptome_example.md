@@ -1,7 +1,7 @@
 Title: Metatranscriptome analysis example on Odyssey
 Date: 2016-02-08 00:00
 Category: Tutorials
-Tags: Next-Gen Sequencing Microbiome RNA-Seq Metatranscriptome 
+Tags: Next-Gen Sequencing, Microbiome, RNA-Seq, Metatranscriptome 
 Summary: An example of preprocessing and analyzing microbiome RNA-seq data on the Odyssey cluster
 
 Next generation sequencing (NGS) RNA sequencing (RNA-seq) can be applied in complex microbial ecosystems for metatranscriptome analysis. The application of mRNA enrichment procedures in combination with NGS techniques has established that in depth analysis of transcriptomic landscapes are now feasible in marine and soil microbial communities, [human microbiomes](http://commonfund.nih.gov/hmp/index) from the intestine and many other body parts, and other types of microbial communities. Paired-end sequencing, like that available on the Illumina platform, can be applied to increase the information content and to enhance the identification of expressed gene functions in complex communities.
