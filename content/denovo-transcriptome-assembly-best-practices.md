@@ -7,11 +7,49 @@ Summary: A best-practices pipeline for de novo transcriptome assembly with Illum
 
 [TRINITY](https://github.com/trinityrnaseq/trinityrnaseq/wiki) is a software package for conducting de novo (as well as the genome-guided version of) transcriptome assembly from RNA-seq data. The Trinity package also includes a number of perl scripts for generating statistics to assess assembly quality, and for wrapping external tools for conducting downstream analyses. 
 
+#### 1 Consult with Informatics Group staff about study design
 
+Not infrequently, Harvard researchers have come to us with assembly problems....AFTER they have devised a study design, picked samples, and conducted sequencing. While in our experience, de novo transcriptome assemblies are far more fragmented than the early performance assessments would suggest, there are aspects of sequencing experiments that can negatively impact assemblies. Please contact us so we can provide advice on designing your transcriptomics study, and help you avoid common pitfalls.  
 
-#### 1  Removing erroneous k-mers from Illumina paired-end reads
+#### 2 Examine quality metrics for sequencing reads
 
-Because Trinity uses a DeBruijn Graph approach, constructing graphs from kmers, erroneous k-mers can adversely impact assemblies. Because rare k-mers are likely due to sequencing errors, correcting reads such that rare k-mers are corrected to a more frequently occurring can improve assemblies. We use rCorrector(https://github.com/mourisl/Rcorrector), which besides being a top performer in side-by-side comparisons, includes tags in the fastq output that indicate whether the read has been corrected, or has been detected as containing an error, but is uncorrectable.
+Examining the base quality distribution, kmer frequencies and adapter contamination by position in the read is an important first step to understanding the underlying quality of your data. For example, an  increase in adapter frequency as one moves along a read is indicative of incomplete removal of adapter sequence during demultiplexing, a rather common occurrence. In addition, the presence of over-represented sequences can be indicative of adapter contamination, rRNA reads, or perhaps other exongenous contamination.
+
+Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to examine quality metrics from your reads. An example slurm submission script is as follows: 
+        
+        #!/bin/bash 
+        #SBATCH -p serial_requeue       # Partition to submit to 
+        #SBATCH -n 16                   # Number of cores 
+        #SBATCH -N 1                    # Ensure that all cores are on one machine 
+        #SBATCH -t 0-3:00               # Runtime in days-hours:minutes 
+        #SBATCH --mem 2000              # Memory in MB 
+        #SBATCH -J FastQC               # job name 
+        #SBATCH -o FastQC.%A.out        # File to which standard out will be written 
+        #SBATCH -e FastQC.%A.err        # File to which standard err will be written 
+        #SBATCH --mail-type=ALL         # Type of email notification- BEGIN,END,FAIL,ALL 
+        #SBATCH --mail-user=<PUT YOUR EMAIL ADDRESS HERE>  # Email to which notifications will be sent 
+
+        source new-modules.sh
+        module purge
+        module load fastqc/0.11.5-fasrc01
+
+        j=`basename $1`
+
+        mkdir -p fastqc_$j
+
+        fastqc --outdir fastqc_$j $1  2>&1 > $j.fastqc.sbatch.out
+
+The above script uses a command line argument, specified by $1, which would be the name of the fastq file. Thus, job submission would look something like:
+        
+        sbatch myfastqcscript.sh mypurpleunicorn_1.fastq  
+
+Outputs will include an html format report, and text files summarizing various quality metric information. Note, in the above script and those below, we use the practice of first loading new-modules to create access to the current module set, then purging any modules that might have gotten loaded from your .bash_profile or .bashrc file to avoid any conflicts, then loading any required modules for the current analysis. 
+
+#### 2  Removing erroneous k-mers from Illumina paired-end reads
+
+Because the current state of the art transcriptome assemblers use a DeBruijn Graph approach that constructs graphs from kmers, erroneous k-mers can adversely impact assemblies. Because rare k-mers are likely due to sequencing errors, correcting reads such that rare k-mers are corrected to a more frequently occurring can improve assemblies. In theory, lowly expressed transcripts may lead to the occurence of biologically real, rare kmers that will get flagged as errors. However, assembly tools will generally do not do a good job of assembling lowly expressed transcripts anyway. Thus, in our opinion the benefits of rooting out errors that will impact the assembly of many transcripts outweigh any adverse effects on reconstruction of lowly expressed transcripts whose assembly will already be compromised by low read coverage. 
+
+We use rCorrector(https://github.com/mourisl/Rcorrector), which besides being a top performer in side-by-side comparisons of kmer-based read error correction tools, includes tags in the fastq output that indicate whether the read has been corrected, or has been detected as containing an error, but is uncorrectable.
 
 First, install a local version of rCorrector. cd into the directory within your home where you install software, and make a clone of rCorrector using git.
        	:::bash
@@ -51,7 +89,7 @@ Reads with erroneous kmers that cannot be fixed will also be flagged, e.g.
         +
         BC@FFFDFGHGHHJJJJJJJJBHIICGIIJJIGHIJJJJIJJJJIIJHHHHEBFD9AB9?BD8@BDDDDDDDDDEEDDCDCCCDDD@DDDDD9?########################################################
 
-#### 2  Discard read pairs for which one of the reads is deemed unfixable
+#### 3  Discard read pairs for which one of the reads is deemed unfixable
 
 Such unfixable reads are often riddled with Ns, or represent other low complexity sequences. Why risk having junk incorporated into your assembly, and why spend compute time on reads that can only hurt the assembly? No good reason, so remove them. We provide a python script for achieving this task. It also strips the "cor" tag from the headers of corrected sequences, as these can cause problems for downstream tools, particularly if you are using data from SRA. Ask not why...it will only give you a headache. 
        
@@ -76,7 +114,7 @@ Such unfixable reads are often riddled with Ns, or represent other low complexit
          
        # where $1 and $2 are cmd line arguments for names of R1 and R2 fastq files, respectively.
 
-#### 3   Trim adapter and low quality bases from fastq files
+#### 4   Trim adapter and low quality bases from fastq files
 
 The Illumina demultiplexing pipeline may incompletely remove adapter sequences, and when the insert sizes for a give read pair lead to overlaps between the sequenced bases, sequencing for one read can extend into the adapter of the other. These bases, as well as low quality bases should be trimmed prior to running Trinity. However, there is evidence that excessive quality trimming (by setting a high base quality threshold) can negatively impact assemblies (CITE McMANES). Based upon these findings, we recommend filtering out bases with qualities below phred 5. 
 
@@ -112,5 +150,84 @@ Then, make and output directory for your trimming results, and submit the trimmi
 
 Finally, if you have a lot of fastq files that you wish to run separately, in either the fastqc or trimming steps, one should consider writing a loop script that will iterate over files and submit sbatch submissions, rather than manually supplying command line arguments for one pair of reads at a time.
 
-#### Running Trinity 
+#### 5 Map trimmed reads to a blacklist to remove unwanted (rRNA reads) OPTIONAL
+
+In most cases, researchers will choose poly-A selection over ribo-depletion, either because of interest in coding sequence, or the finding that ribo-depletion can lead to bias in downstream analyses Lahens et al. 2014, Genome Biology(https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-6-r86). However, library prepration strategies using poly-A selection will typically not remove all of the rRNA, and we have seen frequencies of reads originating from rRNA post-selection to occasionally exceed 30%. Removing reads originating from rRNA will reduce Odyssey cluster usage, and assembly time. Equally important, you will have a more precise estimate of how many of your reads will actually go towards the assembly of mRNA transcripts.
+
+Our recommendation is to first map your reads to an rRNA database, such as can be downloaded in fasta for from SILVA(https://www.arb-silva.de/). Then, one can run bowtie2 such as to maximize sensitivity of mapping, meaning you will maximize the number of reads you will consider as originating from rRNA, and thus worthy of being filtered out of your final read set for assembly. Once you build a bowtie2 index for the rRNA fasta database, see instructions at bowtie2(http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml), map your reads:
+
+        #!/bin/bash
+        #SBATCH -N 1
+        #SBATCH -n 12 #Number of cores
+        #SBATCH -t 12:00:00  #Runtime in minutes
+        #SBATCH -p serial_requeue  #Partition to submit to
+        #SBATCH --mem=24000  #Memory per node in MB
+        #SBATCH -e silvabt2_%A.e
+        #SBATCH -o silvabt2_%A.o
+ 
+        # $1 = full path to your silva database; do not include the fasta suffix (fa,fasta,etc.)
+        # $2 = R1 fastq file
+        # $3 = R2 fastq file
+        # $4 = text file to which to write summary metrics
+        # $5 = name of file to which paired reads that map to rRNA database will be written (bowtie2 will and the 1 and 2 suffixes to indicate whether left or right reads
+        # $6 = same as $5, but for read pairs for which neither read mapped to the rRNA database
+        # $7 = same as $5, but for single ends that mapped to the rRNA database whose mates didn't map
+        # $8 = same as $5, but for single ends that did not map to the rRNA database
+
+        source new-modules.sh
+        module purge
+        module load bowtie2/2.2.4-fasrc01
+        bowtie2 --very-sensitive-local --phred33  -x $1 -1 $2  -2 $3 --threads 12 --met-file $4 --al-conc-gz $5 --un-conc-gz $6 --al-gz $7 --un-gz $8
+
+The reads you want to keep are those corresponding to the read pairs that did not align to the rRNA database, i.e. specified by $6 after the --un-conc-gz flag.
+
+#### 6 Run fastqc on your processed reads that pass qc and filtering from the above steps
+
+Use the same sbatch submission format from step 2 (above). Ideally, there will be no trend in adapter contamination by cycle, and there will be increased evenness in kmer distributions, GC content, no over-represented sequences, etc. 
+
+#### 7 Remove remaining over-represented sequences OPTIONNAL
+
+Occasionally, over-represented sequeuences will be detected by fastqc even after running through the above steps. One should BLAST them to see what they are, and consider using a script to remove read pairs containing the over-represented sequences. Typically, these will be rRNAs that were not sufficiently represented in the SILVA database (e.g. 5S), or other more common rRNAs that your reads won't map to because it is too divergent from the organisms used to construct the database. We provide a simple python script to use the sequences flagged by fastqc(PUT HERE)
+
+#### 8 Run Trinity
+ 
+We continue to evaluate other de novo transcriptome assemblers, but at present we recommend Trinity as it performs relatively well, uses compute resources efficiently, and has ongoing support from its developers, and the distribution includes scripts for conducting a number of downstream analyses for assembly quality evaluation and expression estimation. 
+
+Settings used for Trinity will depend upon a number of factors, including the sequencing strategy, whether libraries are stranded, and the size of the data set. For data sets with > 200 million reads after the filtering steps above, for computational considerations we recommend conducting in silico normalization. One can perform the normalization as part of the Trinity run, or do it separately using insilico_read_normalization.pl, the perl script provided as part of the Trinity package, found in the util directory. We suggest it may be more efficient to run the normalization separately, especially if a large amount of memory needs to be allocated to the assembly itself. Below is an example script for a Trinity job for a stranded paired-end library, generated using dUTP chemistry (hence the RF flag), without normalization as part of the job submission.
+
+        #!/bin/bash 
+        #SBATCH -N 1
+        #SBATCH -n 32
+        #SBATCH -p general                   # may consider running on a bigmem node for large dataset
+        #SBATCH -e trinity_%A.err            # File to which STDERR will be written
+        #SBATCH -o trinity_%A.out           # File to which STDOUT will be written
+        #SBATCH -J trinity_%A               # Job name
+        #SBATCH --mem=250000                 # Memory requested
+        #SBATCH --time=2-23:00:00              # Runtime in D-HH:MM:SS
+        #SBATCH --mail-type=ALL              # Type of email notification- BEGIN,END,FAIL,ALL
+        #SBATCH --mail-user=name@harvard.edu # Email to send notifications to
+
+        source new-modules.sh
+        module purge
+        module load trinityrnaseq/2.1.1-fasrc01
+        # $1 = comma-separated list of R1 files
+        # $2 = comma-separated list of R2 files
+        # $3 = name of output directory Trinity will create to store results. This must include Trinity in the name, otherwise the job will terminate
+
+        Trinity --seqType fq --SS_lib_type RF --max_memory 225G --min_kmer_cov 1 --CPU 32 --left $1 --right $2 --output $3 
+
+Depending upon the size of the input read data set, you may need some combination of more (or less) time and memory. Another option is to use Trinity's capability to distribute parallelizable steps across a job grid. To do this, you must add the --grid_conf argument and specifying a grid config file, configured as follows:
+
+        # grid type:
+        grid=SLURM
+        # template for a grid submission
+        cmd=sbatch -p general --mem=5500 --time=02:00:00 --account=<YOUR ODYSSEY USER ACCT>
+        # number of grid submissions to be maintained at steady state by the Trinity submission system
+        max_nodes=500
+        # number of commands that are batched into a single grid submission job.
+        cmds_per_node=200
+
+You should also use the --grid_node_max_memory 5G argument, which uses a value slightly less than what's in the grid config file. 
+
+Finally, --left and --right are for comma separated lists of R1 and R2 fastq files. An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
