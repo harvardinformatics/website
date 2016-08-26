@@ -112,9 +112,11 @@ Such unfixable reads are often riddled with Ns, or represent other low complexit
         module purge
         module load python/2.7.8-fasrc01
 
-        python /n/regal/informatics/workshops/trinity/python_code/FilterUncorrectabledPEfastq.py $1 $2 2>&1 > rmunfixable_$r1.out
+        python FilterUncorrectabledPEfastq.py -1 $1 -2 $2 -o fixed 2>&1 > rmunfixable_$r1.out
          
-       # where $1 and $2 are cmd line arguments for names of R1 and R2 fastq files, respectively.
+       # where $1 and $2 are cmd line arguments for names of R1 and R2 fastq files, respectively, and 'fixed' is a prefix added to the filtered output files (which, of course, you can change).
+
+The latest version of [FilterUncorrectablePEfasta.py](https://github.com/harvardinformatics/TranscriptomeAssemblyTools/blob/master/FilterUncorrectabledPEfastq.py) can be found in the TranscriptomeAsemblyTools repository on the Harvard Informatics github repository
 
 #### 5   Trim adapter and low quality bases from fastq files
 
@@ -127,9 +129,9 @@ While Trimmomatic is commonly used for adapter and quality trimming, the adapter
        $ unzip trim_galore_v0.4.1.zip
 
 Then, make and output directory for your trimming results, and submit the trimming job with an sbatch script:
-        i
+        
         #!/bin/bash
-        #SBATCH -J trimglaore
+        #SBATCH -J trimgalore
         #SBATCH -n 1                     # Use 1 cores for the job
         #SBATCH -t 0-6:00                 # Runtime in D-HH:MM
         #SBATCH -p serial_requeue         # Partition to submit to
@@ -151,6 +153,16 @@ Then, make and output directory for your trimming results, and submit the trimmi
 Some of these options can be modified for your data set, e.g. if you are analyzing single end data, you obviously need none of the arguments specifying the handling of paired data, nor do you need to specify R1 and R2 reads! In addition, you may have reasons to change the minimum read length threshold, or the --strigency and -e parameters that pertain to adapter detection and filtering. In our experience, these settings have worked well. If you wish to re-purpose this script for trimming reads that you will then align to a genome, you can opt to be more stringent with respect to the minimum allowed base quality.
 
 Finally, if you have a lot of fastq files that you wish to run separately, in either the fastqc or trimming steps, one should consider writing a loop script that will iterate over files and submit sbatch submissions, rather than manually supplying command line arguments for one pair of reads at a time.
+
+NOTE: For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
+
+        your/path/to/trim_galore --paired --retain_unpaired --phred33 -a AAGATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a2 GATCGTCGGACTGTAGAACTCTGAACGTGTAGATCTCGGTGGTCGCCGTATCATT --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
+
+The sequence for -a = A + reverse complement of the index primer (which includes the unique index for the sample). Another way to interpret this is that it is the sequence of the 3' adapter plus the additional bases added to reverse complement the overhanging portion of the index primer. In the above case, the index is ACTTGA, such that expected sequence in the read = AAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC + ACTTGA + AATCTCGTATGCCGTCTTCTGCTTG.
+
+The sequenece for -a2 = the reverse complement of the 5' adapter plus the bases added to reverse complement the SR primer. 
+
+See the PrepX workflow documents from Wafergen Biosystems to get more details on the adapter sequences. 
 
 #### 6 Map trimmed reads to a blacklist to remove unwanted (rRNA reads) OPTIONAL
 
