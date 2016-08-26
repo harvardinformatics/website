@@ -22,7 +22,7 @@ PLUGIN_EVENTS = {
 KNITR_OPTS_CHUNK = {
     'fig.path': 'images/', 
 }
-MD_EXTENSIONS = (['codehilite','fenced_code'])
+MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 TOC = {
     'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
                                 # Expected format is a regular expression
