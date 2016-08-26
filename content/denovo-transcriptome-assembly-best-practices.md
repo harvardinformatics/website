@@ -78,7 +78,7 @@ Then, make a directory in which to run rCorrector, and create symlinks from your
     module load perl/5.10.1-fasrc04
     module load perl-modules/5.10.1-fasrc04
      
-    perl /path/to/rCorrector/run_rcorrector.pl -t 12 -1 comma-separated list of left (R1) reads -2 comma-separated list of right (R2)reads
+    perl /path/to/rCorrector/run_rcorrector.pl -t 12 -1 comma-separated list of left (R1) reads -2 comma-separated list of right (R2) reads
 
 Output fastq files will include "cor" in their names. Corrected reads will have a "cor" suffix in their labels, e.g.
         
