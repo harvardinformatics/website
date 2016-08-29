@@ -207,7 +207,7 @@ Use the same sbatch submission format from step 2 (above). Ideally, there will b
 
 #### 8 Remove remaining over-represented sequences OPTIONNAL
 
-Occasionally, over-represented sequeuences will be detected by fastqc even after running through the above steps. One should BLAST them to see what they are, and consider using a script to remove read pairs containing the over-represented sequences. Typically, these will be rRNAs that were not sufficiently represented in the SILVA database (e.g. 5S), or other more common rRNAs that your reads won't map to because it is too divergent from the organisms used to construct the database. We provide a simple python script to use the sequences flagged by fastqc(PUT HERE)
+Occasionally, over-represented sequeuences will be detected by fastqc even after running through the above steps. One should BLAST them to see what they are, and consider using a script to remove read pairs containing the over-represented sequences. Typically, these will be rRNAs that were not sufficiently represented in the SILVA database (e.g. 5S), or other more common rRNAs that your reads won't map to because it is too divergent from the organisms used to construct the database. We provide a python script,[RemoveFastqcOverrepSequenceReads.py](https://github.com/harvardinformatics/TranscriptomeAssemblyTools/blob/master/RemoveFastqcOverrepSequenceReads.py) to use the sequences flagged by fastqc to remove read pairs where either of the reads contains one of their respective over-represented sequences.
 
 #### 9 Run Trinity
  
