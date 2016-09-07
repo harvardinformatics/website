@@ -21,8 +21,7 @@ Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to exami
     :::bash    
     #!/bin/bash 
     #SBATCH -p serial_requeue       # Partition to submit to 
-    #SBATCH -n 16                   # Number of cores 
-    #SBATCH -N 1                    # Ensure that all cores are on one machine 
+    #SBATCH -n 1                   # Number of cores 
     #SBATCH -t 0-3:00               # Runtime in days-hours:minutes 
     #SBATCH --mem 2000              # Memory in MB 
     #SBATCH -J FastQC               # job name 
