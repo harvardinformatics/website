@@ -156,11 +156,9 @@ Then, make and output directory for your trimming results, and submit the trimmi
  
 Some of these options can be modified for your data set, e.g. if you are analyzing single end data, you obviously need none of the arguments specifying the handling of paired data, nor do you need to specify R1 and R2 reads! In addition, you may have reasons to change the minimum read length threshold, or the --strigency and -e parameters that pertain to adapter detection and filtering. In our experience, these settings have worked well. If you wish to re-purpose this script for trimming reads that you will then align to a genome, you can opt to be more stringent with respect to the minimum allowed base quality.
 
-**IMPORTANT NOTE:** if any of your downstream applications use bowtie (not bowtie2), it will be necessary to also supply the -t flag to TrimGalore. When a start/end coordinate of one read of an aligned pair is contained within its mate, bowtie will report that alignment as invalid. If you previously used TrimGalore, and then used the older version of the Trinity perl scripts for assessing read support that used bowtie, and did not supply the -t flag, the reported estimate of the percentage of properly mapped pairs will be incorrect, and might substantially under-estimate the support for your assembly.  
+**Note to bowtie users:** if any of your downstream applications use bowtie (not bowtie2), it will be necessary to also supply the -t flag to TrimGalore. When a start/end coordinate of one read of an aligned pair is contained within its mate, bowtie will report that alignment as invalid. If you previously used TrimGalore, and then used the older version of the Trinity perl scripts for assessing read support that used bowtie, and did not supply the -t flag, the reported estimate of the percentage of properly mapped pairs will be incorrect, and might substantially under-estimate the support for your assembly.  
 
-Finally, if you have a lot of fastq files that you wish to run separately, in either the fastqc or trimming steps, one should consider writing a loop script that will iterate over files and submit sbatch submissions, rather than manually supplying command line arguments for one pair of reads at a time.
-
-NOTE: For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
+**Libraries build with Wafergen Prepx mRNA kit on Apollo robot:** For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
 
         your/path/to/trim_galore --paired --retain_unpaired --phred33 -a AAGATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a2 GATCGTCGGACTGTAGAACTCTGAACGTGTAGATCTCGGTGGTCGCCGTATCATT --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
 
@@ -169,6 +167,8 @@ The sequence for -a = A + reverse complement of the index primer (which includes
 The sequenece for -a2 = the reverse complement of the 5' adapter plus the bases added to reverse complement the SR primer. 
 
 See the PrepX workflow documents from Wafergen Biosystems to get more details on the adapter sequences. 
+
+Finally, if you have a lot of fastq files that you wish to run separately, in either the fastqc or trimming steps, one should consider writing a loop script that will iterate over files and submit sbatch submissions, rather than manually supplying command line arguments for one pair of reads at a time.
 
 #### 6 Map trimmed reads to a blacklist to remove unwanted (rRNA reads) OPTIONAL
 
