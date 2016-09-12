@@ -229,7 +229,7 @@ Settings used for Trinity will depend upon a number of factors, including the se
 
     source new-modules.sh
     module purge
-    module load trinityrnaseq/2.1.1-fasrc01
+    module load trinity/2.2.0-fasrc01
     # $1 = comma-separated list of R1 files
     # $2 = comma-separated list of R2 files
     # $3 = name of output directory Trinity will create to store results. This must include Trinity in the name, otherwise the job will terminate
