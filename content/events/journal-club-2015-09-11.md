@@ -1,6 +1,6 @@
 Title: Journal Club 2015-09-11
 Date: 2016-01-01
-Category: Tutorials
+Category: Journal Club
 Author: Tim Sackton
 Tags: PSMC, Journal Club
 Event-Start: 2015-09-11 9:30

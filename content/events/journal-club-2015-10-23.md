@@ -1,6 +1,6 @@
 Title: Journal Club 2015-10-23
 Date: 2015-10-23
-Category: Tutorials
+Category: Journal Club
 Author: Tim Sackton
 Tags: Journal Club
 Event-Start: 2015-10-23 9:30

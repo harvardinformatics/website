@@ -1,7 +1,7 @@
 Title: FASRC & Informatics Open House 2016
 Date: 2016-09-08
 Author: Aaron Kitzmiller
-Category: Events
+Category: Tutorials
 Summary: We are presenting 3 workshops in February 2016.  These are aimed at people completely new to unix and the command line.
 Frontpage: True
 Event-Start: 2016-09-19 3:30
