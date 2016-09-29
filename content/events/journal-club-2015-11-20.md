@@ -1,6 +1,6 @@
 Title: Journal Club 2015-11-20
 Date: 2015-11-20
-Category: Journal Club
+Category: Tutorials
 Author: Tim Sackton
 Tags: Journal Club
 Event-Start: 2015-11-20 9:30
