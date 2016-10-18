@@ -140,8 +140,8 @@ Exercises
 <ul>
 
 <li>Run the command 
-  <pre>bash /n/regal/informatics/workshops/Intermediate_Unix/Data/mylongscript.sh</pre> and put the output
-into a file</li>
+  `bash /n/regal/informatics/workshops/Intermediate_Unix/Data/mylongscript.sh`
+and put the output into a file</li>
 <li>Suspend the job</li>
 <li>Run the jobs command - what is it telling you?</li>
 <li>Push the job into the background by typing bg</li>
