@@ -342,7 +342,7 @@ Exercises :
 <ul>
 <li> Find all files in your home directory older than 1 day</li>
 <li> Find all files in /tmp/ newer than 7 days</li>
-<li> Find all files under the /n/regal/informatics/workshops/Intermediate_Unix directory that end <pre>.fa</pre> and print their contents to the screen</li>
+<li> Find all files under the /n/regal/informatics/workshops/Intermediate_Unix directory that end `.fa` and print their contents to the screen</li>
 <li> Find all files under the /n/regal/informatics/workshops/Intermediate_Unix directory that are greater than 10G.  How big are they?</li>
 </ul>
 </div>
@@ -361,7 +361,7 @@ For example
    :::bash
    grep 'chr'  Data/AF1.bed 
 
-finds all lines in Data/AF1.bed that contain the string <pre>chr</pre>
+finds all lines in Data/AF1.bed that contain the string `chr`
 
 (We'll come back to more advanced grep later)
 
