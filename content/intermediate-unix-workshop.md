@@ -353,13 +353,11 @@ Extra: A good set of find examples is here [http://alvinalexander.com/unix/edu/e
 
 The grep command looks for strings within files.  The basic use is :
 
-   :::bash
-   grep 'mystring' myfile
+   <pre>grep 'mystring' myfile</pre>
 
 For example
 
-   :::bash
-   grep 'chr'  Data/AF1.bed 
+   <pre>grep 'chr'  Data/AF1.bed </pre>
 
 finds all lines in Data/AF1.bed that contain the string `chr`
 
