@@ -263,7 +263,7 @@ recommend
 <li>Allow for 5 minutes of run time</li>
 <li>Submit to the serial_requeue queue</li>
 </ul>
-Run two commands ls –l /tmp/ and hostname and append the output into a file.</li>
+Inside the script run two commands `ls –l /tmp/` and `hostname` and append the output into a file.</li>
 <li>Test your script on the command line (ctrl-c to get out of it)</li>
 <li>Submit the script to slurm</li>
 <li>Check the status of your job.</li>
