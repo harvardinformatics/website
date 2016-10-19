@@ -255,3 +255,88 @@ You should also use the --grid_node_max_memory 5G argument, which uses a value s
 
 Finally, --left and --right are for comma separated lists of R1 and R2 fastq files. An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
+
+#### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
+
+Metrics such as N50 should never, by themselves, be treated as good indicators of assembly quality. An obvious, if extreme, example, is that if you incorrectly assembly all of your reads into one gigantic contig, your N50 will be very large. However, extremely short N50s, such that they represent a fraction of the expected size of the fragments in your library might indicate other problems. Similarly, the number of "transcripts" and "genes" in your Trinity assembly do not provide any absolute metric of quality. However, the more "genes" Trinity assembles--particularly if they are only a few hundred bases long--the more likely your contigs represent subsequences of actual genes. These caveats aside, you can easily generate N50 statistics, and counts of the number of Trinity contigs in an interactive session using the perl script that comes with Trinity.
+    
+    :::bash
+    srun -p interact --pty -t 00:20:00 --mem 500 /bin/bash
+    source new-modules.sh
+    module purge
+    module load trinity/2.2.0-fasrc01
+    $TRINITY_HOME/util/TrinityStats.pl Trinity.fasta > Trinity_assembly.metrics
+
+#### 10-2 Assesing assembly quality step 2: quantify read support for the assembly
+
+As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki/RNA-Seq-Read-Representation-by-Trinity-Assembly) documentation, assembled transcripts may not represent the full complement of paired-end reads. This will occur because, for very short contigs, only one read from paired-end read will align to it. Simply mapping your reads with bowtie (or your aligner of choice) to the transcripts will not shed any insight into this phenomenon as only properly mapped read pairs will be reported. To evalute read support for the assembly is a three step process. First, you build a bowtie2 index for your assembly.
+
+    :::bash
+    #!/bin/bash
+    #SBATCH -N 1
+    #SBATCH -n 4 #Number of cores
+    #SBATCH -t 0:00:00  #Runtime in minutes
+    #SBATCH -p serial_requeue  #Partition to submit to
+    #SBATCH --mem=8000  #Memory per node in MB
+    #SBATCH -e bt2build.e
+    #SBATCH -o b2build.o
+     
+    # $1 = your assembly fasta
+    assembly_prefix=$(basename $1 |sed 's/.fasta//g')
+    
+    source new-modules.sh
+    module purge    
+    module load bowtie2/2.2.9-fasrc01
+    
+    bowtie2-build –threads 4 $1 $assembly_prefix
+
+Next, you map your reads.
+
+
+    :::bash
+    #!/bin/bash
+    #SBATCH -N 1
+    #SBATCH -n 16 #Number of cores
+    #SBATCH -t 12:00:00  #Runtime in minutes
+    #SBATCH -p serial_requeue  #Partition to submit to
+    #SBATCH --mem=16000  #Memory per node in MB
+
+    source new-modules.sh
+    module purge
+    module load samtools/1.3.1-fasrc01 
+    module load bowtie2/2.2.9-fasrc01
+   
+    # $1 name of your assembly (without the .fasta suffix)
+    # $2 comma separated list of left read file names
+    # $3 comma separated list of right read file names
+    
+    #NOTE: if your assembled your reads with Trinity by providing lists of left and right reads
+
+
+    bowtie2 -p 16 --local --no-unal -x $1 -q -1 $2 -2 $3 | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam 
+ 
+Finally, you generate alignment statistics
+
+    :::
+    #!/bin/bash 
+    #SBATCH -n 1
+    #SBATCH -p serial_requeue            
+    #SBATCH -e concorstat.err           # File to which STDERR will be written
+    #SBATCH -o concordstats.out         # File to which STDOUT will be written
+    #SBATCH -J concordstats                # Job name
+    #SBATCH --mem=6000                     # Memory requested
+    #SBATCH --time=23:30:00                # Runtime in HH:MM:SS
+    #SBATCH --mail-type=ALL                # Type of email notification- BEGIN,END,FAIL,ALL
+    #SBATCH --mail-user=Your.Email.Address # Email to send notifications to
+
+    source new-modules.sh
+    module purge
+    module load samtools/1.2-fasrc01
+    module load bowtie2/2.2.9-fasrc01
+    module load trinity/2.2.0-fasrc01
+
+    # NOTE: depending upon the size of your read data set, you may want to specify more or less time for this job. If you need > 24 hours, be sure to specify the general queue.
+
+    $TRINITY_HOME/util/SAM_nameSorted_to_uniq_count_stats.pl bowtie2.nameSorted.bam
+
+    
