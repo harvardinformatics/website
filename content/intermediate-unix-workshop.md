@@ -38,7 +38,6 @@ and/or have attended the ‘Basic Unix’ workshop previously.</b>
 * grep
 * find
 * awk
-* perl regex
 * bash for loops
 
 ### Functionality Covered
@@ -79,7 +78,7 @@ Common mistakes include:
 * Running scp from the remote machine and not your local machine - check your command prompt people! Everyone does it at least once.
 
 ### Windows
-The RC documentation has info on how to use winscp here
+The RC documentation has info on how to use filezilla here
 [https://rc.fas.harvard.edu/resources/documentation/transferring-data/copying-data-to-and-fromodyssey-using-scp](https://rc.fas.harvard.edu/resources/documentation/transferring-data/copying-data-to-and-fromodyssey-using-scp)
 
 <div style="color:red; margin: 50px">
@@ -141,8 +140,8 @@ Exercises
 <ul>
 
 <li>Run the command 
-  <pre>bash /n/regal/informatics/workshops/Intermediate_Unix/Data/mylongscript.sh</pre> and put the output
-into a file</li>
+  `bash /n/regal/informatics/workshops/Intermediate_Unix/Data/mylongscript.sh`
+and put the output into a file</li>
 <li>Suspend the job</li>
 <li>Run the jobs command - what is it telling you?</li>
 <li>Push the job into the background by typing bg</li>
@@ -164,19 +163,22 @@ You can submit jobs completely on the command line but I recommend creating a sc
     # These are comment lines starting with #
     #
     # These lines are interpreted by slurm.
-    #SBATCH -J <jobname> # The name of the job (can be any string – make is something readable)
-    #SBATCH -N 1 # Ensure that all cores are on one machine
-    #SBATCH -n <n> # Use n cores for the job
-    #SBATCH -t <n-nn:nn> # Runtime in D-HH:MM
-    #SBATCH -p <queuename> # Partition to submit to
-    #SBATCH --mem=<n> # Memory pool for all cores in Mb (see also --mem-per-cpu)
+    #SBATCH -J <jobname>        # The name of the job (can be any string – make is something readable)
+    #SBATCH -N 1                # Ensure that all cores are on one machine
+    #SBATCH -n <n>              # Use n cores for the job
+    #SBATCH -t <n-nn:nn>        # Runtime in D-HH:MM
+    #SBATCH -p <queuename>      # Partition to submit to (serial_requeue/general)
+    #SBATCH --mem=<n>           # Memory pool for all cores in Mb (see also --mem-per-cpu)
     #SBATCH -o <outfile>.%A.out # File to which STDOUT will be written (%A is replaced by the jobid)
     #SBATCH -e <outfile>.%A.err # File to which STDERR will be written (%A is replaced by the jobid)
-    #SBATCH --mail-type=<type> # Type of email notification- BEGIN,END,FAIL,ALL
+    #SBATCH --mail-type=<type>  # Type of email notification- BEGIN,END,FAIL,ALL
     #SBATCH --mail-user=<myemail@harvard.edu> # Email to which notifications will be sent
+    #SBATCH --constraint=holyib               # If you want to use the /n/holylfs storage
     
-    # The command can use the input parameter $1 here
-    
+    # The command can use the command line  parameters $1 here
+   
+    source new-modules.sh
+ 
     module load <mymodule>
     
     some_command_here $1 > $1.out
@@ -184,6 +186,8 @@ You can submit jobs completely on the command line but I recommend creating a sc
 
 
 In the sections below we'll go through the various pieces.
+
+In practice it's handy to keep a template sbatch file handy so you can copy it when you want to run a new set of commands on the cluster.
 
 ### 5.1 The Header Line
 
@@ -259,7 +263,7 @@ recommend
 <li>Allow for 5 minutes of run time</li>
 <li>Submit to the serial_requeue queue</li>
 </ul>
-Run two commands ls –l /tmp/ and hostname and append the output into a file.</li>
+Inside the script run two commands `ls –l /tmp/` and `hostname` and append the output into a file.</li>
 <li>Test your script on the command line (ctrl-c to get out of it)</li>
 <li>Submit the script to slurm</li>
 <li>Check the status of your job.</li>
@@ -292,10 +296,10 @@ Find is a sophisticated recursive directory search which can locate files based 
 Basic syntax is :
 
     :::bash
-    find \<dir\> -name \<name pattern\>
+    find <dir> -name <name pattern>
 
 
-This will list all found files.
+This will print all found files matching the pattern underneath the specified directory.
 
 Example :
 
@@ -313,7 +317,7 @@ Example:
 
 (You put {} where the filename should go and the command should always end with \;)
 
-This command files all fastq files and lists them.
+This command finds all fastq files and lists them.
 
 Another usage for find is finding files that are newer or older than a certain time
 
@@ -323,17 +327,41 @@ Another usage for find is finding files that are newer or older than a certain t
 
 Will find all files below the current directory modified more than 7 days ago. Use -7 for less than 7 days ago.
 
+We can also use find for finding large files (or indeed small files)
+
+    :::bash
+    find . -size +1M 
+
+And if we want to know the size of the files we can add an -exec option
+
+    :::bash
+    find . -size +1G -exec ls -ls {} \;
+
 <div style="color:red; margin: 50px">
 Exercises :
 <ul>
 <li> Find all files in your home directory older than 1 day</li>
 <li> Find all files in /tmp/ newer than 7 days</li>
-<li> Find all files under the /n/regal/informatics/workshops/Basic_UNIX directory that contain the string chr14</li>
+<li> Find all files under the /n/regal/informatics/workshops/Intermediate_Unix directory that end `.fa` and print their contents to the screen</li>
+<li> Find all files under the /n/regal/informatics/workshops/Intermediate_Unix directory that are greater than 10G.  How big are they?</li>
 </ul>
 </div>
 
 Extra: A good set of find examples is here [http://alvinalexander.com/unix/edu/examples/find.shtml](http://alvinalexander.com/unix/edu/examples/find.shtml)
 
+## 6.1 Basic file searching - grep
+
+The grep command looks for strings within files.  The basic use is :
+
+   <pre>grep 'mystring' myfile</pre>
+
+For example
+
+   <pre>grep 'chr'  Data/AF1.bed </pre>
+
+finds all lines in Data/AF1.bed that contain the string `chr`
+
+(We'll come back to more advanced grep later)
 
 ## 7. Pipes – joining commands together using |
 
@@ -342,7 +370,7 @@ You can feed the output of one command to the input of another using the | chara
 For example you can run three commands one after the other 
 
     :::bash
-    \<cmd1\> | \<cmd2\> | \<cmd3\>
+    <cmd1> | <cmd2> | <cmd3>
 
 This is best illustrated with some examples:
 
@@ -411,8 +439,8 @@ If we want to feed input into samtools directly without using the myfile.sam fil
 Exercises :
 <ul>
 <li> Find how many chr14 lines there are in
-/n/regal/informatics/workshops/Intermediate_Unix /Data/AF2.bed and
-/n/regal/informatics/workshops/Intermediate_Unix /Data/AF1.bed</li>
+/n/regal/informatics/workshops/Intermediate_Unix/Data/AF2.bed and
+/n/regal/informatics/workshops/Intermediate_Unix/Data/AF1.bed</li>
 <li> Find and concatenate all .bed files under /n/regal/informatics/workshops/Intermediate_Unix/
 and use pipe and another command to find the 10th row containing chr20 </li>
 </ul>
@@ -485,7 +513,7 @@ Of course you still have to have enough space in the new directory (use the `df 
 So to find all entries for chr20 in our AF1.bed file we’d do:
 
     :::bash
-    grep ’chr20’ /n/regal/informatics/workshops/Intermediate_UNIX/Data/AF1.bed
+    grep ’chr20’ /n/regal/informatics/workshops/Intermediate_Unix/Data/AF1.bed
 
 
 Useful options :
@@ -600,112 +628,4 @@ Exercises:
 <li>Find the read lengths in the fastq file (Hint: each fastq entry has 4 lines and the read length is on the 1st line of the entry)</li>
 </ul>
 </div>
-
-
-## 11. Perl regular expressions
-
-Perl is a complete programming language but there is one aspect of it that is really useful on the command line. This is it’s ability to search and replace strings on the fly.
-
-An example of the syntax is:
-
-    :::bash
-    perl -pe ’s/sausage/melon/g’ myfile
-
-
-This will take each line of myfile and change each instance (the final g) of sausage into melon. 
-
-More powerfully we can have wildcards:
-
-    :::bash
-    perl -pe ’s/.*Length=//’ myfile
-
-
-Let's break the search pattern `.*Length=` down :
-
-*  The `.` means match any character and the `*` means match any number of characters.
-*  `Length=` means find Length= in each line
-
-Now let's look at the replace pattern.  In this case it's empty so what we have is
-
- - match any characters up to and including Length= and replace them with nothing (i.e. delete them)
-
-
-Let’s do something more complicated
-
-    :::bash
-    perl -pe ’s/.*:(.*?)/$1/’ myfile
-
-
-Again let's break this down.
-
-The search pattern is `.*:(.*?)` which looks nasty but let's go through it
-
-*   `.*`  we know means any number of characters
-*   `:`   match a colon
-*   `()`    the brackets mean remember this match for later
-*   `.*?`  means match any number of characters but as small a number as possible to fit in with the other search elements
-
-So we're searching and saving all characters after the last colon in the line
-
-The replace pattern is just `$1` which means replace with whatever was matched within the first set of brackets in the search pattern.
-
-So this removes everything before the final colon.
-
-Matches can be specified more precisely than `.` and `.*`
-
-We can use:
-
-* `\S+` for one or more non-whitespace (`*` is 0 or more and `+` is 1 or more)
-* `\s+` for whitespace
-* `\d+` for digits
-* `\w+` for words
-* `^` Start of line
-* `$` end of line
-* `\n` newline char
-* `\t` tab char
-* `\.` Will match a `.` character (in general `\` will escape a character)
-
-This will reverse the first and 2nd words
-
-    :::bash
-    perl -pe ’s/^(\w+)\s+(\w+)/$2 $1/’ myfile
-
-
-And of course we can use pipes
-
-    :::bash
-    awk ’$5 > 200 { print $1}’ |perl -pe ’s/chr//’
-
-
-This will print out all the column 1 chromosome labels for scores > 200 and strip of the chr string
-
-<div style="color:red; margin: 50px">
-Exercises:
-<ul>
-<li>1. Convert a fastq file to fasta format using one line. Use the
-/n/regal/informatics/workshops/Intermediate_Unix/Data/SRR866428_1.fastq file.
-Note:
-Fastq format looks like
-<pre style="margin-top: 20px">
-Header line
-GGTTATTAGGGTGGCAGAGCCAGGAAATTGCGT
-+some stuff here
-Quality line
-</pre>
-
-Fasta format looks like
-<pre style="margin-top: 20px">
-\>header line here<br>
-GGTTATTAGGGTGGCAGAGCCAGGAAATTGCGT<br>
-\>another header line<br>
-CCTCTAAGGCGGGCCACTGTGCCAAATTCTCTA<br>
-</li>
-<li>2. Extract the index strings from the fastq file and estimate the frequency distribution
-(Use the /n/regal/informatics/workshops/Intermediate_Unix/DF_2.R1.fastq file)
-Index strings are on the end of the header line and look like CGTACTAG (or a similar length sequence)</li>
-</ul>
-</div>
-
-Extra: Useful information about perl in command lines
-http://www.softpanorama.org/Scripting/Perlorama/perl_in_command_line.shtml
 

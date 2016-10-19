@@ -106,7 +106,7 @@ shouldn't be used for large scale cluster usage. 40Gb quota.
 
 ### Scratch directories. 
 
-These are very fast but not backed up filesystems. There is no charge for usage but people need to email rchelp@fas.harvard.edu to request access. There is no limit to usage but files unused for 3 months will be purged from the system. The main scratch filesystem is `/n/regal`
+These are very fast but not backed up filesystems. There is no charge for usage but people need to email rchelp@fas.harvard.edu to request access. There is no limit to usage but files unused for 3 months will be purged from the system. The main scratch filesystems are `/n/regal` and `/n/holylfs`.
 
 ### Lab shares. 
 
@@ -438,10 +438,10 @@ File sizes can get very large and listing the size in bytes can get confusing. U
 <div class="exercises">
 Exercises
 <ul>
-<li>How many directories are in the listing for /n/regal/informatics/workshops/Basic_UNIX_2015-11-04?</li>
-<li>What is the largest file in /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/seq? </li>
+<li>How many directories are in the listing for /n/holylfs/LABS/informatics/workshops/Basic_UNIX?</li>
+<li>What is the largest file in /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/seq? </li>
 <li>Using the man page find the option to ls that recursively lists files in a directory.</li>
-<li>Which is the biggest file in the whole directory tree under /n/regal/informatics/workshops/Basic_UNIX_2015-11-04?</li>
+<li>Which is the biggest file in the whole directory tree under /n/holylfs/LABS/informatics/workshops/Basic_UNIX?</li>
 </ul>
 </div>
 
@@ -490,13 +490,13 @@ This will put the output from the ls command into a file myhomedir.txt
 Exercises
 <ul>
 <li>Using the cat command and then redirecting to a file create a file myscript.sh in your
-home directory containing the contents of /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/myscript.sh</li>
+home directory containing the contents of /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/myscript.sh</li>
 <li>Using the nano editor edit the file you just made in your home directory. This is an
 example of a shell script. This contains a series of commands (the top line #!/bin/bash
 says use the bash shell) that are run when the file is invoked. Edit the content of the file
 to add 2 extra commands 
 
-    <ul><li>1) Change to the /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data directory</li>
+    <ul><li>1) Change to the /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data directory</li>
         <li> 2) Do a long listing of that directory</li>
     </ul>
 
@@ -584,11 +584,11 @@ In addition to navigating files we can search for patterns
 <div class="exercises">
 Exercises
 <li>Use the tail command to see if the file
-/n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/mylongscript.out is
+/n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/mylongscript.out is
 changing and roughly how often</li>
-<li>Look at the source for this file /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/mylongscript.sh . Use the man command to find out what this output means</li>
+<li>Look at the source for this file /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/mylongscript.sh . Use the man command to find out what this output means</li>
 <li>Practice the less navigation commands on the file in
-/n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/seqruns.dat</li>
+/n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/seqruns.dat</li>
 <li>Use the navigation commands to find what is on the first and last lines</li>
 <li>Find the first occurence of the string 1501 (Jan 2015). Roughly how far through the file
 is this</li>
@@ -618,7 +618,7 @@ If you want to create a directory multiple levels down use the -p option to fill
 Exercises
 <ul>
 <li>Make yourself a user directory (use your username as the directory name) in</li>
-<li>/regal/informatics/workshops/Basic_Unix_2015-11-04/Users</li>
+<li>/n/holylfs/LABS/informatics/workshops/Basic_Unix/Users</li>
 <li>Use a single command to create under the directory you just created called
 test1/test2/test3</li>
 </li>
@@ -682,7 +682,7 @@ Exercises
 <ul>
 
 <li>Make a Data directory under your username directory you created in the last section.</li>
-<li>Find the largest file in the /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data directory</li>
+<li>Find the largest file in the /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data directory</li>
 <li>Make a symlink to this file in your newly created Data directory</li>
 <li>Use head or less to make sure you have the right content in the file and your symlink worked</li>
 </ul>
@@ -709,7 +709,7 @@ Note - be very careful with this and double check before pressing return. Be esp
 <div class="exercises">
 Exercises
 <ul>
-<li>Copy the /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/seq
+<li>Copy the /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/seq
 directory and its contents to your user space</li>
 <li>Change into that directory and remove all the files starting with pog</li>
 <li>Remove your seq directory and the contents with a single command</li>
@@ -747,7 +747,7 @@ This will rename all files matching *.htm from an .htm extension to an .html ext
 <div class="exercises">
 Exercises
 <ul>
-<li>Copy the /n/regal/informatics/workshops/Basic_UNIX_2015-11-04/Data/seq
+<li>Copy the /n/holylfs/LABS/informatics/workshops/Basic_UNIX/Data/seq
 directory and its contents to your user space</li>
 <li>Change to that directory and rename all the .fa files to .fasta files</li>
 <li>Now change them all back again</li>
