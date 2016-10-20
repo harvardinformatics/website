@@ -339,4 +339,53 @@ Finally, you generate alignment statistics
 
     $TRINITY_HOME/util/SAM_nameSorted_to_uniq_count_stats.pl bowtie2.nameSorted.bam
 
-    
+#### 10-3 Assesing assembly quality step 3: quantifying completeness
+
+Another metric of assembly quality is evaluating the extent to which it recovers single copy orthologs that are present across higher taxonomic groupings. While in the absence of knowing which transcripts are truly expressed in a sample it is difficult to determine an absolute expectation for recovery of these orthologs, clearly, high numbers of such genes classified as missing in an assembly should be considered a potential red flag. Furthermore, asssemblies based upon the same read data can be evaluated with respect to the numbers of genes that are complete, fragmented, or missing from the assembly
+
+To assess completeness, we use [BUSCO](http://busco.ezlab.org/). BUSCO requires that you specify a BUSCO (Benchmarking Universal Single-Copy Orthologs) data set (currently, we've downloaded Vertebrates and Arthropods), which are located at /n/regal/informatics/BUSCO. BUSCO wraps HMMER, and uses Hidden Markov Model profiles to determine whether assembly contigs are orthologus with a particular BUSCO dataset entry. One can run BUSCO as follows:
+
+    :::
+    #!/bin/bash 
+    #SBATCH -N 1
+    #SBATCH -n 16
+    #SBATCH -p serial_requeue
+    #SBATCH -e BUSCO.err           # File to which STDERR will be written
+    #SBATCH -o BUSCO.out         # File to which STDOUT will be written
+    #SBATCH -J BUSCO                # Job name
+    #SBATCH --mem=6000                     # Memory requested
+    #SBATCH --time=04:00:00                # Runtime in HH:MM:SS
+    #SBATCH --mail-type=ALL                # Type of email notification- BEGIN,END,FAIL,ALL
+    #SBATCH --mail-user=Your.Email.Address # Email to send notifications to
+
+    source new-modules.sh
+    module purge
+    module load  BUSCO/1.1b1-fasrc01
+
+
+    # $1 input fasta file (your assembly, e.g. Trinty.fasta)
+    # $2 output directory (BUSCO will prepend run_)
+    # $3 lineage directory see lineages to choose from at: http://busco.ezlab.org/
+
+    BUSCO_v1.1b1.py  -c 16 -o $2 -in $1 -l $3 -m trans $2.BUSCO_trans.out 
+
+    Example submission: sbatch BUSCO.sh Trinity.fasta trinity_BUSCO /n/regal/informatics/BUSCO/vertebrata
+
+
+Besides directories containing HMMER output, translated proteins, and tables of BUSCO hits (and missing BUSCOs), BUSCO outputs a useful short summary table, and example of which is below:
+
+#BUSCO was run in mode: trans
+
+Summarized benchmarks in BUSCO notation:
+	C:70%[D:24%],F:4.2%,M:25%,n:3023
+
+Representing:
+	1387	Complete Single-copy BUSCOs
+	750	Complete Duplicated BUSCOs
+	128	Fragmented BUSCOs
+	758	Missing BUSCOs
+	3023	Total BUSCO groups searched
+
+Because multiple transcripts can hit a BUSCO, this can lead to classification of BUSCOs as being "complete duplicated." More informative is the total number of complete BUSCOs (both single and duplicated). It should be noted that, because profiles are effectively consensus sequences, it is possible that, even if the gene for your organism was included in building the BUSCO database, it may be divergent enough from the consensus such that your matching contig may be classified as missing. In other words, there can be false negatives. A forthcoming update to BUSCO will help to alleviate this problem.
+
+ 
