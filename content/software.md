@@ -12,4 +12,4 @@ and pipelines like [Trinity](tag/trinity.html) and [RSEM](tag/rsem.html)
 
 Data management services are primarily through the [MiniLIMS](/tag/minilims.html) and up-coming [IggyBase](https://github.com/harvardinformatics/iggybase) LIMS platform.
 
-ajk22
+ajk223
