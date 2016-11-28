@@ -148,7 +148,7 @@ We are small in number and try to cover the needs of as many people across campu
                 <p>
                 Data Scientist maintaining pipeline for Illumina sequencer data processing, also working on methods for analysis of RNA-seq (and other omics) data.</p>
                 <p>
-                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
+                <a href="mailto:adamfreedman@fas.harvard.edu">adamfreedman at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
