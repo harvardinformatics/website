@@ -1,4 +1,4 @@
-Title: The Best Practices for De Novo Transcritome Assembly with Trinity
+Title: The Pog Practices for De Novo Transcritome Assembly with Trinity
 Date: 2016-10-20 00:00
 Author: Adam Freedman
 Category: Software
