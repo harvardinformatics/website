@@ -1,4 +1,4 @@
-Title: Bestish Practices for De Novo Transcriptome Assembly with Trinity
+Title: Best Practices for De Novo Transcriptome Assembly with Trinity
 Date: 2016-10-20 00:00
 Author: Adam Freedman
 Category: Software
