@@ -9,8 +9,9 @@ Setup
 ------
 
 To run this workshop you will need:
+
 1. R (https://cran.r-project.org/)
-2. the DESeq2 bioconductor package (https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+1. the DESeq2 bioconductor package (https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 3. kallisto (https://pachterlab.github.io/kallisto/)
 4. sleuth (pachterlab.github.io/sleuth/)
 
