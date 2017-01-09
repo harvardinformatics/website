@@ -133,3 +133,23 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div style="clear:both;"></div>
 </div>
+
+### Adam Freedman
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/adam_freedman.png">
+                          <img class="img-responsive" src="/images/adam_freedman.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Data Scientist maintaining pipeline for Illumina sequencer data processing, also working on methods for analysis of RNA-seq (and other omics) data.</p>
+                <p>
+                <a href="mailto:adamfreedman@fas.harvard.edu">adamfreedman at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
