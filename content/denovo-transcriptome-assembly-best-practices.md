@@ -160,7 +160,7 @@ Some of these options can be modified for your data set, e.g. if you are analyzi
 
 **Note to bowtie users:** if any of your downstream applications use bowtie (not bowtie2), it will be necessary to also supply the -t flag to TrimGalore. When a start/end coordinate of one read of an aligned pair is contained within its mate, bowtie will report that alignment as invalid. If you previously used TrimGalore, and then used the older version of the Trinity perl scripts for assessing read support that used bowtie, and did not supply the -t flag, the reported estimate of the percentage of properly mapped pairs will be incorrect, and might substantially under-estimate the support for your assembly.  
 
-**Libraries build with Wafergen Prepx mRNA kit on Apollo robot:** For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
+**Libraries build with Wafergen PrepX mRNA kit on Apollo robot:** For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
 
         your/path/to/trim_galore --paired --retain_unpaired --phred33 -a AAGATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a2 GATCGTCGGACTGTAGAACTCTGAACGTGTAGATCTCGGTGGTCGCCGTATCATT --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
 
@@ -199,10 +199,18 @@ Our recommendation is to first map your reads to an rRNA database, such as can b
     
     source new-modules.sh
     module purge
-    module load bowtie2/2.2.4-fasrc01
+    module load bowtie2/2.2.9-fasrc01
     bowtie2 --very-sensitive-local --phred33  -x $1 -1 $2  -2 $3 --threads 12 --met-file $4 --al-conc-gz $5 --un-conc-gz $6 --al-gz $7 --un-gz $8
 
 The reads you want to keep are those corresponding to the read pairs that did not align to the rRNA database, i.e. specified by $6 after the --un-conc-gz flag.
+
+**If your RNA-seq libraries are built with a stranded protocol**, you should use the relevant bowtie2 setting:
+
+* for dUTP-based libraries (Illumina TruSeq,NEBNext Ultra Directional), which are "RF" in Trinity parlance,  use bowtie2 flag --nofw
+* for ligation-stranded protocols, i.e. Wafergen PrepX directional mRNA libraries built on the Apollo robot, which are "FR" in Trinity parlance, use bowtie2 flag --norc
+* if in doubt about which stranding protocol is used in your library prep kit, consult the user manual or contact the manufacturer's technical support
+* of course, if your kit is not a strand-specific protocol, ignore all of this!
+
 
 #### 7 Run fastqc on your processed reads that pass qc and filtering from the above steps
 
@@ -233,12 +241,14 @@ Settings used for Trinity will depend upon a number of factors, including the se
 
     source new-modules.sh
     module purge
-    module load trinity/2.2.0-fasrc01
+    module load trinityrnaseq/2.3.2-fasrc01
     # $1 = comma-separated list of R1 files
     # $2 = comma-separated list of R2 files
     # $3 = name of output directory Trinity will create to store results. This must include Trinity in the name, otherwise the job will terminate
 
     Trinity --seqType fq --SS_lib_type RF --max_memory 225G --min_kmer_cov 1 --CPU 32 --left $1 --right $2 --output $3 
+
+**For libraries built with Illumina TruSeq directional or Wafergen PrepX mRNA kit on the Apollo robot, --SS_lib_type should be set to FR**.
 
 Depending upon the size of the input read data set, you may need some combination of more (or less) time and memory. Another option is to use Trinity's capability to distribute parallelizable steps across a job grid. To do this, you must add the --grid_conf argument and specifying a grid config file, configured as follows:
 
@@ -264,7 +274,7 @@ Metrics such as N50 should never, by themselves, be treated as good indicators o
     srun -p interact --pty -t 00:20:00 --mem 500 /bin/bash
     source new-modules.sh
     module purge
-    module load trinity/2.2.0-fasrc01
+    module load trinityrnaseq/2.3.2-fasrc01
     $TRINITY_HOME/util/TrinityStats.pl Trinity.fasta > Trinity_assembly.metrics
 
 #### 10-2 Assesing assembly quality step 2: quantify read support for the assembly
@@ -315,6 +325,8 @@ Next, you map your reads.
 
     bowtie2 -p 16 --local --no-unal -x $1 -q -1 $2 -2 $3 | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam 
  
+**NOTE: you can use the appropriate flag for stranded libraries (see information in section 6 above re: the appropriate flags to use**
+
 Finally, you generate alignment statistics
 
     :::
@@ -333,7 +345,7 @@ Finally, you generate alignment statistics
     module purge
     module load samtools/1.2-fasrc01
     module load bowtie2/2.2.9-fasrc01
-    module load trinity/2.2.0-fasrc01
+    module load trinityrnaseq/2.3.2-fasrc01
 
     # NOTE: depending upon the size of your read data set, you may want to specify more or less time for this job. If you need > 24 hours, be sure to specify the general queue.
 
