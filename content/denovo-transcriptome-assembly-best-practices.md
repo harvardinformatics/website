@@ -162,11 +162,9 @@ Some of these options can be modified for your data set, e.g. if you are analyzi
 
 **Libraries build with Wafergen PrepX mRNA kit on Apollo robot:** For libraries built with Wafergen PrepX directional mRNA library kits on the Apollo robot, we have seen cases where TrimGalore! does not remove adapters in their entirety using TrimGalore's default settings. If the fastqc report for the trimmed reads still indicates an increase in adapter occurrence as one moves along the read, specify the reverse complements of the specific Wafergen adapters and index sequence, such that your TrimGalore! command line for the above submission script looks like this:
 
-        your/path/to/trim_galore --paired --retain_unpaired --phred33 -a AAGATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a2 GATCGTCGGACTGTAGAACTCTGAACGTGTAGATCTCGGTGGTCGCCGTATCATT --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
+        your/path/to/trim_galore --paired --retain_unpaired --phred33 -a AAGATCGGAAGAGC  -a2 GATCGTCGGACTGTAGAA --output_dir trimmed_reads --length 36 -q 5 --stringency 5 -e 0.1 $1 $2
 
-The sequence for -a = A + reverse complement of the index primer (which includes the unique index for the sample). Another way to interpret this is that it is the sequence of the 3' adapter plus the additional bases added to reverse complement the overhanging portion of the index primer. In the above case, the index is ACTTGA, such that expected sequence in the read = AAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC + ACTTGA + AATCTCGTATGCCGTCTTCTGCTTG.
-
-The sequenece for -a2 = the reverse complement of the 5' adapter plus the bases added to reverse complement the SR primer. 
+The sequence supplied for -a is A + a subsequences of the reverse complement of the 3' index primer (including, when used, a barcode index). For -a2, it is a subsequences of the reverse complement of the 5' index primer. While, in principle, one could supply the full length adapter sequences (which would include the reverse complements of overhangs), in practice we have found that using the shorter sequences increases sensitivity, and minimizes the chance of retaining adapter sequence in trimmed reads. 
 
 See the PrepX workflow documents from Wafergen Biosystems to get more details on the adapter sequences. 
 
