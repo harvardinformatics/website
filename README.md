@@ -34,5 +34,5 @@ If clone --recursive does not work (you might see a complaint about a non-existe
 
 ### Making live on the website
 
-    rsync is no longer necessary to make your changes live.  If you push to the master branch, the website is automatically updated by a github hook.  You pretty much have no excuse.
+rsync is no longer necessary to make your changes live.  If you push to the master branch, the website is automatically updated by a github hook.  You pretty much have no excuse.
 
