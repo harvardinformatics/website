@@ -26,11 +26,13 @@ If clone --recursive does not work (you might see a complaint about a non-existe
 
     cd output && python -m pelican.server
 
+### Or use a one-liner
+    pelican content -t `pwd`/informatics-theme -o output && (cd output && python -m pelican.server)
+
 ### Should be visible from localhost:8000
 
 
 ### Making live on the website
 
+    rsync is no longer necessary to make your changes live.  If you push to the master branch, the website is automatically updated by a github hook.  You pretty much have no excuse.
 
-For updating the web site, check out the files, make your edits, and do a make rsync_upload
-You'll want to set SSH_USER to your username
