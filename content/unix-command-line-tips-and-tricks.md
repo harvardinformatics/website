@@ -1,6 +1,7 @@
 Title: Unix Command Line Tips and Tricks
 Date: 2015-01-01 10:00
 Category: Tutorials
+Tags: Unix
 Summary: This basic unix tutorial will get you up and running for making files, listing directories and running single commands.   It will show you what you need for about 80% of your command line work.
 
 This basic unix tutorial will get you up and running for making files, listing directories and running single commands.   It will show you what you need for about 80% of your command line work.
