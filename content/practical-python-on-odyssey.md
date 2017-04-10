@@ -5,6 +5,8 @@ Author: Aaron Kitzmiller, Meghan Porter-Mahoney, Adam Freedman
 Tags: Python, Workshop
 Summary:  Learn the practical use of Python on the FAS Odyssey cluster by working through common challenges of the Python language and Odyssey environment. Topics will include file I/O, shell execution, Slurm job submission, package installation, virtual environments, and parallel execution. While some basic Python constructs will be covered, the course will be difficult to follow without at least tutorial-level understanding of the language (e.g. https://www.learnpython.org/). An Odyssey cluster account, basic Linux knowledge, and Linux editor skills (vi, nano, etc.) are required. 
 
+[PDF of the slides](https://github.com/harvardinformatics/python-workshop/raw/master/python-workshop.pdf)
+
 # Overview
 
 * Learn python by debugging existing code <div class="comment">
@@ -909,3 +911,4 @@ or
             return True
         return False
 
+  
