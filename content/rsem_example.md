@@ -12,7 +12,7 @@ If an annotated reference genome is available, RSEM can use a gtf file represent
 
 #### Preliminaries
 
-### Choosing an aligner
+##### Choosing an aligner
 **STAR** is a splice-aware aligner that will produce gapped alignments to handle reads that span exon-intron junctions. Thus it is only appropriate when an annotated reference genome is available. STAR performs two-pass iterative mapping that identifies novel splice sites, and uses the updated splicing information to generate transcriptome (as well as genomic) alignments.
 
 If one does not have a reference genome, **bowtie** and **bowtie2** are the other available aligner options. Note that, if one has an annotated genome and prefers mapping directly to the transcript sequences, one can also use these aligners. For RSEM to work properly when estimating expression from alignments to transcript sequences, those alignments must be ungapped. Bowtie is an ungapped aligner. While bowtie2 default behavior is to do gapped alignments, RSEM implements specific command line arguments such that it is run in an ungapped fashion. It has been shown that using bowtie2 this way is slightly more sensitive than bowtie, so we recommend it's use over bowtie2 unless there are project-specific reasons for using the former.
