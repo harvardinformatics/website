@@ -24,6 +24,7 @@ One has the ability to alter the command line arguments RSEM feeds to aligners, 
 RSEM has the ability to produce both gene and isoform-level expression estimates. However, accurate isoform level expression is typically much more challenging than gene-level estimation, and isoform-level estimates are far noisier. Thus, it is valuable to be able to group transcripts into genes. When the RSEM and aligner indices are built with an annotated reference genome, RSEM will automatically identify the genes to which annotated transcripts belong. Otherwise, one needs to provide a file that indicates the gene-transcript relationships. Depending upon the source of the transcriptome sequences and how they were annotated, this may or may not be straightforward (see below for an example).  
 
 
+# Running RSEM
 
 #### 1  Load the software and start SLURM session
 
