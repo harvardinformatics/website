@@ -148,8 +148,8 @@ First process the reference transcriptome fasta file downloaded to build various
 	#SBATCH -t 90
 
 	source new-modules.sh
-	module load rsem/1.2.16-fasrc03
-	module load samtools/1.2-fasrc01
+	module load rsem/1.2.29-fasrc02
+	module load samtools/1.4-fasrc01
 
 	TRANS_DATA=/path/to/trasncriptome/data
 
