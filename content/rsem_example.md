@@ -1,11 +1,27 @@
 Title: RSEM example on Odyssey
+Author: Adam Freedman
 Date: 2016-01-04 00:00
 Category: Software
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, RSEM
 Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey cluster
 
 
-[RSEM](http://deweylab.github.io/RSEM/README.html) is a software package for estimating gene and isoform expression levels from single-end or paired-end RNA-Seq data. The software works with transcriptome sequences and does not require a reference genome. It uses the Expectation Maximization (EM) algorithm to estimate abundances at the isoform and gene levels.
+[RSEM](http://deweylab.github.io/RSEM/README.html) is a software package for estimating gene and isoform expression levels from single-end or paired-end RNA-Seq data. The software works with transcriptome sequences and does not require a reference genome. It can either perform the read alignment step prior to quantification, or take an alignment (bam) file as input, so long as the alignment settings are appropriate for RSEM. Currently, RSEM can perform the alignment step with three different aligners: bowtie, bowtie2, or STAR. It uses the Expectation Maximization (EM) algorithm to estimate abundances at the isoform and gene levels.
+
+If an annotated reference genome is available, RSEM can use a gtf file representation of those annotations to extract the transcript sequences for which quantification will be performed, and build the relevant genome and transcriptome indices. If this is done and the alignment step is implemented within RSEM, the option is available to also write the read alignments in genomic coordiinates, permitting visualization of expression data in a browser such as [IGV](http://software.broadinstitute.org/software/igv/). If no reference genome is available, one must supply RSEM a fasta file of transcript sequences. In addition, one can supply information that groups transcripts by gene, such that gene-level expression estimates.  
+
+#### Preliminaries
+
+### Choosing an aligner
+**STAR** is a splice-aware aligner that will produce gapped alignments to handle reads that span exon-intron junctions. Thus it is only appropriate when an annotated reference genome is available. STAR performs two-pass iterative mapping that identifies novel splice sites, and uses the updated splicing information to generate transcriptome (as well as genomic) alignments.
+
+If one does not have a reference genome, **bowtie** and **bowtie2** are the other available aligner options. Note that, if one has an annotated genome and prefers mapping directly to the transcript sequences, one can also use these aligners. For RSEM to work properly when estimating expression from alignments to transcript sequences, those alignments must be ungapped. Bowtie is an ungapped aligner. While bowtie2 default behavior is to do gapped alignments, RSEM implements specific command line arguments such that it is run in an ungapped fashion. It has been shown that using bowtie2 this way is slightly more sensitive than bowtie, so we recommend it's use over bowtie2 unless there are project-specific reasons for using the former.
+
+One has the ability to alter the command line arguments RSEM feeds to aligners, but one must be careful that those arguments don't produce alignments that RSEM cannot properly process, e.g. gapped alignments. 
+
+### Gene vs. isoform level expression
+
+RSEM has the ability to produce both gene and isoform-level expression estimates. However, accurate isoform level expression is typically much more challenging than gene-level estimation, and isoform-level estimates are far noisier. Thus, it is valuable to be able to group transcripts into genes. When the RSEM and aligner indices are built with an annotated reference genome, RSEM will automatically identify the genes to which annotated transcripts belong. Otherwise, one needs to provide a file that indicates the gene-transcript relationships. Depending upon the source of the transcriptome sequences and how they were annotated, this may or may not be straightforward (see below for an example).  
 
 
 
@@ -15,17 +31,17 @@ RSEM is already installed as a module on the cluster. It can be loaded as follow
 
 	:::bash
 	$ source new-modules.sh
-	$ module load rsem/1.2.16-fasrc03
+	$ module load rsem/1.2.29-fasrc02
 
 This loads RSEM and sequence alignment software, in this case Bowtie and Bowtie2.
 
 A SAMtools module is also needed (SAMtools is software used to manipulate the SAM/BAM outputs of sequence alignment programs):
 
 	:::bash
-	$ module load samtools/1.2-fasrc01
+	$ module load samtools/1.4-fasrc01
 
 
-We recommend running longer RSEM jobs as SLURM jobs on the cluster, or in an interactive SLURM session on Odyssey, for smaller datasets.
+For testing scripts and command line arguments with small data sets, it is possible to run RSEM in an interactive session. In all other cases, the compute resources and time required for running RSEM analyses will require running those analyses as SLURM jobs on the cluster.
 
 When logged in on Odyssey, an interactive session can be launched with a command like the following, in which we are requesting one CPU (parameter "-n") in the interactive partition (parameter "-p"), for a bash session of 150 minutes ("-t") with memory 5000 Mb ("--mem="):
 
