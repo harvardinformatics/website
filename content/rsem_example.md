@@ -48,11 +48,17 @@ When logged in on Odyssey, an interactive session can be launched with a command
 	$ srun -p interact -n 1 --pty -t 150 --mem=5000 /bin/bash
 
 
-#Create a separate working folder for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs, especially if there is a lot of I/O or large files are written out during jobs.
-#For example, if you create your working directory under regal and name it "rsem_example", the full path to the directory could be:
-#
-#	:::bash
-#	$ export RSEM_DIR=~/regal/rsem_example
+Generally, it is easier to assign working directories to shell variables and then use them in specifying arguments to RSEM, rather than always specifying the full path. On the odyssey cluster, for SLURM jobs it is preferable to read/write on the /n/regal file system, especially if there is a lot of I/O or large files are written out during jobs.
+
+For example, if you create your working directory where your fastq files are on regal and name it "rsem_example", then one could create a variable for that data:
+
+    :::bash
+    export RSEM_DIR=~/regal/where/to/find/my/fastq/files
+
+one could do the same for the location of your genome/transcriptome against which reads will be mapped to estimate expression:
+
+    :::bash
+    export TRANS_DATA=/path/to/trasncriptome/data
 
 
 #### 3a  Building an rsem index for an annotated reference genome
