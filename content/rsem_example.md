@@ -159,6 +159,7 @@ An example script for processing a single paired-end read sample, Chupacabra_R1.
 It is easy to embed the above into either a bash script that loops over read pairs in order to quickly process the job submissions. Alternatively, it can be modified such that one supplies command line arguments for the fastq file and transcriptome locations.
 
 Important things to note:
+
 - For strand-specific RNA-seq protocols there are options to specify strandedness during the mapping phase. Consult your library kit manual, RSEM and short read aligner documentation to determine the approriate settings. In some cases, it is not immediately clear and requires some investigation!
 - Depending upon the genome size/transcriptome complexity and the number of input reads, the amount of memory and time required to complete an RSEM job may vary. We recommend doing a test run with one data set, then using the SLURM sacct tool to get information on elapsed time and amount of memory used to optimize subsequent resource requests for subsequent job submissions.
 
