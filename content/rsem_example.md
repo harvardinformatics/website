@@ -1,6 +1,6 @@
 Title: RSEM example on Odyssey
 Author: Adam Freedman
-Date: 2016-01-04 00:00
+Date: 2017-06-19 00:00
 Category: Software
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, RSEM
 Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey cluster
@@ -21,13 +21,14 @@ One has the ability to alter the command line arguments RSEM feeds to aligners, 
 
 ### Gene vs. isoform level expression
 
-RSEM has the ability to produce both gene and isoform-level expression estimates. However, accurate isoform level expression is typically much more challenging than gene-level estimation, and isoform-level estimates are far noisier. Thus, it is valuable to be able to group transcripts into genes. To enable gene-level expression estimation, the rsem program for building the transcript index is supplied with a text file that indicates the gene-transcript relationships: the first and second columns are gene id and transcript id, respectively, separated by a tab.
+RSEM has the ability to produce both gene and isoform-level expression estimates. However, accurate isoform level expression is typically much more challenging than gene-level estimation, and isoform-level estimates are far noisier. Thus, it is valuable to be able to group transcripts into genes. The grouping of transcripts into genes is carried out when the rsem (and associated aligner index) is built. If a genome sequence and an associated annotation file in either gtf or gff3 format are available for the species of interest, gene-transcript relationships can be automatically detected from the gtf file. In the absence of an annotated genome, a tab-separated text file can be supplied that defines those relationships: the first and second columns are gene id and transcript id, respectively, separated by a tab. Such an approach would be used for transcriptome assemblies where gene-isoform relationships are determined by the assembler, or where an annotation pipeline has been used to group putative transcript contigs into groups originating from the same gene. See below for examples of building the rsem index with each method.
 
-
+### Pre-processing RNA-seq reads
+Prior to conducting expression analyses, RNA-seq reads will have to be pre-processed. An important first step is to run [fastqc])(https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to get a first glimpse at the quality of the data. Besides looking at base qualities, it is important to assess the extent to which there is residual adapter contamination after demultplexing. Depending upon the application and the type of sequencing library, one can use tools such as [TrimGalore!](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/) to remove residual adapter and low quality bases. An example for running TrimGalore! on the odyssey cluster in the context of de novo transcriptome assembly can be found at [Trinity Best Practices](http://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html). It should be noted that the degree to which one should trim low quality bases will vary with the study. Current studies are not unanimous in the importance of quality trimming for de novo transcriptome assembly. For expression analyses, a recent study has suggested that quality-based trimming biases expression estimates. If you have questions regarding your particular study, please set up an appointment for a consultation with Informatics Group bioinformatics staff. 
 
 # Running RSEM
 
-#### 1  Load the software and start SLURM session
+#### 1  Loading RSEM and dependencies
 
 RSEM is already installed as a module on the cluster. It can be loaded as follows:
 
@@ -35,13 +36,9 @@ RSEM is already installed as a module on the cluster. It can be loaded as follow
 	$ source new-modules.sh
 	$ module load rsem/1.2.29-fasrc02
 
-This loads RSEM and sequence alignment software, in this case Bowtie and Bowtie2.
+This loads RSEM and by default, the sequence aligners Bowtie and Bowtie2. If you plan on using STAR or another supported aligner, you will need to load it's module separately.
 
-A SAMtools module is also needed (SAMtools is software used to manipulate the SAM/BAM outputs of sequence alignment programs):
-
-	:::bash
-	$ module load samtools/1.4-fasrc01
-
+#### 2  Testing in interactive mode
 
 For testing scripts and command line arguments with small data sets, it is possible to run RSEM in an interactive session. In all other cases, the compute resources and time required for running RSEM analyses will require running those analyses as SLURM jobs on the cluster.
 
@@ -51,155 +48,115 @@ When logged in on Odyssey, an interactive session can be launched with a command
 	$ srun -p interact -n 1 --pty -t 150 --mem=5000 /bin/bash
 
 
-Create a separate working folder for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs, especially if there is a lot of I/O or large files are written out during jobs.
-For example, if you create your working directory under regal and name it "rsem_example", the full path to the directory could be:
-
-	:::bash
-	$ export RSEM_DIR=~/regal/rsem_example
-
-
-
-#### 2  Download RNA-seq data
+#Create a separate working folder for this example, for data and results files, running jobs, etc., preferably on the /n/regal file system, which is recommended for SLURM jobs, especially if there is a lot of I/O or large files are written out during jobs.
+#For example, if you create your working directory under regal and name it "rsem_example", the full path to the directory could be:
+#
+#	:::bash
+#	$ export RSEM_DIR=~/regal/rsem_example
 
 
-If you do not have you own RNA-seq fastq read data, you can download the following for this example.
+#### 3a  Building an rsem index for an annotated reference genome
+Assuming your genome fasta and annotation file are called genome.fasta and annotation.gtf, respectively, to build an rsem index for an annotated genome (that has a gtf or gff3 annotation file), using bowtie2 as the short read aligner, one would build an index as follows:
 
-The RNA-seq example data are from an experiment using human fibroblast cells, and are available on GEO at accession [GSE37704](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE37704); there are six samples (three biological replicates in each of two conditions).
-The six RNA-seq datasets (paired-end data in this example) can be downloaded from the GEO Short Read Archive as .sra datafiles; the SRA IDs of the datasets are "SRR493366", "SRR493367", "SRR493368" "SRR493369", "SRR493370", "SRR493371":
+    :::bash
+    #!/bin/bash
+    #SBATCH -n 1
+    #SBATCH --mem 8000
+    #SBATCH -p serial_requeue
+    #SBATCH -o rsem_prep.out
+    #SBATCH -e rsem_prep.err
+    #SBATCH -t 90
 
-	:::bash
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145662/SRR493366/SRR493366.sra
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145663/SRR493367/SRR493367.sra
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145664/SRR493368/SRR493368.sra
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145665/SRR493369/SRR493369.sra
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145666/SRR493370/SRR493370.sra
-	$ wget ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX145/SRX145667/SRR493371/SRR493371.sra
+    source new-modules.sh
+    module purge
+    module load rsem/1.2.29-fasrc02
 
-These altogether can take about 15 mins to download to the cluster.
+    TRANS_DATA=/path/to/trasncriptome/data
 
-To extract fastq files from the GEO data, use NCBI program toolkit. It is already installed on Odyssey and can be loaded with:
+    rsem-prepare-reference --gtf $TRANS_DATA/annotation.gtf --bowtie2 $TRANS_DATA/genome.fasta  $TRANS_DATA/genome
 
-	:::bash
-	$ source new-modules.sh
-	$ module load sratoolkit/0.2.3.4-2.bib-fasrc02
+This script tells rsem to 1) use annotation.gtf to determine isoform-gene relationships, build the aligner index files for bowtie2 for genome.fasta, and place the indices in the$TRANS_DATA directory with the prefix "genome". To use a gff3 annotation file instead of a gtf, you would use the flag --gff3 instead of --gtf. When either flag is observed, RSEM assumes that the fasta sequence being supplied is for a genome.
 
-The fastq-dump command produces two compressed fastq files for each dataset, for the forward and reverse reads. In this example, this is done with a SLURM job-array:
+NOTE: UCSC gene annotation files downloaded as gtf do not preserve gene-isoform relationships. In this and other cases where gene and isoform ids are not linked in the annotation file, one can explicitly supply a tab-delimited text file indicating the Gene/Transcript relationships (format: "gene_id(tab)transcript_id"). In this scenario, one would build the RSEM index as follows:
 
-	:::bash
-	#!/bin/bash
-	#SBATCH -n 1
-	#SBATCH -N 1
-	#SBATCH --mem 1000
-	#SBATCH -p serial_requeue
-	#SBATCH -o sra_%A_%a.out
-	#SBATCH -e sra_%A_%a.err
-	#SBATCH -J sra_arr
-	#SBATCH -t 150
-	#SBATCH --array=66-71
+    :::bash
+    #!/bin/bash
+    #SBATCH -n 1
+    #SBATCH --mem 8000
+    #SBATCH -p serial_requeue
+    #SBATCH -o rsem_prep.out
+    #SBATCH -e rsem_prep.err
+    #SBATCH -t 90
 
-	source new-modules.sh
-	module load sratoolkit/0.2.3.4-2.bib-fasrc02
+    source new-modules.sh
+    module purge
+    module load rsem/1.2.29-fasrc02
 
-	RSEM_DIR=~/regal/rsem_example
+    TRANS_DATA=/path/to/trasncriptome/data
 
-	srafile=SRR4933${SLURM_ARRAY_TASK_ID}.sra
+    rsem-prepare-reference --gtf $TRANS_DATA/annotation.gtf --transcript-to-gene-map $TRANS_DATA/gene_transcript_map.txt --bowtie2 $TRANS_DATA/genome.fasta  $TRANS_DATA/genome  
 
-	fastq-dump --split-files -I --gzip  -O $RSEM_DIR  $RSEM_DIR/$srafile
+NOTE: Even if you have a gtf file that properly links isoform and gene IDs, you can still override it by supplying a mapping file along with the --transcript-to-gene-map flag.  
+	
+#### 3b  Building an RSEM index for a set of transcript sequences
+In cases where no genome and associated annotation file is available, one can build an index for the set of transcript sequences, supplying a transripts.fasta file instead of a genome fasta file. For Trinity de novo transcriptome assemblies, a transcript-to-gene-map can be easily created with RSEM's extract-transcript-to-gene-map-from-trinity tool. Alternatively, you can supply your own map file, e.g. based upon contig-gene relationships obtained from an annotation pipeline. In either case, one would build the index as follows:
 
+    :::bash
+    #!/bin/bash
+    #SBATCH -n 1
+    #SBATCH --mem 8000
+    #SBATCH -p serial_requeue
+    #SBATCH -o rsem_prep.out
+    #SBATCH -e rsem_prep.err
+    #SBATCH -t 03:00:00
 
-The fastq-dump processing of these datasets can take a couple of hours.  If you have much smaller input files, you may not have to use a SLURM job, but you could run on the interactive SLURM session.
+    source new-modules.sh
+    module purge
+    module load rsem/1.2.29-fasrc02
 
+    TRANS_DATA=/path/to/trasncriptome/data
 
-
-#### 3  Transcriptome data
-
-
-For transcriptome reference, we are using human transcriptome data from a recent annotation release of Ensembl. This dataset can be downloaded with:
-
-	:::bash
-	$ wget ftp://ftp.ensembl.org/pub/release-83/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
-	$ gunzip Homo_sapiens.GRCh38.cdna.all.fa.gz
-
-The transcriptome data can be placed in a separate folder (the /n/regal file system is recommended), which we can mark with an environment variable, for easy reference:  
-
-	:::bash
-	$ export TRANS_DATA=/path/to/trasncriptome/data
-
-
-A tab-delimited text file indicating the Gene/Transcript relationships (format: "gene_id(tab)transcript_id"), is also needed for RSEM. This file can be created using information from the transcriptome data source. In our example we obtained the table using sequence header annotation in the transcriptome fasta file.  
-We have named this file "gene_transcript_map.txt". 
-
-The human transcriptome data can be copied from the Informatics reference genome directory on Odyssey: /n/regal/informatics_public/ref/ensembl/release-83/homo_sapiens. This directory (/n/regal/informatics_public/ref) contains annotation datasets from other reference organisms that could potentially also be used as inputs for this RSEM example workflow. 
+    rsem-prepare-reference --transcript-to-gene-map $TRANS_DATA/gene_transcript_map.txt --bowtie2 $TRANS_DATA/transcripts.fasta  $TRANS_DATA/transcripts
 
 
-
-
-#### 4  Run RSEM
-
-First process the reference transcriptome fasta file downloaded to build various index and other auxiliary files that RSEM needs; this is done with the RSEM "rsem-prepare-reference" function, which we run here as a SLURM job with the following script:
-
-	:::bash
-	#!/bin/bash
-	#SBATCH -n 1
-	#SBATCH -N 1
-	#SBATCH --mem 8000
-	#SBATCH -p serial_requeue
-	#SBATCH -o rsem_prep.out
-	#SBATCH -e rsem_prep.err
-	#SBATCH -t 90
-
-	source new-modules.sh
-	module load rsem/1.2.29-fasrc02
-	module load samtools/1.4-fasrc01
-
-	TRANS_DATA=/path/to/trasncriptome/data
-
-	rsem-prepare-reference --transcript-to-gene-map $TRANS_DATA/gene_transcript_map.txt --bowtie2 $TRANS_DATA/Homo_sapiens.GRCh38.cdna.all.fa  $TRANS_DATA/human38_cdna.rsem
-
-Preparation of index files for this transcriptome took about 30 minutes.
-
-
-Now we can quantify abundances of the transcripts in the RNA-seq datasets with the RSEM "rsem-calculate-expression" function. In the "rsem-calculate-expression" function we specify: 
+#### 4  Estimate expression with RSEM
+One then quantifies abundances of the transcripts in the RNA-seq dataset with the RSEM "rsem-calculate-expression" function. In the "rsem-calculate-expression" function we specify: 
 
 - sequence alignment program to use, in this example Bowtie2 (parameter "--bowtie2"); 
 - number of threads to use (parameter "--num-threads"); 
 - paired-end fastq input files (parameter "--paired-end");
-- and finally, as arguments, the paired-end fastq input datasets, the transcriptome index files, and the output prefix for each dataset. Note: the fastq inputs must be uncompressed for this example.
+- and finally, as arguments, the paired-end fastq input datasets, the transcriptome index files, and the output prefix for each dataset. RSEM can handle either uncompressed or compressed (*gz) fastq files.
 
-We run this as a SLURM job-array:
+An example script for processing a single paired-end read sample, Chupacabra_R1.fq.gz and Chupacabra_R2.fq.gz is as follows
 
-	:::bash
-	#!/bin/bash
-	#SBATCH -n 32
-	#SBATCH -N 1
-	#SBATCH --mem 75000
-	#SBATCH -p general
-	#SBATCH -o rsem_%A_%a.out
-	#SBATCH -e rsem_%A_%a.err
-	#SBATCH -J rsem_arr
-	#SBATCH -t 1000
-	#SBATCH --array=66-71
+    :::bash
+    #!/bin/bash
+    #SBATCH -n 12
+    #SBATCH -N 1
+    #SBATCH --mem 12000
+    #SBATCH -p serial_requeue
+    #SBATCH -o rsem_%A.out
+    #SBATCH -e rsem_%A.err
+    #SBATCH -J rsem_chupa
+    #SBATCH -t 10:00:00
 
+    source new-modules.sh
+    module load rsem/1.2.16-fasrc03
+    module load samtools/1.2-fasrc01
 
-	source new-modules.sh
-	module load rsem/1.2.16-fasrc03
-	module load samtools/1.2-fasrc01
+    TRANS_DATA=/path/to/trasncriptome/data
+    RSEM_DIR=~/regal/where/to/find/your/fastq/files
 
-	TRANS_DATA=/path/to/trasncriptome/data
-	RSEM_DIR=~/regal/rsem_example
-
-
-	dataset=SRR4933${SLURM_ARRAY_TASK_ID}
-
-	rsem-calculate-expression --bowtie2 --num-threads 32  --paired-end  $RSEM_DIR/${dataset}_1.fastq  $RSEM_DIR/${dataset}_2.fastq  $TRANS_DATA/human38_cdna.rsem  $RSEM_DIR/${dataset}.rsem
+    rsem-calculate-expression --bowtie2 --num-threads 12 --paired-end  $RSEM_DIR/Chupacabra_R1.fq.gz  $RSEM_DIR/Chupacabra_R2.fq.gz  $TRANS_DATA/transcripts  $RSEM_DIR/Chupacabra_RSEM_bowtie2
 
 
-RSEM expression quantification processing of these datasets takes up to about 9-10 hours.
+It is easy to embed the above into either a bash script that loops over read pairs in order to quickly process the job submissions. Alternatively, it can be modified such that one supplies command line arguments for the fastq file and transcriptome locations.
 
-
+Important things to note:
+- For strand-specific RNA-seq protocols there are options to specify strandedness during the mapping phase. Consult your library kit manual, RSEM and short read aligner documentation to determine the approriate settings. In some cases, it is not immediately clear and requires some investigation!
+- Depending upon the genome size/transcriptome complexity and the number of input reads, the amount of memory and time required to complete an RSEM job may vary. We recommend doing a test run with one data set, then using the SLURM sacct tool to get information on elapsed time and amount of memory used to optimize subsequent resource requests for subsequent job submissions.
 
 #### 5  RSEM output
-
 
 The results of a RSEM run are written out in files that have the prefix indicated in the "rsem-calculate-expression" command. 
 
@@ -209,8 +166,6 @@ The main outputs of interest are the files containing the quantification results
 - dataset_prefix.genes.results
 
 These are tab-delimited files and contain expression estimates for each isoform ("transcript_id") or gene ("gene_id") as "expected_count", and also as TPM (Transcripts Per Million) and FPKM (Fragments Per Kilobase of transcript per Million mapped reads) numbers.
-
-
 
 #### 6 References
 
