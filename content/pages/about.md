@@ -147,7 +147,7 @@ We are small in number and try to cover the needs of as many people across campu
     </div>
     <div class="team-blurb">
         <p>
-        Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
+        Former Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
         </p>
     </div>
     <div style="clear: both;"></div>
