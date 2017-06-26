@@ -49,26 +49,25 @@ We are small in number and try to cover the needs of as many people across campu
 
 ## Team
 
-### Michele Clamp
-
+### Tim Sackton
 <div>
-	<div class="team-photo">
-		<figure>
-			<a class="img" href="/images/michele.jpg">
-		    		<img class="img-responsive" src="/images/michele.jpg"></img>
-			</a>
-		    <figcaption></figcaption>
-		</figure>
-	</div>
-	<div class="team-blurb">
-		<p>
-		Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
-		</p>
-		<p>
-		 <a href="mailto:michele_clamp@harvard.edu">michele_clamp at harvard</a>
-		</p>
-	</div>
-	<div style="clear: both;"></div>
+    <div class="team-photo">
+        <figure>
+            <a class="img" href="/images/tim.jpg">
+                    <img class="img-responsive" src="/images/tim.jpg"></img>
+            </a>
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <div class="team-blurb">
+        <p>
+        Director of Bioinformatics
+        </p>
+        <p>
+        <a href="mailto:tsackton@g.harvard.edu">tsackton at harvard</a>
+        </p>
+    </div>
+    <div style="clear: both;"></div>
 </div>
 
 ### Aaron Kitzmiller
@@ -83,34 +82,13 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div class="team-blurb">
                 <p>
-                Senior Scientific Computing Associate responsible for software engineering, web development and high performance computing.
+                Director of Software Operations
                 </p>
                 <p>
                  <a href="mailto:aaron_kitzmiller@harvard.edu">aaron_kitzmiller at harvard</a>
                 </p>
         </div>
         <div style="clear: both;"></div>
-</div>
-
-### Tim Sackton
-<div>
-	<div class="team-photo">
-		<figure>
-			<a class="img" href="/images/tim.jpg">
-		    		<img class="img-responsive" src="/images/tim.jpg"></img>
-			</a>
-		    <figcaption></figcaption>
-		</figure>
-	</div>
-	<div class="team-blurb">
-		<p>
-		Senior Bioinformatics Scientist and also working on Ratite phylogeny and the genomic basis for flight in birds with Scott Edwards' group.
-		</p>
-		<p>
-		<a href="mailto:tsackton@oeb.harvard.edu">tsackton at harvard</a>
-		</p>
-	</div>
-	<div style="clear: both;"></div>
 </div>
 
 ### Meghan Porter-Mahoney
@@ -152,4 +130,25 @@ We are small in number and try to cover the needs of as many people across campu
                 </p>
         </div>
         <div style="clear:both;"></div>
+</div>
+
+## Alumni
+
+### Michele Clamp
+
+<div>
+    <div class="team-photo">
+        <figure>
+            <a class="img" href="/images/michele.jpg">
+                    <img class="img-responsive" src="/images/michele.jpg"></img>
+            </a>
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <div class="team-blurb">
+        <p>
+        Director of Informatics and Scientific Applications   Yes those are aggressive filters on the photo – what of it?
+        </p>
+    </div>
+    <div style="clear: both;"></div>
 </div>
