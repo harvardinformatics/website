@@ -12,7 +12,7 @@ From the [Picrust website](http://picrust.github.io/picrust/):
     surveys and full genomes.
 
 ## Installation
-Because PICRUSt is a Python package, it can be [setup on Odyssey using a local Anaconda clone](Python on Odyssey).  It is a bit more complex than a simple pip install, though.
+Because PICRUSt is a Python package, it can be [setup on Odyssey using a local Anaconda clone]({filename}/python-on-odyssey.md).  It is a bit more complex than a simple pip install, though.
 
 ### Setup a conda clone 
 Follow the instructions [for setting up an Anaconda clone on Odyssey](anaconda-on-odyssey), if you don't already have one. 
@@ -54,7 +54,7 @@ This must be installed from an downloaded archive.  The archive need not be unpa
         Uninstalling cogent-1.9:
           Successfully uninstalled cogent-1.9
     Successfully installed PICRUSt-1.1.1 cogent-1.5.3
-    
+
     (ody) $ format_tree_and_trait_table.py --help
     Usage: format_tree_and_trait_table.py [options] {-t/--input_tree INPUT_TREE -i/--input_trait_table INPUT_TRAIT_TABLE}
 
