@@ -1,6 +1,6 @@
 body {
     padding-top: 70px;
-    font-size: 14px;
+    font-size: 18px;
     font-family: 'Lato','Helvetica Neue', Arial, sans-serif;
 }
 
@@ -54,18 +54,18 @@ code {
 	color: #c7254e;
 }
 h1 {
-	font-size: 28px;
+	font-size: 32px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 
 h2 {
-	font-size: 22px;
+	font-size: 28px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 h3,h4 {
-	font-size: 18px;
+	font-size: 22px;
 	font-weight: bold;
 	margin-top: 1.5em;
 }

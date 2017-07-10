@@ -23,7 +23,7 @@ Summary: Procedure for testing the SeqPrep code
     </pre>
     
 1. Setup the environment
-    Ordinarily you would run the setup.sh script ( <pre>. setup.sh</pre>) if you were going to run seqprep for real.  This sets up the environment with the real environment (the real primary data and analysis directories).  We need to change these defaults before running the tests.
+    Ordinarily you would run the setup.sh script if you were going to run seqprep for real.  This sets up the environment with the real environment (the real primary data and analysis directories).  We need to change these defaults before running the tests.
     
     The main config file for seqprep is usually found in
     
@@ -38,18 +38,12 @@ Summary: Procedure for testing the SeqPrep code
     <pre>export IGGYPREFDIR=IggyTools/test/data/iggytools_prefs</pre>
     
     You’ll also need to edit the iggyseq_settings.yaml file to change the location of the following :
-    
     <pre>
     PRIMARY_PARENT
-    
     USERS_FILE
-    
     WATCHERS_FILE
-	
     LOGDIR_PARENT
-    	
     PROCESSING_PARENT
-    
     FINAL_PARENT
     </pre>
     
