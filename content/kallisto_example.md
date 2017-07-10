@@ -1,6 +1,7 @@
 Title: Kallisto example on Odyssey
 Date: 2015-12-15 00:00
-Category: Software
+Author: Adam Freedman
+Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, Kallisto
 Summary: An example of quantifying RNA-seq expression with Kallisto on Odyssey cluster
 
@@ -8,7 +9,7 @@ Summary: An example of quantifying RNA-seq expression with Kallisto on Odyssey c
 [Kallisto](http://pachterlab.github.io/kallisto/) is a program for quantifying abundances of transcripts from RNA-Seq data, or more generally of target sequences using high-throughput sequencing reads. It is based on the novel idea of pseudoalignment for rapidly determining the compatibility of reads with targets, without the need for alignment. The speed of kallisto makes it possible to use the bootstrap to determine uncertainty of estimates.
 
 
-#### 1  Load the software and start SLURM session
+#### 1&#46;  Load the software and start SLURM session
 
 Kallisto is already installed as a module on the cluster. It can be loaded as follows:
 
@@ -41,7 +42,7 @@ For example, if you create your working directory under regal and name it "kalli
 	$ export KALLISTO_DIR=~/regal/kallisto_example
 
 
-#### 2  Download example data
+#### 2.  Download example data
 
 
 If you don't have you own RNA-seq fastq read data and transcriptome reference fasta data, you can download the following for this example.
@@ -67,6 +68,7 @@ To extract fastq files from the GEO data, use NCBI's program toolkit. It's alrea
 
 The fastq-dump command produces two compressed fastq files for each dataset, for the forward and reverese reads. In this example, this is done with a SLURM job-array:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 1
 	#SBATCH -N 1
@@ -103,7 +105,7 @@ The transcriptome data can be placed in a separate folder (the /n/regal file sys
 
 
 
-#### 3  Run kallisto
+#### 3.  Run kallisto
 
 First process the transcriptome fasta file downloaded to build a transcriptome index that kallisto needs with the kallisto "index" function; we name the index file "human_transcripts.idx":
 
@@ -124,6 +126,7 @@ Now we can quantify abundances of the transcripts in the RNA-seq datasets with t
 We run this as a SLURM job-array:
 
 	
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 32
 	#SBATCH -N 1
@@ -151,7 +154,7 @@ We run this as a SLURM job-array:
 Kallisto processing of these datasets takes about 30 minutes.
 
 
-#### 4  Kallisto output
+#### 4.  Kallisto output
 
 
 The results of a kallisto run are written in the specified output folder for each dataset (the -o option). The contents of each output folder are three files:
@@ -167,7 +170,7 @@ The "run_info.json" file contains a summary of the run, including data on the nu
 The "abundance.h5" file contains the main quantification together with the boostraps in HDF5 compressed format, for large output of runs with many bootstraps.
 
 
-#### 5 References
+#### 5. References
 
 N. Bray, H. Pimentel, P. Melsted, and L. Pachter (2015). Near-optimal RNA-Seq quantification. [arXiv:1505.02710](http://arxiv.org/abs/1505.02710)
 

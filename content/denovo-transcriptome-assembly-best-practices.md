@@ -1,7 +1,7 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
 Date: 2016-10-20 00:00
 Author: Adam Freedman
-Category: Software
+Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
 Summary: A best-practices pipeline for de novo transcriptome assembly with Illumina paired-end reads using Trinity
 

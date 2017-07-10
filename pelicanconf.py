@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
-import os
 from datetime import datetime
 from dateutil.tz import tzlocal
 
@@ -13,16 +12,29 @@ PLUGINS = ['tag_cloud.tag_cloud',
            'rmd_reader',
            'pin_to_top',
            'events',
+           'jinja2content',
            ]
 
 PLUGIN_EVENTS = {
- 'ics_fname': 'calendar.ics',
+    'ics_fname': 'calendar.ics',
 }
 
 KNITR_OPTS_CHUNK = {
     'fig.path': 'images/', 
 }
-MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
+# MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
+MARKDOWN = {
+    'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code'],
+    'extension_configs' : {
+        'markdown.extensions.codehilite' : {
+            'use_pygments' : True, 
+            'css_class': 'highlight',
+            'linenums' : False,
+            'guess_lang' : False,
+        },
+    }
+}
+
 TOC = {
     'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
                                 # Expected format is a regular expression
@@ -101,3 +113,6 @@ INTERLINKS = {
 DIRECT_TEMPLATES = ['search','index','archives','tags']
 
 CUTOFF_DATE = datetime(2090, 1, 1, 0, 0, 0, tzinfo=tzlocal())
+
+IGNORE_FILES = ['includes']
+JINJA2CONTENT_TEMPLATES = ['includes']

@@ -1,6 +1,6 @@
 Title: Trinotate workflow example on Odyssey
 Date: 2015-11-25 00:00
-Category: Software
+Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Trinotate
 Summary: An example of running the Trinotate suite of tools to annotate a given transcriptome (in this case the mouse transcriptome).
 
@@ -114,6 +114,7 @@ The mouse example data can also be downloaded from [here](https://github.com/gma
 
 The transcriptome nucleotide sequences are processed with TransDecoder to produce the most likely longest-ORF peptide candidates. As this is a longer job we ran it as a SLURM job, here is the script:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 1
 	#SBATCH -N 1
@@ -151,6 +152,7 @@ It would be a good idea to run these searches in a separate working directory.
 
 Blastx of transcript nucleotide sequences against SwissProt. Run as a SLURM job array for the transcript fasta volumes. The script is:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 8
 	#SBATCH -N 1
@@ -183,6 +185,7 @@ Concatenate result volumes into a single results file:
 
 Blastp of transcript TransDecoder peptide sequences against SwissProt. Run as a SLURM job array for the fasta volumes. The script is:
  
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 8
 	#SBATCH -N 1
@@ -215,6 +218,7 @@ Concatenate result volumes into a single results file:
 Run HMMER against Pfam to identify protein domains; run as a SLURM job:
 
  
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 16
 	#SBATCH -N 1
@@ -264,6 +268,7 @@ Break the transcriptome into volumes of 3,000 sequences to runs jobs in parallel
 
 Blastx of transcript nucleotide sequences against Uniref90. Run as a SLURM job array in partition "general" for the transcript fasta volumes. The script is:
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 32
 	#SBATCH -N 1
@@ -297,6 +302,7 @@ Concatenate result volumes into a single results file:
 
 Blastp of transcript TransDecoder peptide sequences against Uniref90. Run as a SLURM job array in partition "serial_requeue" for the fasta volumes. The script is:
  
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 32
 	#SBATCH -N 1
@@ -333,6 +339,7 @@ Other OPTIONAL processing includes running the following programs; they are alre
 
 Below is an example SLURM script to run these three programs sequentially. Alternatively, they can be run in parallel in three separate SLURM scripts using the same SLURM parameters. Each program would need about 2-4 hours to finish the mouse example dataset (tmHMM takes the longest); altogether they would take 10-12 hours.
 
+	:::bash
 	#!/bin/bash
 	#SBATCH -n 1
 	#SBATCH -N 1
