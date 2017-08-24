@@ -74,6 +74,7 @@ h1 a, h2 a, h3 a, h4 a {
 	color: inherit;
 }
 
+
 p {
 	margin: 1em 1em 0em 1em;
 }
@@ -395,6 +396,19 @@ figure.floatcenter, .align-center {
 }
 .event-item {
 	margin-top: 3em; 
+}
+
+.bullet-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 1.2em;  
+    float: left;
+    position: relative;
+}
+.bullet-title-img {
+    margin-top: 1em;
+    margin-right: 0.5em;
+    height: 80px !important;
 }
 
 /* Solutions for mobile and small screens  */
