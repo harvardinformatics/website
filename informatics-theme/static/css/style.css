@@ -399,9 +399,9 @@ figure.floatcenter, .align-center {
 }
 
 .bullet-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
-    margin-top: 1.2em;  
+    margin-top: 2em;  
     float: left;
     position: relative;
 }
@@ -409,6 +409,22 @@ figure.floatcenter, .align-center {
     margin-top: 1em;
     margin-right: 0.5em;
     height: 80px !important;
+}
+.content-section {
+    width: 100%;
+}
+.content-section-content {
+    margin-top: 0em;
+    margin-left: 2em;
+    font-size: 18px;
+    width: 100%; 
+}
+.bullet-title-img-div {
+    position: relative;
+    float: left;
+}
+.page-article-list {
+    display: none;
 }
 
 /* Solutions for mobile and small screens  */
@@ -438,6 +454,9 @@ figure.floatcenter, .align-center {
 		font-weight: bold;
 		margin-top: 0.5em;
 	}
+    ul {
+        margin: 0em;
+    }
 	#content article {
 		margin: 0;
 	}
@@ -447,4 +466,15 @@ figure.floatcenter, .align-center {
 	.codehilite {
 		margin: 0;
 	}
+    .bullet-title-img-div {
+        display: none;
+    }
+    .content-section-content {
+        font-size: normal;
+        margin: 0em;
+    }
+    .page-article-list {
+        display: block;
+        margin-top: 2em;
+    }
 }
