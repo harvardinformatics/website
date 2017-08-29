@@ -426,6 +426,16 @@ figure.floatcenter, .align-center {
 .page-article-list {
     display: none;
 }
+.chalkboard {
+    font-family: "Fredericka the Great", cursive;
+    font-size: 32px;
+    color: white;
+    background-image: url('/images/chalkboard.jpeg');
+    background-size: 100%;
+    margin: 2em;
+    border: 8px solid sandybrown;
+    padding: 10px;
+ }
 
 /* Solutions for mobile and small screens  */
 @media (max-width: 650px) {
