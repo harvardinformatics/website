@@ -56,25 +56,6 @@
         {% endif %}
         <div class="entry-content">
             {{ page.content }}		
-            {% for cat,articles in categories %}
-                {% if cat == page.title %}
-                <h2>Related articles</h2>
-                    {% for article in (articles_page.object_list if articles_page else articles) %}
-                                <article>
-                                    <h3><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h3>
-                                    {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
-                                        <div class="well well-sm">
-                                            {% include "includes/article_info.html" %}
-                                        </div>
-                                    {% endif %}
-                                    <div class="summary">{{ article.summary }}<a style="float: right" href="{{ SITEURL }}/{{ article.url }}">more ...</a>
-                                        {% include 'includes/comment_count.html' %}
-                                    </div>
-                                </article>
-                                <hr/>
-                    {% endfor %}
-               {% endif %}
-            {% endfor %}
 		    {% include 'includes/pagination.html' %}
             {% if page.comments == 'enabled' %}
                 {% include 'includes/comments.html' %}

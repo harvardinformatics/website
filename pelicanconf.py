@@ -66,9 +66,9 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Sidebar stuff, Link images are first
-LINKS = (('/images/harvard.jpg','Harvard University', 'http://www.harvard.edu'),
-         ('/images/harvard.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
-         ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
+# LINKS = (('/images/harvard.jpg','Harvard University', 'http://www.harvard.edu'),
+#          ('/images/harvard.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
+#          ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
 
 SHOW_ARTICLE_AUTHOR = True
 # Social widget

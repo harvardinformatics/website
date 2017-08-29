@@ -72,6 +72,30 @@
                 </ul>
             </li>
         {% endif %}
+        <!-- related articles in the sidebar! -->
+        {% if page %}
+            {% for cat,articles in categories %}
+                {% if cat == page.title %}
+                <h3>Recent {{page.title}} articles</h3>
+                    <div style="margin-left: 1em;">
+                    {% for article in (articles_page.object_list if articles_page else articles) %}
+                                <article>
+                                    <strong><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></strong>
+                                    {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+                                        <div class="well well-sm">
+                                            {% include "includes/article_info.html" %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="summary" style="font-size: 12px;">{{ article.summary }}<a style="float: right" href="{{ SITEURL }}/{{ article.url }}">more ...</a>
+                                        {% include 'includes/comment_count.html' %}
+                                    </div>
+                                </article>
+                                <hr/>
+                    {% endfor %}
+                    </div>
+               {% endif %}
+            {% endfor %}
+        {% endif %}
         {% include 'includes/github.html' %}
         {% include 'includes/twitter_timeline.html' %}
     </ul>
