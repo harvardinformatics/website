@@ -10,7 +10,8 @@ ADD requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
 WORKDIR /var/www
-RUN git clone --recursive https://github.com/getpelican/pelican-plugins.git && git clone https://github.com/harvardinformatics/website.git
+RUN git clone --recursive https://github.com/getpelican/pelican-plugins.git && mkdir website
+ADD . website
 RUN cd website && pelican content -t informatics-theme -o /var/www/html
 
 CMD ["/usr/sbin/httpd","-DFOREGROUND"]

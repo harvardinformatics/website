@@ -24,7 +24,7 @@ KNITR_OPTS_CHUNK = {
 }
 # MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 MARKDOWN = {
-    'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code'],
+    'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta'],
     'extension_configs' : {
         'markdown.extensions.codehilite' : {
             'use_pygments' : True, 
