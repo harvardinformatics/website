@@ -5,6 +5,9 @@ Author: Michele Clamp
 Tags: Chip-Seq, Workshop
 Summary: This tutorial provides a workflow for Chip-Seq alignment, peak finding and motif analysis
 
+***NOTE: THIS WORKFLOW IS DEPRECIATED AND SHOULD NOT BE USED AS A GUIDE FOR CURRENT ANALYSIS. RETAINED FOR HISTORICAL REASONS ONLY***
+
+
 ## Notes
 
 The input data files are available at:

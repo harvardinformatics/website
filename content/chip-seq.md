@@ -4,6 +4,8 @@ Category: Tutorials
 Tags: Chip-Seq
 Summary: Chip-seq, or Chromatin Immunoprecipitation Sequencing, is used to probe DNA-protein interactions. This tutorial illustrates an example Chip-seq analysis. After reads are preprocessed and aligned, peaks are called and motifs identified. 
 
+***NOTE: THIS WORKFLOW IS DEPRECIATED AND SHOULD NOT BE USED AS A GUIDE FOR CURRENT ANALYSIS. RETAINED FOR HISTORICAL REASONS ONLY***
+
 Chip-seq, or Chromatin Immunoprecipitation Sequencing, is used to probe DNA-protein interactions. First, DNA in whole cells is reversibly cross-linked to bound proteins with a cross-linking agent such as formaldehyde. Next, the DNA is isolated and sonicated to produce small fragments. Fragments containing the protein of interest are isolated via the addition of a protein-specific antibody and chromatin immunoprecipitation. Crosslinks are reversed and the isolated DNA is purified. Finally, strand-specific adapters are ligated and the library is amplified.
 
 Strand-specific reads help to distinguish signal from noise, as true signal will consist of two peaks of equal magnitude, but on opposite strands. This is due to the fact that reads can originate from either end of DNA fragments, and DNA fragments are usually much longer than reads. This characteristic peak profile is shown in Figure 1.
