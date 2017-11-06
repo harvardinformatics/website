@@ -1,6 +1,35 @@
-## Harvard FAS Informatics website
-Website markdown files
+# Harvard FAS Informatics website
+Website markdown files.  
 
+## Editing the website is easy
+Just checkout the repository, edit a markdown file and check it back in.  Which, assuming you know Markdown and all of the conventions for the website, is pretty easy.  
+
+If you're going to make some significant changes, beyond adding a page or modifying an existing one, you should create a branch and then do a merge request so that someone else can take a look.
+
+## Building the website the easy way
+So, now, the easiest way to build the website is to use Docker.  
+
+### Install Docker
+This is pretty easy if you have a Mac.  The official DMG is pretty good.  You shouldn't need to homebrew.
+
+### Checkout the repository and enter the top level directory
+    git clone git@github.com:harvardinformatics/website.git
+    cd website
+
+### Build a docker image
+The "tag" that you give it can be anything, but "website" makes sense.  The Docker build will take care of the setup of the Python environment, getting the pelican-plugins, and converting the source Markdown files into HTML.
+
+    docker build -t website .
+    
+### Run it on your local machine
+The container includes a web server listening to port 80.  If you run the container and map a port on your localhost, you can view it there. To see it at http://localhost:8080, 
+
+    docker run -d -p 8080:80 website
+
+Regardless of whether you are using Docker, once you're satisfied, just check your changes in (or merge your branch into master).  The live website should be automatically updated.
+
+## Building the website the hard way
+If you want to build it without Docker, you have to do all this setup stuff.
 
 ### Install pelican and markdown (python 2.7 required)
 
