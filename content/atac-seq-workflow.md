@@ -16,8 +16,8 @@ Summary: Peak calling workflow for ATAC-seq and related methods
 [Next steps](#next)<br>
 [References](#references)<br>
 
-
-## ATAC-seq overview <a name="overview"></a>
+<a name="overview"></a>
+## ATAC-seq overview 
 
 ATAC-seq (Assay for Transposase-Accessible Chromatin with high-throughput sequencing) is a method for determining chromatin accessibility across the genome.  It utilizes a hyperactive Tn5 transposase to insert sequencing adapters into open chromatin regions (Fig. 1).  High-throughput sequencing then yields reads that indicate these regions of increased accessibility.
 
@@ -27,7 +27,8 @@ ATAC-seq (Assay for Transposase-Accessible Chromatin with high-throughput sequen
 </figure>
 <br>
 
-## Experimental design <a name="design"></a>
+<a name="design"></a>
+## Experimental design 
 
 The developers of the ATAC-seq method have published a [detailed protocol](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4374986/) for the laboratory procedure (Buenrostro *et al.*, 2015).
 
