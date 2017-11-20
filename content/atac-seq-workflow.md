@@ -132,7 +132,7 @@ NGmerge is available on Odyssey in the ATAC-seq module:
 
 The output files will be &lt;sample&gt;\_1.fastq.gz and &lt;sample&gt;\_2.fastq.gz.  Of the many arguments available with NGmerge, here are the most important ones for this application:
 
-<table>
+<table class="githubtable">
 <thead>
 <tr>
 <th align="center">Argument</th>
@@ -179,7 +179,7 @@ For many model organisms, the genome and pre-built reference indexes are availab
 
 Once the indexes are built, the reads can be aligned using Bowtie2.  A brief look at the [manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) reveals the large number of parameters and options available with Bowtie2.  Here are a few that may benefit alignment of an ATAC-seq dataset on Odyssey:
 
-<table>
+<table class="githubtable">
   <tr>
     <th>Argument</th>
     <th>Description</th>
