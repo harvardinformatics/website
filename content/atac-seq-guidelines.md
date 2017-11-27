@@ -1,9 +1,9 @@
-Title: Peak-calling guidelines
-Author: John Gaspar
+Title: ATAC-seq Guidelines
+Author: John M. Gaspar
 Date: 2017-11-01
 Category: Software
-Tags: ChIP-seq, ATAC-seq, Peaks, Peak Calling, Best Practices
-Summary: Peak-calling guidelines for ATAC-seq and related methods
+Tags: ATAC-seq, ChIP-seq, Peaks, Peak Calling, Best Practices
+Summary: Guidelines for the bioinformatics analysis of ATAC-seq data
 
 ## Table of Contents
 [ATAC-seq overview](#overview)<br>
