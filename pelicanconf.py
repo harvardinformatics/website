@@ -89,7 +89,9 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
-STATIC_PATHS = ['images','extra']
+ARTICLE_EXCLUDES = ['extra/test.html']
+PAGE_EXCLUDES = ['extra/test.html']
+STATIC_PATHS = ['images','extra/test.html']
 EXTRA_PATH_METADATA = {
     'extra/favicon.ico': {'path': 'favicon.ico'},
 }
