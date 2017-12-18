@@ -34,6 +34,13 @@ img {
 	max-width: 100%;
 }
 
+:target:before {
+  content:"";
+  display:block;
+  height:60px; /* fixed header height*/
+  margin:-60px 0 0; /* negative fixed header height */
+}
+
 .img-responsive {
   display: block;
   max-width: 100%;
@@ -395,6 +402,42 @@ figure.floatcenter, .align-center {
 }
 .event-item {
 	margin-top: 3em; 
+}
+
+.githubtable {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-color: #dfe2e5;           
+}
+.githubtable tr {
+    border-top: 1px solid #dfe2e5;
+    display: table-row;
+}
+.githubtable th {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+    font-weight: 600;
+}
+.githubtable tbody {
+    display: table-row-group;
+    vertical-align: middle;
+ }
+
+.githubtable td {
+    /*background-color: #fff;*/
+    border: 1px solid #dfe2e5;    
+    vertical-align: inherit;
+}
+.githubtable tr:nth-child(even) {
+    background-color: #eee;
+}
+.githubtable tr:nth-child(odd) {
+    background-color: #fff;
 }
 
 /* Solutions for mobile and small screens  */
