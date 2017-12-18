@@ -136,8 +136,8 @@ We are small in number and try to cover the needs of as many people across campu
 <div>
         <div class="team-photo">
                 <figure>
-                        <a class="img" href="/images/john_gaspar.png">
-                          <img class="img-responsive" src="/images/john_gaspar.png"></img>
+                        <a class="img" href="/images/john_gaspar.jpg">
+                          <img class="img-responsive" src="/images/john_gaspar.jpg"></img>
                         </a>
                     <figcaption></figcaption>
                 </figure>
