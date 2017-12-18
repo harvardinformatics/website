@@ -1,6 +1,6 @@
 Pygments==2.0.2
 Markdown==2.6.2
 beautifulsoup4==4.3.2
-pelican==3.7.1
+pelican==3.6.3
 icalendar==3.9.1
 
