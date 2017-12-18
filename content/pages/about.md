@@ -103,7 +103,7 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div class="team-blurb">
                 <p>
-                Software Engineer working on development of an application for laboratory sample tracking (Iggybase). BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
+                Senior Software Engineer BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
                 </p>
                 <p>
                 <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
@@ -130,6 +130,68 @@ We are small in number and try to cover the needs of as many people across campu
                 </p>
         </div>
         <div style="clear:both;"></div>
+</div>
+
+### John Gaspar
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/john_gaspar.png">
+                          <img class="img-responsive" src="/images/john_gaspar.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Bioinformatics Scientist, specializing in data processing and genomic enrichment assays.</p>
+                <p>
+                <a href="mailto:jgaspar@fas.harvard.edu">jgaspar at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Yasin Kaymaz
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/yasin_kaymaz.jpg">
+                          <img class="img-responsive" src="/images/yasin_kaymaz.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation. 
+He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatics from Boston University. He graduated from University of Massachusetts Medical school with a PhD degree in Bioinformatics and Computational Biology.</p>
+                <p>
+                <a href="mailto:yasinkaymaz@fas.harvard.edu">yasinkaymaz at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Allison Shultz
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/allison_shultz.jpg">
+                          <img class="img-responsive" src="/images/allison_shultz.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Bioinformatics Scientist working on analyses of genomic data, specializing on population genomics. She received her B.A. in Integrative Biology from UC Berkeley, M.S. in Biology from San Diego State University, and PhD in Organismic and Evolutionary Biology from Harvard University. Learn more about her research on her <a href="http://www.allisonshultz.com">website</a>.</p>
+                <p>
+                <a href="mailto:ashultz@fas.harvard.edu">ashultz at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+
 </div>
 
 ## Alumni
