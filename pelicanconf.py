@@ -69,7 +69,9 @@ AUTHOR_FEED_RSS = None
 LINKS = (('/images/harvard.jpg','Harvard University', 'http://www.harvard.edu'),
          ('/images/harvard.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
          ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
-
+MENUITEMS = (
+    ('About', '/pages/about.html'),
+)
 SHOW_ARTICLE_AUTHOR = True
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
