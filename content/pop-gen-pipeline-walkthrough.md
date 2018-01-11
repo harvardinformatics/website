@@ -211,7 +211,7 @@ Note that it is not recommended to actually remove the duplicate sequences from 
     O=samplename.dedup.bam \
     METRICS_FILE=samplename.dedup.metrics.txt \
     REMOVE_DUPLICATES=false \
-    TAGGING_POLICY=ALL
+    TAGGING_POLICY=All
 
 We also recommend creating a deduplications metrics file, which will report the proportion and type of duplicate sequences in your sample and read groups.
 
