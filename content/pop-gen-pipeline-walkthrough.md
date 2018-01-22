@@ -59,7 +59,9 @@ The jobs take the form of shell scripts, which are submitted with the [sbatch co
 
 ### Running the GATK/PicardTools Pipeline on Odyssey
 
-A few notes on running **GATK** and **PicardTools** commands on Odyssey. The commands and information given below are specific to GATK and PicardTools version 3. These programs have been rolled together in GATK4, and while the commands will be similar, there will be some changes in the command structure. We will update this tutorial at a future date to incorporate GATK4.
+#### The commands and information given below are specific to GATK and PicardTools version 3. These programs have been rolled together in GATK4, and while the commands will be similar, there will be some changes in the command structure. We will update this tutorial at a future date to incorporate GATK4. If you download the latest version of GATK, you will get GATK4. You can download previous versions of GATK (e.g. GATK 3.8 [here](https://software.broadinstitute.org/gatk/download/archive)).
+
+A few notes on running **GATK** and **PicardTools** commands on Odyssey. 
 
 **GATK** and **PicardTools** are built with java, and so when running the *jar* file (e.g. `java -jar picard.jar <PicardTool>`), you can include a few extra [options](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) to pass to java that are especially applicable to running these programs on Odyssey. First, you can add a memory limit to java, for example requiring java to use no more than 4GB memory: `-Xmx4g`. This can help ensure your program does not use more memory than you request, resulting in job termination on Odyssey. 
 
