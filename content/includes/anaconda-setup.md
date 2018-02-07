@@ -1,6 +1,6 @@
 
     :::bash
-    $ module load python/2.7.11-fasrc01
+    $ module load python/2.7.13-fasrc01
     $ conda create -n ody --clone $PYTHON_HOME
     $ source activate ody
     (ody) $ python
