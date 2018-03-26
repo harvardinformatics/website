@@ -7,16 +7,6 @@ The Informatics and Scientific Applications group is a small group working in th
 
 A large part of our remit is to smooth the path of scientific discovery by working with faculty, post-docs and grad students to design and analyze sequencing experiments for the most efficient bang for the buck.  Our group is currently small (two bioinformaticians and two web developers) so we have limited resources to fulfill this area but we are aiming to grow and expand our services.
 
-## Where to find us
-Informatics and Scientific Applications is located on the first floor of 38 Oxford Street, Cambridge, MA 02138. Please note that this building is not actually on Oxford Street. It is located just to the east (or behind) the Northwest Labs, and just north of the Biological Labs. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=38+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=38+&amp;hnear=38+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
-
-Use the entrance on the southwest corner of the building (marked in the map below), which is unlocked during regular business hours. Climb the ramp and go through the doors, then follow the hallway to our communal meeting area.
-
-If you are planning to drive, please be advised that on-street parking is very limited and University-owned lots require a pre-paid day [permit](https://www2.uos.harvard.edu/cgi-bin/permit/purchase.pl). We strongly urge using public transportation.
-
-![Map](/images/map.jpg)
-
-
 ## Services
 
 The Informatics group provides bioinformatics analysis support for all users of the Core Sequencing facility and to FAS faculty groups regardless of the origin of their data.    In addition we have the responsibility for sample submission, tracking, scheduling and billing services for many of the core instrument facilities across FAS.
@@ -191,6 +181,16 @@ He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatic
     </div>
     <div style="clear: both;"></div>
 </div>
+
+## Where to find us
+Informatics and Scientific Applications is located on the first floor of 38 Oxford Street, Cambridge, MA 02138. Please note that this building is not actually on Oxford Street. It is located just to the east (or behind) the Northwest Labs, and just north of the Biological Labs. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=38+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=38+&amp;hnear=38+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
+
+Use the entrance on the southwest corner of the building (marked in the map below), which is unlocked during regular business hours. Climb the ramp and go through the doors, then follow the hallway to our communal meeting area.
+
+If you are planning to drive, please be advised that on-street parking is very limited and University-owned lots require a pre-paid day [permit](https://www2.uos.harvard.edu/cgi-bin/permit/purchase.pl). We strongly urge using public transportation.
+
+![Map](/images/map.jpg)
+
 
 ###Directions
 **By Public Transportation**
