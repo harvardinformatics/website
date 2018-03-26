@@ -2,7 +2,7 @@
 {% block content %}
     {% if articles %}
          {% for article in (articles_page.object_list if articles_page else articles) %}
-        		{% if loop.first and not articles_page.has_previous()%}
+        		{% if loop.first and not articles_page.has_previous() and not article.category.name == "Employment" %}
 	        		<article>
 	        			<h1><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
 	                {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
@@ -14,6 +14,18 @@
 	                {% include 'includes/comment_count.html' %}
 	        		</article>
 	        		<hr/>
+                {% elif article.category.name == "Employment" %}
+                    <article>
+                        <h1><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h1>
+                    {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}
+                        <div class="well well-sm">
+                            {% include "includes/article_info.html" %}
+                        </div>
+                    {% endif %}
+                    {{ article.content }}
+                    {% include 'includes/comment_count.html' %}
+                    </article>
+                    <hr/>                
         		{% else %}
 		            <article>
 		                <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>

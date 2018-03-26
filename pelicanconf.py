@@ -86,6 +86,7 @@ TAG_CLOUD_MAX_ITEMS = 100
 DISPLAY_CATEGORIES_ON_SIDEBAR = False
 DISPLAY_CATEGORIES_ON_MENU = True
 
+
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
