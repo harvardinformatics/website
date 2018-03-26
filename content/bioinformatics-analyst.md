@@ -1,4 +1,4 @@
-Title: Informatics Developer 
+Title: Bioinformatician
 Date: 2018-03-15
 Category: Employment
 Author: Tim Sackton
