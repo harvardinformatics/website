@@ -14,7 +14,7 @@ Formal(ish) software development is represented in FAS Informatics by Software O
     <div style="clear: both"></div>
     <div class="content-section-content">
         <ul>
-            <li>setup and troubleshooting support for informatics applications in the <a href="">huge Odyssey application library</a>, including RaxML, Qiime, and Trinity</li>
+            <li>setup and troubleshooting support for informatics applications in the <a href="https://portal.rc.fas.harvard.edu/apps/modules">huge Odyssey application library</a>, including RaxML, Qiime, and Trinity</li>
             <li>setup Slurm jobs to run informatics applications, including parallelization assistance</li>
             <li>adapt third party software for Odyssey job submission</li>
         </ul>
@@ -26,7 +26,7 @@ Formal(ish) software development is represented in FAS Informatics by Software O
     <div style="clear: both;"></div>
     <div class="content-section-content">
         <ul>
-            <li>ad-hoc and organized Python assistance, including the <a href="">Practical Python on Odyssey course</a></li>
+            <li>ad-hoc and organized Python assistance, including the Practical Python on Odyssey course</li>
             <li>parallelization assistance (Slurm job submission, multiprocessing module, MPI</li>
             <li>third party package setup, including source builds against Odyssey libraries</li>
             <li>web and database applications</li>
@@ -46,11 +46,3 @@ Formal(ish) software development is represented in FAS Informatics by Software O
     </div>
 </div>
 
-
-FAS Informatics deploys a significant portion of the software available on the
-[Odyssey cluster](http://portal.rc.fas.harvard.edu/apps/modules/).
-
-In addition, there is in-house expertise with modern bioinformatics tools
-and pipelines like [Trinity](tag/trinity.html) and [RSEM](tag/rsem.html)
-
-Data management services are primarily through the [MiniLIMS](/tag/minilims.html) and up-coming [IggyBase](https://github.com/harvardinformatics/iggybase) LIMS platform.

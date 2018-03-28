@@ -24,12 +24,12 @@ figure {
     margin-left: auto;
     margin-right: auto;
     margin-top: 1.5em;
-    margin-bottom: 1.5em; 
+    margin-bottom: 1.5em;
 }
 
 img {
-  	vertical-align: middle; 
-	display:block;
+  	vertical-align: middle;
+	display: block;
 	height: auto;
 	max-width: 100%;
 }
@@ -44,7 +44,7 @@ img {
 .img-responsive {
   display: block;
   max-width: 100%;
-  height: auto; 
+  height: auto;
 }
 
 a {
@@ -81,6 +81,7 @@ h1 a, h2 a, h3 a, h4 a {
 	color: inherit;
 }
 
+
 p {
 	margin: 1em 1em 0em 1em;
 }
@@ -110,7 +111,7 @@ p {
 }
 
 /* for list-group-items nested within a list-group-item, reset the bottom
-   padding of the last item, b/c the containing item has paddimg already 
+   padding of the last item, b/c the containing item has paddimg already
  */
 .list-group-item .list-group-item:last-child {
     padding-bottom: 0px;
@@ -154,7 +155,7 @@ p {
 
 .label {
 	margin-left: 1em;
-	margin-right: 0.5em; 
+	margin-right: 0.5em;
 	padding: .4em .6em .4em .6em;
 }
 #aboutme {
@@ -320,7 +321,7 @@ figure.floatcenter, .align-center {
     background-repeat: no-repeat;
     background-position: top center;
     background-attachment: scroll;
-    background-size: cover; 
+    background-size: cover;
     background-color: #C4C4C4;
     margin: 0 0 20px;
     padding: 30px 0; /*controls padding around inner text*/
@@ -358,12 +359,12 @@ figure.floatcenter, .align-center {
 }
 
 .exercises {
-	color: red; 
+	color: red;
 	margin: 50px	;
 }
 
 .answers {
-	color: green; 
+	color: green;
 	margin: 50px	;
 	display: block;
 }
@@ -377,16 +378,16 @@ figure.floatcenter, .align-center {
 }
 
 .team-photo {
-	max-width: 200px; 
-	position: relative; 
-	float: left; 
-	margin: 1em;	
+	width: 200px;
+	position: relative;
+	float: left;
+	margin: 1em;
 }
 
 .team-blurb {
-	max-width: 300px; 
-	position: relative; 
-	float: left; 
+	width: 300px;
+	position: relative;
+	float: left;
 	margin: 2em;
 }
 
@@ -401,9 +402,47 @@ figure.floatcenter, .align-center {
 	font-weight: bold;
 }
 .event-item {
-	margin-top: 3em; 
+	margin-top: 3em;
 }
 
+.bullet-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 2em;
+    float: left;
+    position: relative;
+}
+.bullet-title-img {
+    margin-top: 1em;
+    margin-right: 0.5em;
+    height: 80px !important;
+}
+.content-section {
+    width: 100%;
+}
+.content-section-content {
+    margin-top: 0em;
+    margin-left: 2em;
+    font-size: 18px;
+    width: 100%;
+}
+.bullet-title-img-div {
+    position: relative;
+    float: left;
+}
+.page-article-list {
+    display: none;
+}
+.chalkboard {
+    font-family: "Fredericka the Great", cursive;
+    font-size: 32px;
+    color: white;
+    background-image: url('/images/chalkboard.jpeg');
+    background-size: 100%;
+    margin: 2em;
+    border: 8px solid sandybrown;
+    padding: 10px;
+ }
 .githubtable {
     display: block;
     width: 100%;
@@ -412,7 +451,7 @@ figure.floatcenter, .align-center {
     margin-bottom: 16px;
     border-spacing: 0;
     border-collapse: collapse;
-    border-color: #dfe2e5;           
+    border-color: #dfe2e5;
 }
 .githubtable tr {
     border-top: 1px solid #dfe2e5;
@@ -430,7 +469,7 @@ figure.floatcenter, .align-center {
 
 .githubtable td {
     /*background-color: #fff;*/
-    border: 1px solid #dfe2e5;    
+    border: 1px solid #dfe2e5;
     vertical-align: inherit;
 }
 .githubtable tr:nth-child(even) {
@@ -456,7 +495,7 @@ figure.floatcenter, .align-center {
 		font-weight: bold;
 		margin-top: 0.5em;
 	}
-	
+
 	h2 {
 		font-size: 20px;
 		font-weight: bold;
@@ -467,6 +506,9 @@ figure.floatcenter, .align-center {
 		font-weight: bold;
 		margin-top: 0.5em;
 	}
+    ul {
+        margin: 0em;
+    }
 	#content article {
 		margin: 0;
 	}
@@ -476,4 +518,15 @@ figure.floatcenter, .align-center {
 	.codehilite {
 		margin: 0;
 	}
+    .bullet-title-img-div {
+        display: none;
+    }
+    .content-section-content {
+        font-size: normal;
+        margin: 0em;
+    }
+    .page-article-list {
+        display: block;
+        margin-top: 2em;
+    }
 }
