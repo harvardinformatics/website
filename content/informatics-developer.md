@@ -4,7 +4,7 @@ Category: Employment
 Author: Aaron Kitzmiller
 Summary: New Informatics Developer position in FAS Informatics
 
-[Apply](https://jobs.brassring.com/1033/asp/tg/cim_jobdetail.asp?partnerID=25240&siteID=5341&AReq=44346BR)
+[Apply](https://sjobs.brassring.com/TGnewUI/Search/home/HomeWithPreLoad?PageType=JobDetails&partnerID=25240&siteID=5341&AReq=45634BR#jobDetails=1375554_5341)
 
 The Faculty of Arts and Sciences Informatics department at Harvard University is looking for a software developer to join a newly formed Informatics Operations team.  Reporting to the Director of Informatics Operations the position's responsibilities will include:
 
