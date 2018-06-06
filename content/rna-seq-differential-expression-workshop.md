@@ -1,5 +1,5 @@
-Title: Differential Expression Workshop, Fall 2017
-Date: 2017-12-20
+Title: Differential Expression Workshop, Spring 2018
+Date: 2018-03-20
 Category: Tutorials
 Author: Adam Freedman
 Tags: RNA-Seq, Workshop, Sleuth, kallisto,limma
