@@ -140,26 +140,67 @@ He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatic
         <div style="clear:both;"></div>
 </div>
 
-### Allison Shultz
+### Tommy Tang
 <div>
         <div class="team-photo">
                 <figure>
-                        <a class="img" href="/images/allison_shultz.jpg">
-                          <img class="img-responsive" src="/images/allison_shultz.jpg"></img>
+                        <a class="img" href="/images/tommy_pic.jpeg">
+                          <img class="img-responsive" src="/images/tommy_pic.jpeg"></img>
                         </a>
                     <figcaption></figcaption>
                 </figure>
         </div>
         <div class="team-blurb">
                 <p>
-                Bioinformatics Scientist working on analyses of genomic data, specializing on population genomics. She received her B.A. in Integrative Biology from UC Berkeley, M.S. in Biology from San Diego State University, and PhD in Organismic and Evolutionary Biology from Harvard University. Learn more about her research on her <a href="http://www.allisonshultz.com">website</a>.</p>
+Bioinformatics scientist working closely with Catherine Dulac's lab to catalog and understand the diversity and function of cell types in the mouse brain using single-cell RNA-seq and other cutting-edge techniques. He gained his PhD in Genetics and Genomics at the University of Florida and did a postdoc in computational biology at MD Anderson Cancer Center. He cares about reproducible research and open science.</p>
                 <p>
-                <a href="mailto:ashultz@fas.harvard.edu">ashultz at harvard</a>
+                <a href="mailto:mingtang@fas.harvard.edu">mingtang at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
-
 </div>
+
+### Juerg Straubhaar
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/placeholder-profile-pic-large.png">
+                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+Bioinformatics scientist working closely with Doug Melton's lab on single-cell RNA-seq and other methods. Also does proteomics.</p>
+                <p>
+                <a href="mailto:jstraubhaar@fas.harvard.edu">jstraubhaar at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Brian Arnold
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/placeholder-profile-pic-large.png">
+                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+Bioinformatics scientist working on population genetics across a diverse taxonomic range including bacteria, plants, and animals.</p>
+                <p>
+                <a href="mailto:barnold@hsph.harvard.edu">barnold at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+
 
 ## Alumni
 
@@ -181,6 +222,28 @@ He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatic
     </div>
     <div style="clear: both;"></div>
 </div>
+
+### Allison Shultz
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/allison_shultz.jpg">
+                          <img class="img-responsive" src="/images/allison_shultz.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Former Bioinformatics Scientist working on analyses of genomic data, specializing on population genomics. Currently Curator of Birds, LA County Museum. Learn more about her research on her <a href="http://www.allisonshultz.com">website</a>.</p>
+                <p>
+                <a href="mailto:ashultz@fas.harvard.edu">ashultz at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+
+</div>
+
 
 ## Where to find us
 Informatics and Scientific Applications is located on the first floor of 38 Oxford Street, Cambridge, MA 02138. Please note that this building is not actually on Oxford Street. It is located just to the east (or behind) the Northwest Labs, and just north of the Biological Labs. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=38+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=38+&amp;hnear=38+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
