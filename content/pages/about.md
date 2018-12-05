@@ -152,7 +152,7 @@ He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatic
         </div>
         <div class="team-blurb">
                 <p>
-Bioinformatics scientist working closely with Catherine Dulac's lab to catalog and understand the diversity and function of cell types in the mouse brain using single-cell RNA-seq and other cutting-edge techniques. He gained his PhD in Genetics and Genomics at the University of Florida and did a postdoc in computational biology at MD Anderson Cancer Center. He cares about reproducible research and open science.</p>
+Bioinformatics scientist working closely with Catherine Dulac's lab to catalog and understand the diversity and function of cell types in the mouse brain using single-cell RNA-seq and other cutting-edge techniques. He gained his PhD in Genetics and Genomics at the University of Florida and did a postdoc in computational biology at MD Anderson Cancer Center. He cares about reproducible research and open science. You can visit his personal website <a href="https://divingintogeneticsandgenomics.rbind.io/">here</a></p>
                 <p>
                 <a href="mailto:mingtang@fas.harvard.edu">mingtang at harvard</a>
                 </p>
