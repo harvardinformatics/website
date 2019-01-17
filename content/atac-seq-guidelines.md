@@ -239,7 +239,7 @@ Bowtie2 also provides (via `stderr`) a summary of the mapping results, separated
 <a name="peak"></a>
 ## Peak-calling
 
-**NOTE:** Our current recommendation is to call peaks with [Genrich](https://github.com/jsh58/Genrich), which was developed in the Informatics Group.  The program has been tested extensively but is not currently published.  The previous version of these guidelines, which included multiple steps of alignment filtering and wrangling, and peak-calling with [MACS2](https://github.com/taoliu/MACS), is available [here](https://informatics.fas.harvard.edu/atac-seq-guidelines-old.html).
+**NOTE:** Our current recommendation is to call peaks with [Genrich](https://github.com/jsh58/Genrich), which was developed in the Informatics Group.  The program has been tested extensively but is not currently published.  The previous version of these guidelines, which included multiple steps of alignment filtering and wrangling, and peak-calling with [MACS2](https://github.com/taoliu/MACS), is available [here](https://informatics.fas.harvard.edu/atac-seq-guidelines-old-version.html).
 
 ### Another peak-caller?  Why???
 
