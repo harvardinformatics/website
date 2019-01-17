@@ -16,7 +16,7 @@ Summary: Guidelines for the bioinformatics analysis of ATAC-seq data
 [Next steps](#next)<br>
 [References](#references)<br>
 
-### NOTE: this is an updated version of the ATAC-seq Guidelines.  The original version can be found [here](https://informatics.fas.harvard.edu/atac-seq-guidelines-old.html).
+### NOTE: this is an updated version of the ATAC-seq Guidelines.  The original version can be found [here](https://informatics.fas.harvard.edu/atac-seq-guidelines-old-version.html).
 
 <a name="overview"></a>
 ## ATAC-seq overview
