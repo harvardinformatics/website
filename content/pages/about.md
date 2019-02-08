@@ -192,7 +192,7 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
         </div>
         <div class="team-blurb">
                 <p>
-                 Software Developer, building applications that support research throughout the College of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
+                 Software Developer, building applications that support research throughout the Faculty of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
                 </p>
                 <p>
                 <a href="mailto:andy_bryant@harvard.edu">andy_bryant at harvard</a>
