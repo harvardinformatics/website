@@ -1,7 +1,7 @@
 Title: About
-Date: 2017-06-26 11:00
+Date: 2019-02-08 11:00
 Category: About
- 
+
 ## Our Mission
 The Informatics and Scientific Applications group is a small group working in the cramped space between faculty, core facilities and high performance computing. We have a number of core responsibilities including first pass analysis for the sequencing core and software/analysis support for the proteomics mass-spectrometry core.     We also support the infrastructure for instrument scheduling and invoicing across many FAS facilities.
 
@@ -99,26 +99,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear:both;"></div>
 </div>
 
-### John Gaspar
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/john_gaspar.jpg">
-                          <img class="img-responsive" src="/images/john_gaspar.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                Bioinformatics Scientist, specializing in data processing and genomic enrichment assays.</p>
-                <p>
-                <a href="mailto:jgaspar@fas.harvard.edu">jgaspar at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
 ### Yasin Kaymaz
 <div>
         <div class="team-photo">
@@ -131,7 +111,7 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div class="team-blurb">
                 <p>
-                Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation. 
+                Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation.
 He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatics from Boston University. He graduated from University of Massachusetts Medical school with a PhD degree in Bioinformatics and Computational Biology.</p>
                 <p>
                 <a href="mailto:yasinkaymaz@fas.harvard.edu">yasinkaymaz at harvard</a>
@@ -200,6 +180,27 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
         <div style="clear:both;"></div>
 </div>
 
+### Andy Bryant
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/AndyHeadshot_small.jpg">
+                          <img class="img-responsive" src="/images/AndyHeadshot_small.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Software Developer, building applications that support research throughout the College of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
+                </p>
+                <p>
+                <a href="mailto:andy_bryant@harvard.edu">andy_bryant at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
 
 
 ## Alumni
@@ -242,6 +243,26 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
         </div>
         <div style="clear:both;"></div>
 
+</div>
+
+### John Gaspar
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/john_gaspar.jpg">
+                          <img class="img-responsive" src="/images/john_gaspar.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Bioinformatics Scientist, specializing in data processing and genomic enrichment assays.</p>
+                <p>
+                <a href="mailto:jgaspar@fas.harvard.edu">jgaspar at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
 </div>
 
 
