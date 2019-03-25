@@ -12,7 +12,6 @@ Summary:  This tutorial will help users go from raw FASTQ sequencing files to an
 [Sequence Reads](#reads)<br>
 [Quality Control](#qc)<br>
 [Preprocessing](#preprocess)<br>
-[Indel Realignment](#realignment)<br>
 [Base Quality Score Recalibration](#bqsr)<br>
 [Variant Calling](#variantcalling)<br>
 [Data Filtering](#filtering)<br>
@@ -58,8 +57,6 @@ Programs, like those listed below (e.g. FastQC, BWA, GATK), are run on Odyssey b
 The jobs take the form of shell scripts, which are submitted with the [sbatch command](https://www.rc.fas.harvard.edu/resources/running-jobs/#Submitting_batch_jobs_using_the_sbatch_command).  The shell scripts request computational resources (time, memory, and number of cores) for a job; it is better to request more resources than expected, rather than risk having a job terminated prematurely for exceeding its limits. When running many jobs, it is also good practice to run a small subset to better understand the resource use for these jobs, and tailor your requests for the full panel.
 
 ### Running the GATK/PicardTools Pipeline on Odyssey
-
-#### The commands and information given below are specific to GATK and PicardTools version 3. These programs have been rolled together in GATK4, and while the commands will be similar, there will be some changes in the command structure. We will update this tutorial at a future date to incorporate GATK4. If you download the latest version of GATK, you will get GATK4. You can download previous versions of GATK (e.g. GATK 3.8 [here](https://software.broadinstitute.org/gatk/download/archive)).
 
 A few notes on running **GATK** and **PicardTools** commands on Odyssey. 
 
@@ -121,6 +118,7 @@ See the documentation for NGmerge `NGmerge -h` for additional parameter options,
 Note that additional trimming with resequencing data is not usually necessary, as many variant callers (e.g. **HaplotypeCaller**) take quality scores into account. Others (e.g. **ANGSD**), can trim reads during the data filtering step. For that reason, we do not recommend trimming here.
 
 ![Figure 1. Visual depiction of workflow](images/pop_gen_workflow_overview.png)
+Figure 1. Visual depiction of workflow
 
 ### Read Group Identifiers
 
@@ -228,104 +226,83 @@ Once you are done with the above steps, it is best practice to validate your BAM
     O=sample.validate.txt \
     MODE=SUMMARY
 
-
-## Indel realignment <a name="realignment"></a>
-
-Indel realignment is a process where indels, which due to stochasticity during the alignment process might be identified in slightly variable positions in different individuals, are standardized across a population (or species). This step is no longer necessary if you are using GATK's [HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php) or [Mutech2](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php) to call SNPs, as it is automatically build into downstream steps. However, if you plan to use BAM files directly in a program like [ANGSD](http://www.popgen.dk/angsd/index.php/Main_Page), or legacy GATK tools, we recommend you perform indel realignment. *Note, indel realignment is no longer available as of GATK4, you need to use an older version to perform this step.*
-
-### 1. Realigner Target Creator
-
-The first step in indel realignment is to create a file for the position of indels across all of the individuals in your sample. The GATK **[RealignerTargetCreator](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_indels_RealignerTargetCreator.php)** tool can be used for this task. To perform this task, you need to input the BAM files for all sequenced individuals, as well as a reference genome. Note, if you are including many individuals (e.g. >20), this step can take several weeks. However, it is possible to perform this step on non-overlapping segments of the genome with the `-L scaffold_list` [option](https://software.broadinstitute.org/gatk/documentation/article.php?id=4133), and concatenate all resulting files after the fact (e.g. the scatter-gather approach, Figure 2).
-
-*Note that this step only needs to be performed once, and the output file can be used for all individual realignments (described below).*
-
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T RealignerTargetCreator \
-    -R reference.fasta \
-    -I sample_1.dedup.sorted.bam \
-    -I sample_2.dedup.sorted.bam \
-    -I sample_3.dedup.sorted.bam \
-    ...
-    -I sample_N.dedup.sorted.bam \
-    -o all_samples.intervals
-
-### 2. Indel Realigner
-
-Once the realigner target is available, each sample needs to be individually realigned, using the GATK program **[IndelRealigner](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php)**.
-
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T IndelRealigner \
-    -R reference.fasta \
-    -I sample_1.dedup.sorted.bam \
-    -targetIntervals all_samples.intervals \
-    -o sample_1.realigned.bam
-
 ## Base Quality Score Recalibration <a name="bsqr"></a>
 
-The next step recommended by the GATK developers is [base quality score recalibration or BSQR](https://gatkforums.broadinstitute.org/gatk/discussion/44/base-quality-score-recalibration-bqsr). This step corrects base quality scores in the data for systematic technical errors based on a set of known true variants, such as those generated for humans in the 1000 genomes project. If you are working with an organism that does not yet have a *truth set* of variant calls (see [this](https://gatkforums.broadinstitute.org/gatk/discussion/1243) GATK forum post for some available resources), but your sequenced genomes to a moderate depth of coverage (~15x), it is still possible to perform BSQR by iteratively calling variants and using the highest scoring set as the input for BSQR. That is:
+The next step recommended by the GATK developers is [base quality score recalibration or BSQR](https://software.broadinstitute.org/gatk/documentation/article?id=11081). This step corrects base quality scores in the data for systematic technical errors based on a set of known true variants, such as those generated for humans in the 1000 genomes project. If you are working with an organism that does not yet have a *truth set* of variant calls (see [this](https://gatkforums.broadinstitute.org/gatk/discussion/1243) GATK forum post for some available resources), but your sequenced genomes to a moderate depth of coverage (~15x), it is still possible to perform BSQR by iteratively calling variants and using the highest scoring set as the input for BSQR. That is:
 
 1.  Complete variant calling (see below) on original data.
 2.  Take SNPs with highest confidence, (e.g. >15x coverage), and use the VCF as the database of known SNPs for BSQR.
 3.  Perform variant calling again on recalibrated BAM files.
 4.  Repeat as needed until convergence occurs.
 
-To run BSQR, first create the recalibration table:
+To run the [BSQR tool](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.1.0.0/org_broadinstitute_hellbender_tools_walkers_bqsr_BaseRecalibrator.php), first create the recalibration table:
 
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T BaseRecalibrator \
+     ~/path/to/gatk BaseRecalibrator \
     -R reference.fasta \
     -I sample_1.dedup.sorted.bam \
-    -knownSites SNPdb.vcf \
-    -o sample_1.recal_data.grp
+    -known-sites SNPdb.vcf \
+    -O sample_1_recal_data.table
 
-Then, create the recalibrated BAM:
+Then, create the recalibrated BAM by giving the recalibration table to the [ApplyBQSR tool](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.1.0.0/org_broadinstitute_hellbender_tools_walkers_bqsr_ApplyBQSR.php):
 
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T PrintReads \
+     ~/path/to/gatk ApplyBQSR \
     -R reference.fasta \
     -I sample_1.dedup.sorted.bam \
-    -BQSR sample_1.recal_data.grp \
-    -o sample_1.recal.bam
+    --bqsr-recal-file sample_1_recal_data.table \
+    -O sample_1.recal.bam
 
 ## Variant calling <a name="variantcalling"></a>
 
-There are multiple options for variant calling, including programs like [FreeBayes](https://github.com/ekg/freebayes), [Samtools](http://www.htslib.org), and the [GATK](https://software.broadinstitute.org/gatk/). For this tutorial, we are focusing on the **[HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php)** program from the GATK pipeline. Calling variants with HaplotypeCaller is essentially a two-step process (similar to indel realignment). First, you call genotypes individually for each sample. Second, you perform joint genotyping across samples to produce a multi-sample VCF call-set. The advantage to this strategy is that the most computationally intensive step, calling genotypes for each sample, only needs to be performed once, even if additional samples will be added later. The joint genotyping, which is less computationally intensive, can be performed as many times as needed as individuals may be added to the dataset.
+There are multiple options for variant calling, including programs like [FreeBayes](https://github.com/ekg/freebayes), [Samtools](http://www.htslib.org), and the [GATK](https://software.broadinstitute.org/gatk/). For this tutorial, we are focusing on the **[HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php)** program from the GATK pipeline. Calling variants with HaplotypeCaller is essentially a two-step process (similar to indel realignment). First, you call genotypes individually for each sample. Second, you perform joint genotyping across samples to produce a multi-sample VCF call-set. The advantage to this strategy is that the most computationally intensive step, calling genotypes for each sample, only needs to be performed once, even if additional samples will be added later. The joint genotyping, which is less computationally intensive, can be performed as many times as needed as individuals may be added to the dataset.
 
 *Note that even if you are not planning on using SNP calls in downstream analyses (e.g. due to low-coverage sequencing), it is possible to use the genotype likelihood scores from the resulting VCF files (discussed below), and take advantage of the active development on these variant callers.*
 
 ### 1. Calling variants for each sample
 
-For each sample, the **[HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php)** program is used to call variants. The minimum options needed are a reference genome, BAM files for that sample, and output file name. Note that this process can be computationally intensive, so to speed the process up, you may wish to use a  *scatter-gather* approach (Figure 2), and perform the variant calling on non-overlapping segments of the genome, specified with the `-L scaffold_list` [option](https://software.broadinstitute.org/gatk/documentation/article.php?id=4133). 
+For each sample, the **[HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php)** program is used to call variants. The minimum options needed are a reference genome, BAM files for that sample, and output file name. Note that this process can be computationally intensive, so to speed the process up, you may wish to use a  *scatter-gather* approach (Figure 2), and perform the variant calling on non-overlapping segments of the genome, specified with the `-L scaffold_list` [option](https://software.broadinstitute.org/gatk/documentation/article?id=11009). 
 
 The output for this program will be a [GVCF](https://software.broadinstitute.org/gatk/documentation/article?id=4017), which has raw, unfiltered SNP and indel calls for all sites, variant or invariant, unlike a typical VCF file (see below for descriptions of the VCF file format.). This is specified by the `--emitRefConfidence GVCF` command, with an example below. See the program page for additional parameter options.
 
-***Note, for low-coverage data, we recommend changing the defaults for two options: `-minPruning 1` and `-minDanglingBranchLength 1`. These commands ensure that any paths in the sample graph (see [detailed documentation on the model](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php)) are only dropped if there is no coverage. Otherwise the defaults of 2 and 4 respectively, will drop low-coverage regions. See the [documentation](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php) for details on these and other available options.***
+***Note, for low-coverage data, we recommend changing the defaults for two options: `--min-pruning 1` and `--min-dangling-branch-length 1`. These commands ensure that any paths in the sample graph (see [detailed documentation on the model](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php)) are only dropped if there is no coverage. Otherwise the defaults of 2 and 4 respectively, will drop low-coverage regions. See the [documentation](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php) for details on these and other available options.***
 
 Example command:
 
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T HaplotypeCaller \
+    ~/path/to/gatk HaplotypeCaller \
+    --java-options "-Xmx4g -XX:ParallelGCThreads=1" \ 
     -R reference.fasta \
     -I sample_1.dedup.sorted.bam \
-    --emitRefConfidence GVCF \
-    -o sample_1.raw.g.vcf 
+    -O sample_1.raw.g.vcf \
+    --emit-ref-confidence GVCF 
 
     
     
 ![Figure 2. Scatter-gather approach](images/scatter_gather.png)
-
+Figure 2. Scatter-gather approach
 
 ### 2. Joint genotyping across samples
 
-Once you have run HaplotypeCaller on your cohort of samples, you can use **[GenotypeGVCFs]()** to perform joint genotyping and produce a multi-sample variant call-set from your gVCF files. 
+Once you have run HaplotypeCaller on your cohort of samples, the resulting GVCFs need to be combined into a single file using **[GenomicsDBImport](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.1.0.0/org_broadinstitute_hellbender_tools_genomicsdb_GenomicsDBImport.php)** before we can use them to call variants across all of our samples. If you split up your genome into intervals for haplotype calling above, you can continue to run variant calling on those intervals by adding the `-L scaffold_list` [option](https://software.broadinstitute.org/gatk/documentation/article?id=11009), but the GenomicsDBImport requires that at least one interval is provided. 
 
-If you have split up your genome into intervals for Haplotype calling above, you can continue to run variant calling on those intervals by adding the `-L scaffold_list` [option](https://software.broadinstitute.org/gatk/documentation/article.php?id=4133). Also, note that for non-human organisms, you may wish to vary the heterozygosity prior from the default value of *0.001*. You can do this with the heterozygosity option, for example with a  value of *0.005*: `--heterozygosity 0.005`. If you wish to include all sites, both variant and invariant, you need to use the `--includeNonVariantSites true` option. See the program page for additional parameter options.
-
-Example command:
-
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T GenotypeGVCFs \
-    -R reference.fasta \
+    ~/path/to/gatk GenomicsDBImport \
+    --java-options "-Xmx4g -XX:ParallelGCThreads=1" \ 
     -V sample_1.raw.g.vcf \
     -V sample_2.raw.g.vcf \
     ...
-    -V sample_X.raw.g.vcf \
-    -o all_samples.vcf
+    -V sample_N.raw.g.vcf \
+    --genomicsdb-workspace-path my_database \ 
+    -L scaffold_0,scaffold_1
+
+This generates a directory called `my_database` that includes combined GVCF data for the first two scaffolds of our reference sequence. The name of this directory is then given to **[GenotypeGVCFs](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.1.0.0/org_broadinstitute_hellbender_tools_walkers_GenotypeGVCFs.php)** to perform joint genotyping and produce a multi-sample variant call-set from your GVCF files. 
+
+    ~/path/to/gatk GenotypeGVCFs \
+    --java-options "-Xmx4g -XX:ParallelGCThreads=1" \ 
+    -R reference.fasta \
+    -V gendb://my_database \
+    -O samples.final.vcf \
+    --tmp-dir=/path/to/large/tmp
     
+Also, for non-human organisms, you may wish to vary the heterozygosity prior from the default value of *0.001*. You can do this with the heterozygosity option, for example with a  value of *0.005*: `--heterozygosity 0.005`. If you wish to include all sites, both variant and invariant, you need to use the `--include-non-variant-sites true` option. See the program page for additional parameter options.
+
 *Note, if you specify output file names with `.gz` extensions, GATK will automatically compress your output files and create and index with tabix.*
 
 ### VCF File Format
@@ -353,7 +330,7 @@ Where:
 
 ### Combining VCF files
 
-If you have been working with the *scatter-gather* approach (Figure 2), an easy way to combine non-overlapping VCF files is to use the **[GatherVcfs](http://broadinstitute.github.io/picard/command-line-overview.html#GatherVcfs)** tool from PicardTools. This is preferred over GATK's **[catVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_CatVariants.php)**, and runs quite quickly.
+If you have been working with the *scatter-gather* approach (Figure 2), an easy way to combine non-overlapping VCF files is to use the **[GatherVcfs](http://broadinstitute.github.io/picard/command-line-overview.html#GatherVcfs)** tool from PicardTools. 
 
     java -jar ~/path/to/picard.jar GatherVcfs  \
     I=all_samples_interval_1.vcf \
@@ -364,7 +341,7 @@ If you have been working with the *scatter-gather* approach (Figure 2), an easy 
 
 ## Data filtering <a name="filtering"></a>
 
-Once you have produced a VCF file with all of your samples, it is necessary to [evaluate](https://gatkforums.broadinstitute.org/gatk/discussion/6308/evaluating-the-quality-of-a-variant-callset) and filter the dataset for quality. If you are working with an organism that has a **variant truth set**, or set variants that are thought to be correct, prior to any downstream analyses you should perform **[Variant Quality Score Recalibration (VQSR)](https://gatkforums.broadinstitute.org/gatk/discussion/39/variant-quality-score-recalibration-vqsr)**. As VQSR is a tricky process to get right (and with few organisms outside of humans with appropriate truth and training datasets), the GATK has a [detailed tutorial](https://software.broadinstitute.org/gatk/documentation/article.php?id=2805). Here, we will focus on using **[hard filters](https://software.broadinstitute.org/gatk/documentation/article.php?id=3225)**, with a tutorial based on the [GATK recommendations](https://software.broadinstitute.org/gatk/documentation/article.php?id=2806).
+Once you have produced a VCF file with all of your samples, it is necessary to [evaluate](https://gatkforums.broadinstitute.org/gatk/discussion/6308/evaluating-the-quality-of-a-variant-callset) and filter the dataset for quality. If you are working with an organism that has a **variant truth set**, or set variants that are thought to be correct, prior to any downstream analyses you should perform **[Variant Quality Score Recalibration (VQSR)](https://gatkforums.broadinstitute.org/gatk/discussion/39/variant-quality-score-recalibration-vqsr)**. As VQSR is a tricky process to get right (and with few organisms outside of humans with appropriate truth and training datasets), the GATK has a [detailed tutorial](https://software.broadinstitute.org/gatk/documentation/article?id=23216). Here, we will focus on using **[hard filters](https://software.broadinstitute.org/gatk/documentation/article?id=11097)**, with a tutorial based on the [GATK recommendations](https://software.broadinstitute.org/gatk/documentation/article?id=23216).
 
 There are a number of parameters recommended for use for hard-filtering with both SNP and INDEL data. The GATK developers provide a number of recommended values, and give a [detailed description](https://gatkforums.broadinstitute.org/gatk/discussion/6925/understanding-and-adapting-the-generic-hard-filtering-recommendations) of why they chose these recommended values, and how you might choose parameters appropriate for your dataset following these recommendations. These parameters are:
 
@@ -390,21 +367,21 @@ There are a number of parameters recommended for use for hard-filtering with bot
 
 ####Ideally, to decide on the best parameter values for your data, you will decide on filters appropriate for both SNPs and INDELS by:
 
-1. Create vcf files for only SNPs and only INDELS:
+1. Create vcf files for only SNPs and only INDELS using [SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_variantutils_SelectVariants.php):
 
 ```
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T SelectVariants \
+    ~/path/to/gatk SelectVariants \ 
     -R reference.fasta \
-    -V samples_combined.vcf \
-    -selectType SNP \
-    -o raw_snps.vcf
+    -V samples.final.vcf \
+    --select-type-to-include SNP \
+    -O raw_snps.vcf
 ```
 ```
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T SelectVariants \
+    ~/path/to/gatk SelectVariants \ 
     -R reference.fasta \
-    -V samples_combined.vcf \
-    -selectType INDEL \
-    -o raw_indels.vcf
+    -V samples.final.vcf \
+    --select-type-to-include INDEL \
+    -O raw_indels.vcf
 ```
 
 2. Plot distributions of each parameter, and compare to distributions [here](https://gatkforums.broadinstitute.org/gatk/discussion/6925/understanding-and-adapting-the-generic-hard-filtering-recommendations).
@@ -415,34 +392,34 @@ Example:
 
     vcftools --vcf raw_snps.vcf --outraw_snps_MQ --get-INFO MQ
 
-3. Apply filters to SNPs and INDELs. You can apply more than one filter here (see example below), and apply names to each different filter. The advantage of this is that later it is possible to remove specific subsets from the data depending on which filters the sites pass. Note that the filters are defined based on [JEXL](https://software.broadinstitute.org/gatk/documentation/article.php?id=1255).
+3. Apply filters to SNPs and INDELs. You can apply more than one filter here (see example below), and apply names to each different filter using [VariantFiltration](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_filters_VariantFiltration.php). The advantage of this is that later it is possible to remove specific subsets from the data depending on which filters the sites pass. Note that the filters are defined based on [JEXL](https://software.broadinstitute.org/gatk/documentation/article.php?id=1255).
 
 ```
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T VariantFiltration \
+    ~/path/to/gatk VariantFiltration \
     -R reference.fasta \
     -V samples_combined.vcf \
-    --filterExpression "!vc.hasAttribute('DP')" \
-    --filterName "noCoverage" \
-    --filterExpression "vc.hasAttribute('DP') && DP < MINDEPTH" \
-    --filterName "MinCov" \
-    --filterExpression "vc.hasAttribute('DP') && DP > MAXDEPTH" \
-    --filterName "MaxCov" \
-    -filterExpression "(vc.isSNP() && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0)) || ((vc.isIndel() || vc.isMixed()) && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0)) || (vc.hasAttribute('QD') && QD < 2.0) " \
-    --filterName "badSeq" \
-    --filterExpression "(vc.isSNP() && ((vc.hasAttribute('FS') && FS > 60.0) || (vc.hasAttribute('SOR') &&  SOR > 3.0))) || ((vc.isIndel() || vc.isMixed()) && ((vc.hasAttribute('FS') && FS > 200.0) || (vc.hasAttribute('SOR') &&  SOR > 10.0)))" \
-    --filterName "badStrand" \
-    --filterExpression "vc.isSNP() && ((vc.hasAttribute('MQ') && MQ < 40.0) || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5))" \
-    --filterName "badMap" \
-    -o samples_filtered.vcf
+    --filter-expression "!vc.hasAttribute('DP')" \
+    --filter-name "noCoverage" \
+    --filter-expression "vc.hasAttribute('DP') && DP < MINDEPTH" \
+    --filter-name "MinCov" \
+    --filter-expression "vc.hasAttribute('DP') && DP > MAXDEPTH" \
+    --filter-name "MaxCov" \
+    -filter-expression "(vc.isSNP() && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0)) || ((vc.isIndel() || vc.isMixed()) && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0)) || (vc.hasAttribute('QD') && QD < 2.0) " \
+    --filter-name "badSeq" \
+    --filter-expression "(vc.isSNP() && ((vc.hasAttribute('FS') && FS > 60.0) || (vc.hasAttribute('SOR') &&  SOR > 3.0))) || ((vc.isIndel() || vc.isMixed()) && ((vc.hasAttribute('FS') && FS > 200.0) || (vc.hasAttribute('SOR') &&  SOR > 10.0)))" \
+    --filter-name "badStrand" \
+    --filter-expression "vc.isSNP() && ((vc.hasAttribute('MQ') && MQ < 40.0) || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5))" \
+    --filter-name "badMap" \
+    -O samples_filtered.vcf
 ```
 
-Once the variants have filtered flags, you can again use **[selectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php)** to create hard-filtered vcf files. For example, to only include variants that pass all filters:
+Once the variants have filtered flags, you can again use **[SelectVariants](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_variantutils_SelectVariants.php)** to create hard-filtered vcf files. For example, to only include variants that pass all filters:
 
-    java -jar ~/path/to/GenomeAnalysisTK.jar -T SelectVariants \
+    ~/path/to/gatk SelectVariants \ 
     -R reference.fasta \
     -V samples_filtered.vcf \
-    --excludeFiltered true \
-    -o samples_passed_sites.vcf
+    --exclude-filtered true \
+    -O samples_passed_sites.vcf
     
     
 ## Next steps <a name="next"></a>
