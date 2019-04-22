@@ -5,7 +5,10 @@ Category: Software
 Tags: Genome Databases, Odyssey
 Summary: BLAST and HMMER reference databases on the Odyssey cluster
 
-Reference databases for BLAST (nr, nt, uniref90) and HMMER (Pfam-A) are available on Odyssey.
+Reference databases for BLAST (nr, nt, uniref90) and HMMER (Pfam-A) are currently available on Odyssey.
+
+If you are interested in seeing additional databases Odyssey, please [contact Tim Sackton](mailto:tsackton@g.harvard.edu?subject=Request new reference database on Odyssey).
+Databases that would be frequently used by multiple groups will be considered.
 
 ## BLAST
 
@@ -34,7 +37,7 @@ Load the desired BLAST version:
      
 ### List / use available BLAST databases     
     
-Loading the ncbi-blast module sets the BLASTDB environment variable to a directory containing available BLAST databases:
+Loading the ncbi-blast module will prepend the BLASTDB environment variable with a directory containing available BLAST databases:
     
     ```
     $ blastdbcmd -list ${BLASTDB} -remove_redundant_dbs
@@ -80,7 +83,7 @@ Search for / load availble [HMMER](http://www.hmmer.org/) versions:
 List available HMMER profile databases:
 
     ```
-    $ find db/2019Q2 -name '*.hmm.*' | sed -e 's#.*/##' -e 's#\.[^\.]*$##'  | uniq
+    $ find ${HMMERDB} -name '*.hmm.*' | sed -e 's#.*/##' -e 's#\.[^\.]*$##'  | uniq
     Pfam-A.hmm
     ```
 
