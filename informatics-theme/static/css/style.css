@@ -1,7 +1,8 @@
 body {
     padding-top: 70px;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Lato','Helvetica Neue', Arial, sans-serif;
+    line-height: 1.7;
 }
 
 ul, ol {
@@ -61,18 +62,18 @@ code {
 	color: #c7254e;
 }
 h1 {
-	font-size: 32px;
+	font-size: 28px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 
 h2 {
-	font-size: 28px;
+	font-size: 22px;
 	font-weight: bold;
 	margin-top: 2em;
 }
 h3,h4 {
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: bold;
 	margin-top: 1.5em;
 }
@@ -86,8 +87,28 @@ p {
 	margin: 1em 1em 0em 1em;
 }
 
+.navbar-search {
+    margin-top: 0.5em;
+}
+.navbar>.container .navbar-brand {
+    color: white;
+}
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+.navbar-default {
+    color: white;
+    background-color: #c62828;
+}
+.navbar-brand {
+    color: white;
+}
+.navbar-fixed-top {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
 .container {
-	width: 95%;
+    width: 90%;
+    max-width: 1200px;
 }
 .subtitle {
 	font-weight: bold;
@@ -223,6 +244,7 @@ p {
     position: relative;
     float: left;
     width: 90%;
+    max-width: 800px;
 }
 .entry-content a {
     text-decoration: none;
