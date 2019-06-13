@@ -77,6 +77,15 @@ The MAKER datastore directory will be created in the directory this job script i
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore
 
+---
+*NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
+```
+Possible precedence issue with control flow operator at /usr/local/lib/site_perl/5.26.2/Bio/DB/IndexedBase.pm line 805.
+
+df: Warning: cannot read table of mounted file systems: No such file or directory
+```
+---
+
 ## Visualizing in JBrowse
 
 [JBrowse](https://jbrowse.org/) can be used to visualize MAKER-generated annotation, RNA/protein evidence sequence alignments, and RepeatMasker-masked regions in the context of the reference genome.
@@ -133,20 +142,13 @@ If name-based indexing is desired for select tracks, this can subsequently be do
 (jbrowse-utils) $ ${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks protein2genome,est2genome --hashBits 4 --compress --out .
 ```
 
----
-*NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
-```
-Possible precedence issue with control flow operator at /usr/local/lib/site_perl/5.26.2/Bio/DB/IndexedBase.pm line 805.
-
-df: Warning: cannot read table of mounted file systems: No such file or directory
-```
----
-
 ### Running JBrowse on Odyssey using Open OnDemand
 
 A JBrowse instance can be launched on Odyssey using the Odyssey Open OnDemand instance ([https://vdi.rc.fas.harvard.edu/]()).
 From the menu, select Interactive Apps > JBrowse.
 In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the maker2jbrowse-odyssey script (in the MAKER datastore directory), then click "Launch".
+
+For more details, see the [JBrowse on Odyssey guide]({filename}/jbrowse.md).
 
 ## Using the MAKER Singularity Image on Other HPC Clusters
 
