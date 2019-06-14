@@ -96,7 +96,7 @@ The JBrowse [generate-names.pl](https://jbrowse.org/docs/generate-names.pl.html)
 ```
 # Execute from the JBrowse data/ directory.
 # "genes" and "variants" correspond to track identifiers in tracks.conf; i.e. [tracks.genes] and [tracks.variants]
-${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks genes,variants --hashBits 4 --workdir .
+${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks genes,variants --hashBits 4 --compress --out .
 ```
 
 ## Running JBrowse on Odyssey using Open OnDemand
