@@ -64,18 +64,18 @@ code {
 h1 {
 	font-size: 28px;
 	font-weight: bold;
-	margin-top: 2em;
+	margin-top: 1.5em;
 }
 
 h2 {
 	font-size: 22px;
 	font-weight: bold;
-	margin-top: 2em;
+	margin-top: 1.5em;
 }
 h3,h4 {
 	font-size: 18px;
 	font-weight: bold;
-	margin-top: 1.5em;
+	margin-top: 1.2em;
 }
 
 h1 a, h2 a, h3 a, h4 a {
@@ -88,7 +88,7 @@ p {
 }
 
 .navbar-search {
-    margin-top: 0.5em;
+    margin-top: 0.1em;
 }
 .navbar>.container .navbar-brand {
     color: white;
@@ -104,11 +104,17 @@ p {
     color: white;
 }
 .navbar-fixed-top {
+    padding-top: 12px;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+.navbar-nav > .active > a {
+    background-color: #c62828 !important;
+    border-bottom: 1px solid white;
+    color: white !important;
 }
 .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 1400px;
 }
 .subtitle {
 	font-weight: bold;

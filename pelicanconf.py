@@ -20,14 +20,14 @@ PLUGIN_EVENTS = {
 }
 
 KNITR_OPTS_CHUNK = {
-    'fig.path': 'images/', 
+    'fig.path': 'images/',
 }
 # MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 MARKDOWN = {
     'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta'],
     'extension_configs' : {
         'markdown.extensions.codehilite' : {
-            'use_pygments' : True, 
+            'use_pygments' : True,
             'css_class': 'highlight',
             'linenums' : False,
             'guess_lang' : False,
@@ -43,7 +43,7 @@ TOC = {
 }
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
-SITEURL = 'http://informatics.fas.harvard.edu'
+SITEURL = 'https://informatics.fas.harvard.edu'
 TAGS_URL = 'tags.html'
 # PATH = 'content2'
 BANNER = True

@@ -1,4 +1,4 @@
-{% set HIDE_SIDEBAR = True %}
+{% set HIDE_SIDEBAR = False %}
 {% extends "base.html" %}
 {% block title %}{{ article.title|striptags }} - {{ SITENAME }}{% endblock %}
 {% block html_lang %}{{ article.lang }}{% endblock %}
@@ -85,7 +85,7 @@
             <div id="toc-title">Table of Contents (<a id="toc-toggle">show</a>)</div>
                 {{ article.toc }}
             </div>
-            {% endif %}            
+            {% endif %}
             <div class="entry-content">
                 <div class="panel">
                     <div class="panel-body">
