@@ -1,0 +1,406 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use FindBin qw($RealBin);
+use lib "$RealBin/../src/perl5";
+use JBlibs;
+
+use Getopt::Long qw(:config no_ignore_case);
+use File::Basename;
+use File::Spec::Functions;
+use File::Temp;
+use Pod::Usage;
+use URI::Escape;
+
+=head1 USAGE
+
+     maker2jbrowse-odyssey [OPTION] <gff3file1> <gff3file2> ...
+     maker2jbrowse-odyssey [OPTION] -d <datastore_index>
+
+     This script takes MAKER produced GFF3 files and dumps them into a
+     JBrowse for you using pre-configured JSON tracks.
+
+     This script is a version of maker2jbrowse that has been optimized for
+     parallel file systems such as Lustre, adding support for compressed
+     indexed file formats (activated when the --bgzip_fasta option is
+     specified); specifically bgzip/tabix-indexed GFF3, and
+     bgzip/samtools-faidx-indexed FASTA for the reference sequence.
+
+=head1 OPTIONS
+
+=over 4
+
+=item --out <dir>, -o <dir>
+
+Output dir for formatted data.  Defaults to './data'.
+
+=item --bgzip_fasta <reference.fa>
+
+Create compressed (bgzip) and indexed (tabix) GFF files for JBrowse tracks.
+
+<reference.fa> will be compressed with bgzip and indexed with samtools faidx.
+
+If the --noseq option is also specified, <reference.fa> will be used only to
+determine reference sequence names and lengths, and will will not be available
+to view or search in JBrowse.
+
+=item --noseq
+
+Do not store the actual sequence bases, just the sequence metadata
+(name, length, and so forth).
+
+=item --ds_index <file.log>, -d <file.log>
+
+Take filenames from a MAKER master datastore index file
+(e.g. my_genome_master_datastore_index.log).
+
+=item --sortMem int
+
+Set --sortMem for flatfile-to-json.pl.
+
+=item --compress
+
+Set --compress for flatfile-to-json.pl
+
+=item --no_names_index
+
+Do not call generate-names.pl at the end of the run to generate the names index.
+
+=item --help, -h, -?
+
+Displays full help information.
+
+=head1 ENVIRONMENT VARIABLES
+
+=item MAKER2JBROWSE_BGZIP_OPTIONS
+
+=item MAKER2JBROWSE_SORT_OPTIONS
+
+(--bgzip_fasta only) Add "sort" and "bgzip" command options; e.g.:
+
+MAKER2JBROWSE_BGZIP_OPTIONS='--threads=8 --compress-level=9'
+MAKER2JBROWSE_SORT_OPTIONS='--parallel=8 --buffer-size=1G --stable --compress-program=gzip'
+
+=back
+
+=cut
+
+my $dstore;
+my $bgzip_fasta;
+my $noseq;
+my $help;
+my $outdir = 'data';
+my $sortmem = 1000000000;
+my $skip_generate_names;
+my $compress = 0;
+my $compress_program;
+my $localbin = '';
+
+if($0 eq 'bin/maker2jbrowse-odyssey') {
+    $localbin = 'bin/';
+}
+
+GetOptions(
+    "bgzip_fasta=s" => \$bgzip_fasta,
+    "noseq", => \$noseq,
+    "ds_index|d=s" => \$dstore,
+    "no_names_index" => \$skip_generate_names,
+    "compress" => \$compress,
+    "help|?" => \$help,
+    "sortMem=i" => \$sortmem,
+    "out|o=s" => \$outdir
+   )
+    or pod2usage( verbose => 2 );
+pod2usage( verbose => 2 ) if $help;
+
+my @files;
+
+if( $dstore ){
+
+    my $base = dirname( $dstore );
+    open my $dstore_fh, '<', $dstore or die "$! reading $dstore";
+
+    #uniq the entries
+    my %seen;
+    while( my $e = <$dstore_fh> ) {
+        next if $seen{$e}++;
+        chomp $e;
+        my ( $id, $dir, $status ) = split("\t", $e);
+        next unless $status =~ /FINISHED/;
+        $dir =~ s/\/$//;
+        push( @files, $dir );
+    }
+
+    for my $file ( @files ){
+        my ($name) = $file =~ /([^\/]+)$/;
+        $name = uri_escape( $name, "." );
+        $file = $base ? catfile( $base, $file, "$name.gff" ) : catfile( $file, "$name.gff" );
+    }
+}
+else {
+    @files = @ARGV;
+}
+
+@files or pod2usage( verbose => 1 );
+
+if ( not $bgzip_fasta ) { # check for missing files
+    my $error;
+    for my $file (@files){
+        unless( -f $file ) {
+            $error .= "ERROR: GFF3 file '$file' does not exist\n";
+        }
+    }
+    die $error if $error;
+}
+
+#--build command lines
+my %commands = (
+
+    #MAKER anotations
+    gene            => [ '--key' => "Gene spans",
+                         '--className' =>  'feature5',
+                         '--type' => 'gene',
+                         '--noSubfeatures'
+                       ],
+    maker           => [ '--key' => "Transcripts",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"exon": "exon", "CDS": "CDS", "five_prime_UTR": "five_prime_UTR", "three_prime_UTR": "three_prime_UTR"}',
+                         '--type'  => 'mRNA'
+                       ],
+
+    #ab initio gene predictions
+    snap_masked     => [ '--key' => "SNAP",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "snap-exon"}',
+                         '--type' => 'match:snap_masked',
+                       ],
+    augustus        => [ '--key' => "Augustus",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "augustus-exon"}',
+                         '--type' => 'match:augustus',
+                       ],
+    augustus_masked => [ '--key' => "Augustus",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "augustus-exon"}',
+                         '--type' => 'match:augustus_masked',
+                       ],
+    genemark        => [ '--key' => "GeneMark",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "genemark-exon"}',
+                         '--type' => 'match:genemark',
+                       ],
+    genemark_masked => [ '--key' => "GeneMark",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "genemark-exon"}',
+                         '--type' => 'match:genemark_masked',
+                       ],
+    fgenesh         => [ '--key' => "FGENESH",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "fgenesh-exon"}',
+                         '--type' => 'match:fgenesh',
+                       ],
+    fgenesh_masked  => [ '--key' => "FGENESH",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "fgenesh-exon"}',
+                         '--type' => 'match:fgenesh_masked',
+                       ],
+    pred_gff        => [ '--key' => "Predictions",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "match_part"}',
+                         '--type' => 'match:pred_gff',
+                       ],
+    model_gff       => [ '--key' => "Models",
+                         '--className' => 'transcript',
+                         '--subfeatureClasses' => '{"match_part": "match_part"}',
+                         '--type' => 'match:model_gff',
+                       ],
+
+    #evidence alignments
+    blastn          => [ '--key' =>  "BLASTN",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "blastn_part"}',
+                         '--type' => 'expressed_sequence_match:blastn',
+                       ],
+    blastx          => [ '--key' =>  "BLASTX",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "blastx_part"}',
+                         '--type' => 'protein_match:blastx',
+                       ],
+    tblastx         => [ '--key' =>  "TBLASTX",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "tblastx_part"}',
+                         '--type' => 'expressed_sequence_match:tblastx',
+                       ],
+    est2genome      => [ '--key' => "est2genome",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "est2genome_part"}',
+                         '--type' => 'expressed_sequence_match:est2genome',
+                       ],
+    protein2genome  => [ '--key' =>  "protein2genome",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "protein2genome_part"}',
+                         '--type' => 'protein_match:protein2genome',
+                       ],
+    cdna2genome     => [ '--key' =>  "cdna2genome",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "cdna2genome_part"}',
+                         '--type' => 'expressed_sequence_match:cdna2genome',
+                       ],
+    est_gff         => [ '--key' => "ESTs",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "est2genome_part"}',
+                         '--type' => 'expressed_sequence_match:est_gff',
+                       ],
+    protein_gff     => [ '--key' =>  "Proteins",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "protein2genome_part"}',
+                         '--type' => 'protein_match:protein_gff',
+                       ],
+    altest_gff      => [ '--key' =>  "altESTs",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "cdna2genome_part"}',
+                         '--type' => 'expressed_sequence_match:altest_gff',
+                       ],
+
+    #repeats
+    repeatmasker   =>  [ '--key'        =>  "RepeatMasker",
+                         '--className'  => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "repeat_part"}',
+                         '--type' => 'match:repeatmasker',
+                       ],
+    repeatrunner  =>   [ '--key' =>  "RepeatRunner",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "repeat_part"}',
+                         '--type' => 'protein_match:repeatrunner',
+                       ],
+    repeat_gff    =>   [ '--key' =>  "Repeats",
+                         '--className' => 'generic_parent',
+                         '--subfeatureClasses' => '{"match_part": "repeat_part"}',
+                         '--type' => 'protein_match:repeat_gff',
+                       ],
+);
+
+
+my @outdir = ( '--out' => $outdir );
+
+# NW: idea is to process each file once...
+# NW: for each distinct source, open another child process that does "sort -k 1,1 -k 4n,4n | bgzip > ${source}.gff3.gz
+#     
+# Add optional --compress=option-argument
+if ( $bgzip_fasta ) {
+    my %tracks;
+    my $MAKER2JBROWSE_BGZIP_OPTIONS = $ENV{MAKER2JBROWSE_BGZIP_OPTIONS} || '';
+    my $MAKER2JBROWSE_SORT_OPTIONS = $ENV{MAKER2JBROWSE_SORT_OPTIONS} || '';
+    mkdir($outdir[1]) or die "$! creating $outdir[1]" if (! -d $outdir[1]);
+    if ( not defined($noseq) ) {
+        system("bgzip -c $MAKER2JBROWSE_BGZIP_OPTIONS '$bgzip_fasta' > '" . catfile($outdir[1], basename("$bgzip_fasta.gz")) . "'");
+        system(('samtools', 'faidx', catfile($outdir[1], basename("$bgzip_fasta.gz"))));
+    }
+    for my $gff3_file (@files){
+        open my $gff3, '<', $gff3_file or die "$! reading $gff3_file";
+        while( <$gff3> ) {
+            last if /^##FASTA/;
+            next if /^#/;
+            /^[^\t]+\t([^\t]+)/ or next;
+            my $source = $1;
+            next if $source eq '.';
+            if (not exists($tracks{$source})) {
+                my $fh;
+                open($fh, "|-", "sort $MAKER2JBROWSE_SORT_OPTIONS -k 1,1 -k 4n,4n | bgzip $MAKER2JBROWSE_BGZIP_OPTIONS > '" 
+                                . catfile($outdir[1], "$source.gff.gz") . "'");
+                $tracks{$source} = $fh;
+            }
+            print { $tracks{$source} } $_;
+        }
+    }
+    for my $source (keys(%tracks)) {
+        close($tracks{$source});
+    }
+    for my $source (keys(%tracks)) {
+        system(("tabix", "-p", "gff", catfile($outdir[1], "${source}.gff.gz")));
+    }
+    open(my $tracks_conf_fh, ">", catfile($outdir[1], "tracks.conf")) or die "$! creating " . catfile($outdir[1], "tracks.conf");
+    print $tracks_conf_fh "[GENERAL]\n";
+    if ( not $noseq ) {
+       print $tracks_conf_fh "refSeqs=" . basename($bgzip_fasta) . ".gz.fai\n";
+       print $tracks_conf_fh "[tracks.refseqs]\n";
+       print $tracks_conf_fh "urlTemplate=" . basename($bgzip_fasta) . ".gz\n";
+    }
+    for my $source (keys(%tracks)) {
+        print $tracks_conf_fh "[tracks.${source}]\n";
+        print $tracks_conf_fh "urlTemplate=${source}.gff.gz\n";
+    }
+    if ( $noseq ) {
+        system(('prepare-refseqs.pl', '--noseq', '--fasta', $bgzip_fasta, @outdir));
+    }
+    close($tracks_conf_fh)
+} else {
+    for my $gff3_file (@files){
+        my @tracks_to_make = do {
+            my %t;
+            open my $gff3, '<', $gff3_file or die "$! reading $gff3_file";
+            while( <$gff3> ) {
+                next if /^#/;
+                my ( $source, $type ) = /[^\t]*\t([^\t]*)\t([^\t]*)/ or next;
+                next if $source eq '.';
+                $t{$source} = 1;
+                $t{gene}  = 1 if $source eq 'maker';
+            }
+            keys %t
+        };
+
+        my @command = (
+            $localbin . "prepare-refseqs.pl",
+            '--gff' => $gff3_file,
+            @outdir
+           );
+        if($compress) {
+            push(@command, "--compress");
+        }
+        if($noseq) {
+            push(@command, "--noseq");
+        }
+        system @command and die "prepare-refseqs.pl failed with exit status $?";
+
+        for my $track ( @tracks_to_make ) {
+
+            if(!$commands{$track} && $track =~ /^([^\:]+)/ && $commands{$1}){
+                @{$commands{$track}} = @{$commands{$1}}; #makes deep copy
+                $commands{$track}[-1] =~ s/^([^\:]+)\:.*$/$1:$track/;
+            }
+
+            unless( $commands{$track} ) {
+                warn "Don't know how to format $track tracks, skipping.\n";
+                next;
+            }
+
+            my @command = (
+                $localbin . "flatfile-to-json.pl",
+                '--trackLabel' => $track,
+                '--gff' => $gff3_file,
+                '--sortMem' => $sortmem,
+                @outdir,
+                @{$commands{$track}}
+               );
+            if($compress) {
+                push(@command, "--compress");
+            }
+
+            system @command and die "flatfile-to-json.pl failed with exit status $?";
+        }
+    }
+}
+
+unless( $skip_generate_names ) {
+
+    my @command = (
+        $localbin . "generate-names.pl",
+        @outdir
+       );
+    if($compress) {
+        push(@command, "--compress");
+    }
+    system @command and die "generate-names.pl failed with exit status $?";
+}
