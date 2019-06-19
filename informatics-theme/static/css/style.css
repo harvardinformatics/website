@@ -114,7 +114,7 @@ p {
 }
 .container {
     width: 90%;
-    max-width: 1400px;
+    max-width: 1600px;
 }
 .subtitle {
 	font-weight: bold;
@@ -219,9 +219,11 @@ p {
 #sidebar #social i {
     margin-right: 3px;
 }
-
+#toc-container {
+    margin: 0;
+}
 #toc {
-	width: 30%;
+	width: 100%;
 	position: relative;
 	float: left;
 	height: 100%;

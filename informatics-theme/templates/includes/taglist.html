@@ -1,5 +1,5 @@
 {% if article.tags %}
-<br/>Tagged as
+, tagged as
 {% for tag in article.tags %}
 	<a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
     {% if not loop.last %}

@@ -1,8 +1,8 @@
 Title: JBrowse on Odyssey
 Date: 2019-06-19
 Author: Nathan Weeks
-Category: Tutorials
-Tags: Odyssey, Genome Annotation
+Category: Software
+Tags: Odyssey, Genome Annotation, JBrowse
 Summary: How to launch JBrowse on Odyssey with Open OnDemand
 
 ## Introduction

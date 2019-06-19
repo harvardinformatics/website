@@ -1,8 +1,8 @@
 Title: MAKER on Odyssey
 Date: 2019-06-18
 Author: Nathan Weeks
-Category: Tutorials
-Tags: Odyssey, Genome Annotation
+Category: Software
+Tags: Odyssey, Genome Annotation, MAKER
 Summary: How to run MAKER on Odyssey
 
 ## Introduction
