@@ -1,5 +1,5 @@
 Title: About
-Date: 2019-02-08 11:00
+Date: 2019-06-19 17:00
 Category: About
 
 ## Our Mission
@@ -201,6 +201,28 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
         <div style="clear:both;"></div>
 </div>
 
+### Nathan Weeks
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/nathan.jpg">
+                          <img class="img-responsive" src="/images/nathan.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Research Application Developer, adapting and optimizing informatics applications for FAS High Performance Computing infrastructure.
+                 His professional background includes software engineering and research IT system administration.
+                 He is a Computer Science PhD candidate through Iowa State University, where his (almost-finished) research focused on parallel computing and HPC fault tolerance.
+                </p>
+                <p>
+                <a href="mailto:nweeks@g.harvard.edu">nweeks at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
 
 
 ## Alumni
