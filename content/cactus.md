@@ -1,7 +1,7 @@
 Title: Cactus on Odyssey
-Date: 2019-06-17
+Date: 2019-06-19
 Author: Nathan Weeks
-Category: Tutorials
+Category: Software
 Tags: Odyssey, Multiple Sequence Alignment
 Summary: How to run Cactus on Odyssey
 
@@ -77,23 +77,22 @@ Cactus will automatically limit the number of tasks based on the number of proce
     # extra options to Cactus
     readonly CACTUS_OPTIONS='--root mr'
     
-    # path to tar file of jobstore from previous (incomplete) run, or empty if no previous run
-    readonly RESTART_JOBSTORE_TAR_FILE='' # cactus-jobStore-${SLURM_JOB_ID}.tar.gz
+    # path to squashfs image file of jobstore from previous (incomplete) run, or empty if no previous run
+    readonly RESTART_JOBSTORE_IMAGE='' #cactus-jobStore-SLURM_JOB_ID.squashfs
     
     ########################################
     # ... don't modify below here ...
     
     readonly JOBSTORE=/scratch/cactus-jobStore-${SLURM_JOB_ID}
     
-    if [ "${RESTART_JOBSTORE_TAR_FILE}" ]
+    if [ "${RESTART_JOBSTORE_IMAGE}" ]
     then
-      mkdir ${JOBSTORE}
-      tar -C ${JOBSTORE} -xzf "${RESTART_JOBSTORE_TAR_FILE}"
+      /usr/sbin/unsquashfs -d ${JOBSTORE} "${RESTART_JOBSTORE_IMAGE}"
     fi
     
-    if ! srun -n 1 singularity exec ${CACTUS_IMAGE} cactus ${RESTART_JOBSTORE_TAR_FILE:+--restart} --binariesMode local ${CACTUS_OPTIONS} ${JOBSTORE} "${SEQFILE}" "${OUTPUTHAL}"
+    if ! srun -n 1 singularity exec ${CACTUS_IMAGE} cactus ${RESTART_JOBSTORE_IMAGE:+--restart} --binariesMode local ${CACTUS_OPTIONS} ${JOBSTORE} "${SEQFILE}" "${OUTPUTHAL}"
     then
-      tar -C ${JOBSTORE} -cf - . | gzip -1 > ${JOBSTORE##*/}.tar.gz
+      /usr/sbin/mksquashfs ${JOBSTORE} ${JOBSTORE##*/}.squashfs
     fi 
     
     # The jobStore directory would eventually be purged, but just in case the
@@ -103,15 +102,15 @@ Cactus will automatically limit the number of tasks based on the number of proce
 ## Restarting an incomplete Cactus run
 
 Using the above job script, the Cactus jobStore will be created on the node-local /scratch file system.
-In the event Cactus does not finish within the wall time limit specified in the job script (sbatch `--time` option), a compressed [tar](https://en.wikipedia.org/wiki/Tar_(computing)) file of the toil jobStore will be staged-out to this directory in a file named `cactus-jobStore-${SLURM_JOB_ID}.tar.gz`, where `${SLURM_JOB_ID}` is the numeric ID assigned to the job by SLURM.
+In the event Cactus does not finish within the wall time limit specified in the job script (sbatch `--time` option), a [SquashFS](https://wiki.gentoo.org/wiki/SquashFS) file system image file of the toil jobStore will be staged-out to this directory in a file named `cactus-jobStore-${SLURM_JOB_ID}.squashfs`, where `${SLURM_JOB_ID}` is the numeric ID assigned to the job by SLURM.
 
 The Cactus jobStore contains the state of the Cactus workflow.
 When Cactus is run with the `--restart` option, it will resume execution of a workflow, skipping finished tasks.
-In the above job script, this can be accomplished by setting the `RESTART_JOBSTORE_TAR_FILE` variable to the pathname of a Cactus jobStore tar file created by a previous execution of the Cactus job script (e.g., `RESTART_JOBSTORE_TAR_FILE=cactus-jobStore-12345678.tar.gz`) before resubmitting the job script with `sbatch`.
+In the above job script, this can be accomplished by setting the `RESTART_JOBSTORE_IMAGE` variable to the pathname of a Cactus jobStore SquashFS file created by a previous execution of the Cactus job script (e.g., `RESTART_JOBSTORE_IMAGE=cactus-jobStore-12345678.squashfs`) before resubmitting the job script with `sbatch`.
 
 ---
 
-*Technical comment*: The description of the exit status of the `srun` command implies that after SIGKILL has been delivered to the job steps (courtesy of the `sbatch --signal=KILL` directive), the `srun` command will block until the tasks have exited, after which it should be safe to tar the jobStore.
+*Technical comment*: The description of the exit status of the `srun` command implies that after SIGKILL has been delivered to the job steps (courtesy of the `sbatch --signal=KILL` directive), the `srun` command will block until the tasks have exited, after which it should be safe to copy the jobStore.
 From the `srun` man page:
 
 ```
@@ -121,7 +120,11 @@ RETURN VALUE
     -- e.g. 128 + signal)
 ```
 
-A single tar file is created instead of recursively copying the contents of the jobStore directory as the jobStore may comprise many files, and writing to a single large file on a parallel file system such as Lustre is generally faster than creating/writing to many smaller files.
+A single SquashFS file is created instead of recursively copying the contents of the jobStore directory as the jobStore may comprise many files, and writing to a single large file on a parallel file system such as Lustre is generally faster than creating/writing to many smaller files.
+
+The `sbatch --signal=KILL@600` in the above script indicates that the KILL signal should be sent approximately 600 seconds before the end of the specified walltime limit (`sbatch --time=00:30:00`).
+This amount should be adjusted based on the anticipated size of the Cactus jobStore.
+In one test using a node from the Odyssey "test" partition (where each node has 2 x 16-core Intel Xeon(R) CPU E5-2683 v4 @ 2.10GHz), the above `mksquashfs` command compressed a Cactus jobStore at a rate of approximately 50 MB/s, with a compression ratio of approximately 6.5X.
 
 ---
 
