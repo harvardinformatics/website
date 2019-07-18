@@ -1,5 +1,5 @@
 Title: How can I download my sequencing data
-Date: 2015-10-06 11:00
+Date: 2019-03-28 11:00
 Category: FAQ
 Summary:Downloading many files by right-clicking each file in a webpage can be cumbersome. You can download all your files at once with wget, scp, or cp.
 
@@ -8,12 +8,14 @@ Downloading many files by right-clicking each file in a webpage can be cumbersom
 If downloading to your local computer, use wget to transfer files over HTTP:
 
     :::bash
-    wget -r -nH --cut-dirs=1 --no-parent -e robots=off --reject="index.htm*" https://software.rc.fas.harvard.edu/ngsdata/<run_name>
+    wget -r -nH --cut-dirs=1 --no-parent -e robots=off  --no-check-certificate --reject="index.htm*" https://data.rc.fas.harvard.edu/ngsdata/<run_name>
+
+We use InCommon certificates that may or may not be part of the trusted authorities on your local machine, so --no-check-certificate may be necessary.
 
 If you have credentials to login to an RC host (for example, rclogin03), you can use scp to copy files to your local computer:
 
     :::bash
-    scp -r <user_name>@rclogin03.rc.fas.harvard.edu:/n/ngsdata/<run_name> /path/to/my/directory
+    scp -r <user_name>@rclogin03.rc.fas.harvard.edu:/n/boslfs/LABS/informatics/<run_name> /path/to/my/directory
 
 If transferring to a directory mounted on the cluster, the best way to transfer files is with a copy command:
 

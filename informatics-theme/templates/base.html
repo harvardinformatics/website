@@ -87,7 +87,7 @@
         <link href="{{ SITEURL }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate"
               title="{{ SITENAME }} RSS Feed"/>
     {% endif %}
-    
+
     <link href="{{ SITEURL }}/theme/css/pygments/github.css" rel="stylesheet">
     <script type="text/javascript" src="/theme/js/jquery.min.js"></script>
     <script type="text/javascript" src="/theme/js/bootstrap.min.js"></script>
@@ -95,7 +95,7 @@
     <script type="text/javascript" src="/theme/js/D3ChordChart.js"></script>
     <script type="text/javascript" src="/theme/js/jquery.MinilimsStatusBox.js"></script>
     <script type="text/javascript" src="/theme/js/informatics.js"></script>
-    
+
 
 </head>
 <body>
@@ -151,7 +151,7 @@
 <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
     <div class="row">
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-8 col-md-8">
+        <div class="col-lg-8 col-md-8" style="margin-top: 2em; padding: 20px 30px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)">
         {% else %}
         <div class="col-sm-12">
         {% endif %}
@@ -164,7 +164,7 @@
     {% block banner %}{% endblock %}
 {% endif %}
 <!-- End Banner -->
-        
+
         {% block content %}
         {% endblock %}
         </div>

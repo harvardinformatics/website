@@ -10,8 +10,9 @@ ADD requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
 WORKDIR /var/www
-RUN git clone --recursive https://github.com/getpelican/pelican-plugins.git && mkdir website
+RUN git clone --recursive https://github.com/getpelican/pelican-plugins.git && (cd pelican-plugins/jinja2content && git checkout 130bdd8466) && mkdir website
 ADD . website
-RUN cd website && pelican content -t informatics-theme -o /var/www/html
+RUN cd website && pelican -D content -t informatics-theme -o /var/www/html
+RUN cp -r website/static/* /var/www/html
 
 CMD ["/usr/sbin/httpd","-DFOREGROUND"]

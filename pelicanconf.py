@@ -20,14 +20,14 @@ PLUGIN_EVENTS = {
 }
 
 KNITR_OPTS_CHUNK = {
-    'fig.path': 'images/', 
+    'fig.path': 'images/',
 }
 # MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 MARKDOWN = {
     'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta'],
     'extension_configs' : {
         'markdown.extensions.codehilite' : {
-            'use_pygments' : True, 
+            'use_pygments' : True,
             'css_class': 'highlight',
             'linenums' : False,
             'guess_lang' : False,
@@ -43,7 +43,7 @@ TOC = {
 }
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
-SITEURL = 'http://informatics.fas.harvard.edu'
+SITEURL = 'https://informatics.fas.harvard.edu'
 TAGS_URL = 'tags.html'
 # PATH = 'content2'
 BANNER = True
@@ -69,7 +69,9 @@ AUTHOR_FEED_RSS = None
 LINKS = (('/images/harvard.jpg','Harvard University', 'http://www.harvard.edu'),
          ('/images/harvard.jpg','Harvard FAS', 'http://www.fas.harvard.edu'),
          ('/images/odybot.png','FAS Research Computing', 'http://rc.fas.harvard.edu'),)
-
+MENUITEMS = (
+    ('About', '/pages/about.html'),
+)
 SHOW_ARTICLE_AUTHOR = True
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
@@ -84,12 +86,15 @@ TAG_CLOUD_MAX_ITEMS = 100
 DISPLAY_CATEGORIES_ON_SIDEBAR = False
 DISPLAY_CATEGORIES_ON_MENU = True
 
+
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
-STATIC_PATHS = ['images','extra']
+# ARTICLE_EXCLUDES = ['extra/test.html']
+# PAGE_EXCLUDES = ['extra/test.html']
+STATIC_PATHS = ['images']
 EXTRA_PATH_METADATA = {
     'extra/favicon.ico': {'path': 'favicon.ico'},
 }
