@@ -8,7 +8,9 @@ Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey clust
 
 [RSEM](http://deweylab.github.io/RSEM/README.html) is a software package for estimating gene and isoform expression levels from single-end or paired-end RNA-Seq data. The software works with transcriptome sequences and does not require a reference genome. It can either perform the read alignment step prior to quantification, or take an alignment (bam) file as input, so long as the alignment settings are appropriate for RSEM. Currently, RSEM can perform the alignment step with three different aligners: bowtie, bowtie2, or STAR. It uses the Expectation Maximization (EM) algorithm to estimate abundances at the isoform and gene levels.
 
-If an annotated reference genome is available, RSEM can use a gtf file representation of those annotations to extract the transcript sequences for which quantification will be performed, and build the relevant genome and transcriptome indices. If this is done and the alignment step is implemented within RSEM, the option is available to also write the read alignments in genomic coordiinates, permitting visualization of expression data in a browser such as [IGV](http://software.broadinstitute.org/software/igv/). If no reference genome is available, one must supply RSEM a fasta file of transcript sequences. In addition, one can supply information that groups transcripts by gene, such that gene-level expression estimates.  
+If an annotated reference genome is available, RSEM can use a gtf file representation of those annotations to extract the transcript sequences for which quantification will be performed, and build the relevant genome and transcriptome indices. If this is done and the alignment step is implemented within RSEM, the option is available to also write the read alignments in genomic coordiinates, permitting visualization of expression data in a browser such as [IGV](http://software.broadinstitute.org/software/igv/). If no reference genome is available, one must supply RSEM a fasta file of transcript sequences. In addition, one can supply information that groups transcripts by gene, such that gene-level expression estimates. 
+
+The example workflows below are demonstrated as sbatch scripts for using with the SLURM job scheduling engine. With modest tweaking,these can be reconfigured for other schedulers, e.g. LSF, SGE. 
 
 # Preliminaries
 
@@ -30,8 +32,8 @@ Prior to conducting expression analyses, RNA-seq reads will have to be pre-proce
 While STAR can be run from within RSEM, this prevents best practice with respect to 2-pass mapping. In the 2-pass approach, one does a first round of alignment to collect sample-specific slice sites. In the second round, for each library one uses all of the splice site information obtained for all of the samples in the experiment. Thus, we present three different workflows:
 
 * Using a reference genome, alignment with STAR outside of RSEM, with bam files provided to RSEM for abundance calculations (steps 1,2,3,and 6)
-* Using a reference genome, wrapping of aligment step using bowtie2 from within RSEM
-* Using a de novo transcriptome, wrapping of alignment step using bowtie2, while telling RSEM which contigs belong to which genes.
+* Using a reference genome, wrapping of aligment step using bowtie2 from within RSEM (steps 4 and 7).
+* Using a de novo transcriptome, wrapping of alignment step using bowtie2, while telling RSEM which contigs belong to which genes (steps 5 and 7).
 
 We define these workflows as combinations of numbered steps enumerated below.
 
@@ -41,6 +43,7 @@ We define these workflows as combinations of numbered steps enumerated below.
 	#SBATCH -n 12 
 	#SBATCH -N 1
 	#SBATCH -t 12:00:00
+        #SBATCH --mem=64000
 	#SBATCH -p shared,general 
 	#SBATCH -e starprep.e
 	#SBATCH -o starprep.o
@@ -56,6 +59,7 @@ We define these workflows as combinations of numbered steps enumerated below.
 
 	STAR --runMode genomeGenerate -runThreadN 12 --sjdbOverhang $1 --sjdbGTFfile $2 --genomeDir $(pwd) --genomeFastaFiles $3 
 
+Note: building a STAR index can be a memory-itensive process, and one may need to allocate more memory to the job. If the SLURM jobs fails to exceeding the memory allocation, the error log will indicate the minimum amount of memory one should reserve.
 #### 2. Do first-pass alignment to the genome with STAR
 	:::bash
 	#!/bin/bash 
@@ -103,7 +107,7 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
 	
 	STAR --runThreadN 16 --genomeDir $1 --sjdbFileChrStartEnd $2 --readFilesCommand zcat --outFileNamePrefix $3 --readFilesIn $4 $5
 
-#### 4. Build an RSEM index for wrapping bowtie2 alignment
+#### 4. Build an RSEM index for wrapping bowtie2 alignment to genome annotations
 	:::bash
 	#!/bin/bash 
 	#SBATCH -n 6
@@ -166,9 +170,9 @@ One quantifies abundances of the transcripts in the RNA-seq dataset with the RSE
 #### 6. Estimate expression from pre-computed STAR alignments  
 	:::bash
     	#!/bin/bash
-    	#SBATCH -n 12
+    	#SBATCH -n 16
     	#SBATCH -N 1
-    	#SBATCH --mem 12000
+    	#SBATCH --mem 64000
     	#SBATCH -p serial_requeue
     	#SBATCH -o rsem_%A.out
     	#SBATCH -e rsem_%A.err
@@ -182,24 +186,37 @@ One quantifies abundances of the transcripts in the RNA-seq dataset with the RSE
 	# $2 == name of STAR index
 	# #3 == sample name
 
-	rsem-calculate-expression --star --num-threads 12 --alignments $1 $(pwd)/$2 $(pwd)/$3 
+	rsem-calculate-expression --star --num-threads 16 --alignments $1 $(pwd)/$2 $(pwd)/$3 
 
-One then quantifies abundances of the transcripts in the RNA-seq dataset with the RSEM "rsem-calculate-expression" function. In the "rsem-calculate-expression" function we specify: 
+#### 7. Align reads with bowtie2 and estimate expression
+        :::bash
+        #!/bin/bash
+        #SBATCH -n 16
+        #SBATCH -N 1
+        #SBATCH --mem 64000
+        #SBATCH -p serial_requeue,shared
+        #SBATCH -o rsem_%A.out
+        #SBATCH -e rsem_%A.err
+        #SBATCH -J rsem
+        #SBATCH -t 10:00:00
 
-- sequence alignment program to use, in this example Bowtie2 (parameter "--bowtie2"); 
-- number of threads to use (parameter "--num-threads"); 
-- paired-end fastq input files (parameter "--paired-end");
-- and finally, as arguments, the paired-end fastq input datasets, the transcriptome index files, and the output prefix for each dataset. RSEM can handle either uncompressed or compressed (*gz) fastq files.
+        module purge
+        module load rsem/1.2.29-fasrc03
 
-
-It is easy to embed the above into either a bash script that loops over read pairs in order to quickly process the job submissions. Alternatively, it can be modified such that one supplies command line arguments for the fastq file and transcriptome locations.
+        # $1 == R1
+        # $2 == R2
+        # $3 == path to rsem index
+        $ $4 sample name        
+ 
+        rsem-calculate-expression --bowtie2 --num-threads 16 --paired-end $1 $2 $3 $4 
 
 #### Important things to note:
+- It is easy to embed the above into either a bash script that loops over read pairs in order to quickly process the job submissions. Alternatively, it can be modified such that one supplies command line arguments for the fastq file and transcriptome locations.
 
-- For strand-specific RNA-seq protocols there are options to specify strandedness during the mapping phase. Consult your library kit manual, RSEM and short read aligner documentation to determine the approriate settings. In some cases, it is not immediately clear and requires some investigation!
+- For strand-specific RNA-seq protocols there are options to specify strandedness during the mapping phase. Consult your library kit manual, RSEM and short read aligner documentation to determine the approriate settings. Typically, for dUTP libraries, one uses "--forward-prob 0", and for ligation-stranded protocols, one uses "--forward-prob 1". In some cases, it is not immediately clear and requires some investigation!
 - Depending upon the genome size/transcriptome complexity and the number of input reads, the amount of memory and time required to complete an RSEM job may vary. We recommend doing a test run with one data set, then using the SLURM sacct tool to get information on elapsed time and amount of memory used to optimize subsequent resource requests for subsequent job submissions.
 
-#### 5  Understanding RSEM output
+#### Understanding RSEM output
 
 The results of a RSEM run are written out in files that have the prefix indicated in the "rsem-calculate-expression" command. 
 
