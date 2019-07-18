@@ -1,6 +1,6 @@
 Title: RSEM example on Odyssey
 Author: Adam Freedman
-Date: 2017-06-19 00:00
+Date: 2019-07-18 00:00
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, RSEM
 Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey cluster
