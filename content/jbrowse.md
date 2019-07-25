@@ -1,9 +1,9 @@
-Title: JBrowse on Odyssey
+Title: JBrowse on the FASRC Cluster
 Date: 2019-06-19
 Author: Nathan Weeks
 Category: Software
-Tags: Odyssey, Genome Annotation, JBrowse
-Summary: How to launch JBrowse on Odyssey with Open OnDemand
+Tags: Genome Annotation, JBrowse, Open OnDemand
+Summary: How to launch JBrowse on the FASRC Cluster with Open OnDemand
 
 ## Introduction
 
@@ -15,21 +15,36 @@ The following is an example of a tracks.conf [minimal configuration](https://jbr
 
 ```
 [GENERAL]
-refSeqs=reference.fa.gz.fai            # reference sequence compressed with bgzip and indexed with "samtools faidx"
+refSeqs=reference.fa.gz.fai
+# reference sequence compressed with bgzip and indexed with "samtools faidx"
+
 [tracks.reference]
-urlTemplate=reference.fa.gz            # file specified as the refSeqs value without the ".fai" suffix
+urlTemplate=reference.fa.gz
+# file specified as the refSeqs value without the ".fai" suffix
+
 [tracks.alignments]
-urlTemplate=alignments.sorted.bam      # my.sorted.bam.bai (created by tabix) is assumed to exist
-# baiUrlTemplate=alignments.sorted.bai # custom name if corresponding .bai file isn't suffixed with .bam.bai
+urlTemplate=alignments.sorted.bam
+# my.sorted.bam.bai (created by "samtools index") is assumed to exist
+## baiUrlTemplate=alignments.sorted.bai
+# custom name if corresponding .bai file isn't suffixed with .bam.bai
+
 [tracks.variants]
-urlTemplate=variants.sorted.vcf.gz     # variants.sorted.vcf.gz.tbi assumed to exist
+urlTemplate=variants.sorted.vcf.gz
+# variants.sorted.vcf.gz.tbi assumed to exist
+
 [tracks.genes]
-urlTemplate=genes.sorted.gff3.gz       # genes.sorted.gff3.gz.tbi assumed to exist
+urlTemplate=genes.sorted.gff3.gz
+# genes.sorted.gff3.gz.tbi assumed to exist
+
 [tracks.expression]
 urlTemplate=expression.bw
+
+[tracks.peaks]
+urlTemplate=peaks.bed.gz
+# peaks.bed.gz.tbi assumed to exist
 ```
 
-All files listed as urlTemplate values are assumed to be in the same directory (a directory typically named "data" and referred to as the JBrowse data directory) as tracks.conf (note that symbolic links to files accessible from Odyssey compute nodes may be used instead); e.g.:
+All files listed as urlTemplate values are assumed to be in the same directory (a directory typically named "data" and referred to as the JBrowse data directory) as tracks.conf (note that symbolic links to files accessible from FASRC compute nodes may be used instead); e.g.:
 
 ```
 $ ls data/
@@ -48,10 +63,14 @@ variants.sorted.vcf.gz.tbi
 
 ## JBrowse data file formats
 
-For optimal performance on Odyssey's [networked and parallel file systems](https://www.rc.fas.harvard.edu/resources/odyssey-storage/), data backing JBrowse tracks should be stored in compressed, indexed file formats that represent data for a given track in a single file (plus one or two smaller associated index files).
+For optimal performance on FASRC [networked, high-performance storage](https://www.rc.fas.harvard.edu/resources/odyssey-storage/#Networked_High-performance_Shared_Scratch_Storage),  data backing JBrowse tracks should be stored in compressed, indexed file formats that represent data for a given track in a single file (plus one or two smaller associated index files).
 Examples are below.
 
-In particular, the JBrowse [flatfile-to-json.pl](https://jbrowse.org/docs/flatfile-to-json.pl.html) script should *not* be used on Odyssey, as it converts the input GFF3/GenBank/BED file into numerous smaller files that degrade performance on network/parallel file systems.
+In particular, the JBrowse [flatfile-to-json.pl](https://jbrowse.org/docs/flatfile-to-json.pl.html) script should *not* be used, as it converts the input GFF3/GenBank/BED file into numerous smaller files that degrade performance on network/parallel file systems.
+
+### Software Environment Setup
+
+For the commands listed below, `bgzip` and `tabix` are provided on the FASRC cluster by the `htslib` environment module, while `samtools` is provided by the `samtools` environment module (use `module-query htslib` and `module-query samtools` to list the latest installed verions).
 
 ### GFF3
 
@@ -62,9 +81,18 @@ awk -F '\t' 'NF == 9' genes.gff3 | sort -k 1,1 -k 4n,4n | bgzip > genes.sorted.g
 tabix -p gff genes.sorted.gff3.gz
 ```
 
-The above command generates a GFF3 lacking directives/comments found in the original, but they are not necessary for viewing in JBrowse.
+The above command generates a GFF3 lacking directives/comments found in the original, but they not necessary for viewing in JBrowse.
 
 For very large GFF3 files, (GNU coreutils) sort options such as `--parallel=8 --buffer-size=1G --stable --compress-program=gzip` can be used to improve sorting performance, while bgzip `--compress-level=9` option may be used for extra compression, and `--threads=...` option can be used to specify additional threads for faster compression.
+
+### BED
+
+A number of [BED](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) file formats can be displayed after sorting by chrom (column 1) then chromStart (column 2), compressing with [bgzip](https://www.htslib.org/doc/bgzip.html), and indexing with [tabix](https://www.htslib.org/doc/tabix.html).
+
+```
+sort -k 1,1 -k 2n,2n peaks.bed | bgzip > peaks.sorted.bed.gz
+tabix -p bed peaks.sorted.bed.gz
+```
 
 ### BAM / CRAM
 
@@ -99,11 +127,11 @@ The JBrowse [generate-names.pl](https://jbrowse.org/docs/generate-names.pl.html)
 ${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks genes,variants --hashBits 4 --compress --out .
 ```
 
-## Running JBrowse on Odyssey using Open OnDemand
+## Running JBrowse on the FASRC Cluster using Open OnDemand
 
-A JBrowse instance can be launched on Odyssey using the Odyssey Open OnDemand web portal ([https://vdi.rc.fas.harvard.edu/](https://vdi.rc.fas.harvard.edu/)).
+A JBrowse instance can be launched on the FASRC cluster using the Open OnDemand web portal ([https://vdi.rc.fas.harvard.edu/](https://vdi.rc.fas.harvard.edu/)).
 From the menu bar, select *Interactive Apps > JBrowse*.
-The web form will be used to submit a SLURM job that runs on an Odyssey compute node (see [https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions](https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions) for a list of some the commonly-available partitions; lab-specific partitions may also be specified, as well as a comma-separated list of partitions that SLURM may consider when scheduling the job).
+The web form will be used to submit a SLURM job that runs on a compute node (see [https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions](https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions) for a list of some the commonly-available partitions; lab-specific partitions may also be specified, as well as a comma-separated list of partitions that SLURM may consider when scheduling the job).
 The custom JBrowse Singularity container image runs the [lighttpd](https://www.lighttpd.net/) web server, which requires only a single processor core and minimal memory (256 MB is requested for the purpose SLURM job scheduling).
 
 In the "path of a JBrowse data directory" textbox, enter the absolute path to the desired JBrowse data/ directory created previously, then click "Launch".
@@ -111,7 +139,7 @@ Once the JBrowse job has been scheduled and the JBrowse instance started on a co
 
 ## Support
 
-For assistance with launching JBrowse on Odyssey, please submit a [help ticket](https://portal.rc.fas.harvard.edu/rcrt/submit_ticket).
+For assistance with launching JBrowse on the FASRC cluster, please submit a [help ticket](https://portal.rc.fas.harvard.edu/rcrt/submit_ticket).
 
 JBrowse bug reports/feature requests may be submitted to the [JBrowse issue tracker](https://github.com/GMOD/jbrowse/issues) on GitHub.
 
