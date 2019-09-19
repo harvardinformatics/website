@@ -38,7 +38,7 @@ The fastq files and ostrich annotations necessary for this analysis are already 
 kallisto
 ---------
 
-We will run kallisto in an interactive node on the Odyssey cluster, although for normal use you would probably want to run it as a batch job. If you do not have an Odyssey cluster account, please partner up with someone who does.
+We will run kallisto in an interactive node on the Cannon cluster, although for normal use you would probably want to run it as a batch job. If you do not have an Cannon cluster account, please partner up with someone who does.
 
 First we'll need to get an interactive node for this work:
 	:::bash

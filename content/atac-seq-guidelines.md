@@ -8,7 +8,7 @@ Summary: Guidelines for the bioinformatics analysis of ATAC-seq data
 ## Table of Contents
 [ATAC-seq overview](#overview)<br>
 [Experimental design](#design)<br>
-[Compute access / Odyssey](#odyssey)<br>
+[Compute access / Cannon](#odyssey)<br>
 [Sequence reads](#reads)<br>
 [Quality control](#qc)<br>
 [Alignment](#alignments)<br>
@@ -67,11 +67,11 @@ For ATAC-seq, we recommend **paired-end sequencing**, for several reasons.
 It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads that are derived from mitochondrial DNA (for example, see [this discussion](http://seqanswers.com/forums/showthread.php?t=35318)).  Since there are no ATAC-seq peaks of interest in the mitochondrial genome, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources.  The [Omni-ATAC method](https://www.nature.com/articles/nmeth.4396) uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
 
 <a name="odyssey"></a>
-## Compute access / Odyssey
+## Compute access / Cannon
 
-This document assumes that you have an account on the [Odyssey computer cluster](https://www.rc.fas.harvard.edu/training/introduction-to-odyssey-online/) of Harvard University.  An account can be requested [here](https://portal.rc.fas.harvard.edu/request/account/new).
+This document assumes that you have an account on the [Cannon computer cluster](https://www.rc.fas.harvard.edu/training/introduction-to-odyssey-online/) of Harvard University.  An account can be requested [here](https://portal.rc.fas.harvard.edu/request/account/new).
 
-Programs, like those listed below (e.g. FastQC, Bowtie2, Genrich), are run on Odyssey by submitting jobs via the [SLURM management system](https://www.rc.fas.harvard.edu/resources/running-jobs/).
+Programs, like those listed below (e.g. FastQC, Bowtie2, Genrich), are run on Cannon by submitting jobs via the [SLURM management system](https://www.rc.fas.harvard.edu/resources/running-jobs/).
 The jobs take the form of shell scripts, which are submitted with the [sbatch command](https://www.rc.fas.harvard.edu/resources/running-jobs/#Submitting_batch_jobs_using_the_sbatch_command).  The shell scripts request computational resources (time, memory, and number of cores) for a job; it is better to request more resources than expected, rather than risk having a job terminated prematurely for exceeding its limits.
 
 <a name="reads"></a>
@@ -97,7 +97,7 @@ However, different replicates should not be concatenated, but instead should be 
 
 It is generally a good idea to generate some quality metrics for your raw sequence data.  One tool that is commonly used for this purpose is [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
 
-On Odyssey, each sequence file would be analyzed like this:
+On Cannon, each sequence file would be analyzed like this:
 
 ```
 module load fastqc
@@ -135,7 +135,7 @@ NGmerge is based on the principle that, with paired-end sequencing, adapter cont
 </figure>
 <br><br>
 
-NGmerge is available on Odyssey:
+NGmerge is available on Cannon:
 
 ```
 module load NGmerge
@@ -191,7 +191,7 @@ bowtie2-build  <genome.fa>  <genomeIndexName>
 
 ### Alignment
 
-Once the indexes are built, the reads can be aligned using Bowtie2.  A brief look at the [manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) reveals the large number of parameters and options available with Bowtie2.  Here are a few that may benefit the alignment of an ATAC-seq dataset on Odyssey:
+Once the indexes are built, the reads can be aligned using Bowtie2.  A brief look at the [manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml) reveals the large number of parameters and options available with Bowtie2.  Here are a few that may benefit the alignment of an ATAC-seq dataset on Cannon:
 
 <table class="githubtable">
   <tr>
@@ -226,7 +226,7 @@ bowtie2  --very-sensitive  -k 10  -x <genomeIndexName>  -1 <name>_1.fastq.gz  -2
   |  samtools sort  -n  -o <BAM>  -
 ```
 
-For input files of 20 million paired reads, this command takes around five hours on Odyssey.  This can be decreased by increasing the number of cores in the Bowtie2 command.  For example, one could specify eight cores for Bowtie2 with `-p 8` and adjust the request in the SLURM script to `#SBATCH -n 10` (that is, eight cores for Bowtie2 and one each for SAMtools view and sort).  The memory usage of Bowtie2 depends primarily on the genome length; enough must be requested to load the genome indexes.
+For input files of 20 million paired reads, this command takes around five hours on Cannon.  This can be decreased by increasing the number of cores in the Bowtie2 command.  For example, one could specify eight cores for Bowtie2 with `-p 8` and adjust the request in the SLURM script to `#SBATCH -n 10` (that is, eight cores for Bowtie2 and one each for SAMtools view and sort).  The memory usage of Bowtie2 depends primarily on the genome length; enough must be requested to load the genome indexes.
 
 Bowtie2 also provides (via `stderr`) a summary of the mapping results, separated according to uniqueness and alignment type (concordant, discordant, and non-concordant/non-discordant).  In terms of alignment interpretation, it is conceptually easier to divide alignments into two basic categories: properly paired and unpaired (Fig. 3).
 
@@ -321,7 +321,7 @@ Running all post-alignment steps with a single command requires the availability
 </table>
 
 
-Here is a command to call peaks from a single BAM file on Odyssey:
+Here is a command to call peaks from a single BAM file on Cannon: 
 
 ```
 module load Genrich
@@ -332,7 +332,7 @@ The alignment files for multiple replicates can be given to Genrich in a comma-s
 
 The output file produced by Genrich is in [ENCODE narrowPeak format](https://genome.ucsc.edu/FAQ/FAQformat.html#format12), listing the genomic coordinates of each peak called and various statistics.
 
-In [this example](https://github.com/jsh58/Genrich#full-analysis-example), a single BAM containing 146.3 million alignments was analyzed by Genrich in 10.5min with 17.1GB of memory on Odyssey.  In general, input BAM(s) of more alignments take longer to analyze, but the memory usage should not increase greatly.  Note that Genrich is not multithreaded, so it runs on a single core only.
+In [this example](https://github.com/jsh58/Genrich#full-analysis-example), a single BAM containing 146.3 million alignments was analyzed by Genrich in 10.5min with 17.1GB of memory on Cannon.  In general, input BAM(s) of more alignments take longer to analyze, but the memory usage should not increase greatly.  Note that Genrich is not multithreaded, so it runs on a single core only.
 
 Those who wish to explore the results of varying the [peak-calling parameters](https://github.com/jsh58/Genrich#peak-calling-parameters) (`-q`/`-p`, `-a`, `-l`, `-g`) should consider having Genrich produce a log file when it parses the SAM/BAM files (for example, with `-f <LOG>` added to the above command).  Then, Genrich can call peaks directly from the log file with the [`-P` option](https://github.com/jsh58/Genrich#pparam):
 

@@ -8,7 +8,7 @@ Summary:  This tutorial will help users go from raw FASTQ sequencing files to an
 ## Table of Contents
 [Whole-genome Pop Gen Sequencing Overview](#overview)<br>
 [Experimental Design](#design)<br>
-[Compute Access / Odyssey](#odyssey)<br>
+[Compute Access / Cannon](#odyssey)<br>
 [Sequence Reads](#reads)<br>
 [Quality Control](#qc)<br>
 [Preprocessing](#preprocess)<br>
@@ -49,22 +49,22 @@ Ideally, to confidently call variants from whole genome resequencing data, diplo
 For whole-genome resequencing studies, it is almost always recommended to use paired-end sequencing. As genome coverage is generally a limiting factor, the cost per base is much less for paired-end than single-end data. In addition, paired-end data generally provide better abilities to map reads to reference genomes, which is highly advantageous, especially for low-coverage data.
 
 
-## Compute acces / Odyssey <a name="odyssey"></a>
+## Compute acces / Cannon <a name="odyssey"></a>
 
-This tutorial assumes that you have an account on the [Odyssey computer cluster](https://www.rc.fas.harvard.edu/training/introduction-to-odyssey-online/), which can be requested [here](https://portal.rc.fas.harvard.edu/request/account/new).
+This tutorial assumes that you have an account on the [Cannon computer cluster](https://www.rc.fas.harvard.edu/training/introduction-to-odyssey-online/), which can be requested [here](https://portal.rc.fas.harvard.edu/request/account/new).
 
-Programs, like those listed below (e.g. FastQC, BWA, GATK), are run on Odyssey by submitting jobs via the [SLURM management system](https://www.rc.fas.harvard.edu/resources/running-jobs/).
+Programs, like those listed below (e.g. FastQC, BWA, GATK), are run on Cannon by submitting jobs via the [SLURM management system](https://www.rc.fas.harvard.edu/resources/running-jobs/).
 The jobs take the form of shell scripts, which are submitted with the [sbatch command](https://www.rc.fas.harvard.edu/resources/running-jobs/#Submitting_batch_jobs_using_the_sbatch_command).  The shell scripts request computational resources (time, memory, and number of cores) for a job; it is better to request more resources than expected, rather than risk having a job terminated prematurely for exceeding its limits. When running many jobs, it is also good practice to run a small subset to better understand the resource use for these jobs, and tailor your requests for the full panel.
 
-### Running the GATK/PicardTools Pipeline on Odyssey
+### Running the GATK/PicardTools Pipeline on Cannon
 
-A few notes on running **GATK** and **PicardTools** commands on Odyssey. 
+A few notes on running **GATK** and **PicardTools** commands on Cannon. 
 
-**GATK** and **PicardTools** are built with java, and so when running the *jar* file (e.g. `java -jar picard.jar <PicardTool>`), you can include a few extra [options](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) to pass to java that are especially applicable to running these programs on Odyssey. First, you can add a memory limit to java, for example requiring java to use no more than 4GB memory: `-Xmx4g`. This can help ensure your program does not use more memory than you request, resulting in job termination on Odyssey. 
+**GATK** and **PicardTools** are built with java, and so when running the *jar* file (e.g. `java -jar picard.jar <PicardTool>`), you can include a few extra [options](https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html) to pass to java that are especially applicable to running these programs on Cannon. First, you can add a memory limit to java, for example requiring java to use no more than 4GB memory: `-Xmx4g`. This can help ensure your program does not use more memory than you request, resulting in job termination on Cannon. 
 
 The second is: `-XX:ParallelGCThreads=1`. This command limits the number of java "Garbage Collector" threads running for each task. Based on what you set this number to be (we recommend 1 or 2), you should make sure to request that that number +1 for the number of cores you request in your submission script (e.g. `-n 2`). If you do not request this, java will start using many threads, and may cause your script to unexpectedly fail.
 
-Finally, you must be using java version 8 (or development kit 1.8). So, be sure to load a java module before running any commands. While there are GATK modules installed on Odyssey, it is simple to download the latest versions yourself. Just be sure to download and specify the picard.jar and GenomeAnalysisTK.jar files when running commands.
+Finally, you must be using java version 8 (or development kit 1.8). So, be sure to load a java module before running any commands. While there are GATK modules installed on Cannon, it is simple to download the latest versions yourself. Just be sure to download and specify the picard.jar and GenomeAnalysisTK.jar files when running commands.
 
 An example PicardTools command with these two variables is: 
 
@@ -97,7 +97,7 @@ Breaking down this information, we have:
     
 ## Quality control <a name="qc"></a>
 
-Before beginning analysis, it is a good idea to assess the general quality of the raw sequence data. One fast and easy to use program for this is [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). To analyze a fastq file on Odyssey:
+Before beginning analysis, it is a good idea to assess the general quality of the raw sequence data. One fast and easy to use program for this is [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). To analyze a fastq file on Cannon:
 
     module load fastqc
     fastqc sample.R1.fastq.gz
