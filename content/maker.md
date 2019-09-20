@@ -1,35 +1,35 @@
-Title: MAKER on Odyssey
+Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
 Author: Nathan Weeks
 Category: Software
-Tags: Odyssey, Genome Annotation, MAKER
-Summary: How to run MAKER on Odyssey
+Tags: Genome Annotation, MAKER
+Summary: How to run MAKER on the FASRC Cluster
 
 ## Introduction
 
 [MAKER](http://www.yandell-lab.org/software/maker.html) is a popular genome annotation pipeline for both prokaryotic and eukaryotic genomes.
-This guide describes best practices for running MAKER on Odyssey to maximize performance.
+This guide describes best practices for running MAKER on the FASRC cluster to maximize performance.
 For additional MAKER background and examples, see [this tutorial](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/MAKER_Tutorial_for_WGS_Assembly_and_Annotation_Winter_School_2018).
-Most tutorial examples can be run on an Odyssey compute node in an [interactive job](https://www.rc.fas.harvard.edu/resources/running-jobs/#Interactive_jobs_and_srun), prefixing any MAKER commands with `singularity exec ${MAKER_IMAGE}`.
+Most tutorial examples can be run on an compute node in an [interactive job](https://www.rc.fas.harvard.edu/resources/running-jobs/#Interactive_jobs_and_srun), prefixing any MAKER commands with `singularity exec ${MAKER_IMAGE}`.
 For general MAKER support, see the [maker-devel Google Group](https://groups.google.com/forum/#!forum/maker-devel).
 
-## MAKER on Odyssey
+## MAKER on the FASRC Cluster
 
-MAKER is run on Odyssey using a provided [Singularity](https://www.rc.fas.harvard.edu/resources/documentation/software/singularity-on-odyssey/) image.
+MAKER is run on the FASRC cluster using a provided [Singularity](https://www.rc.fas.harvard.edu/resources/documentation/software/singularity-on-odyssey/) image.
 This image was created from the MAKER [Biocontainers](https://biocontainers.pro) image (which in turn was generated from the corresponding [Bioconda package](https://bioconda.github.io/recipes/maker/README.html)), and at the time of this writing contains the latest versions of most bioinformatics software dependencies.
 
 ## Prerequisites
 
-These instructions assume the shell variable `MAKER_IMAGE=/n/scratchssdlfs/singularity_images/informatics/maker:2.31.10--pl526_14.sif` is set.
+These instructions assume the shell variable `MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif` is set.
 
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) via `maker -CTL` (required for maker_exe.ctl to generate pathnames for applications inside the container; existing maker_opts.ctl and maker_bopts.ctl files may be used if desired).
-   Singularity is not available on Odyssey login nodes, however, `srun` may be used to run `maker -CTL` in a Singularity container on compute node and generate the MAKER control files in the current working directory:
+   Singularity is not available on FASRC login nodes, however, `srun` may be used to run `maker -CTL` in a Singularity container on compute node and generate the MAKER control files in the current working directory:
    ```
    srun singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
    ```
 
 2. In maker_opts.ctl, set `max_dna_len=999999999` to avoid splitting reference sequence contigs into smaller segments for sequence alignment.
-   This lessens the file metadata load on the parallel file system (scratchlfs or holylfs on Odyssey), which is the main constraint for MAKER scalability on Odyssey.
+   This lessens the file metadata load on the parallel file system (FASRC scratchlfs or holylfs file systems), which is one of the main constraints for MAKER scalability.
    Note that with a test data set, memory usage per process remained below the `--mem-per-cpu=4g` limit suggested in the SLURM job script below, but YMMV.
 
 3. *(Optional; applicable to eukaryotic genomes only)* Download [RepBase RepeatMasker Edition](https://www.girinst.org/) to use as a supplemental repeat database for [RepeatMasker](http://www.repeatmasker.org/RMDownload.html) (license required == $$).
@@ -38,8 +38,43 @@ These instructions assume the shell variable `MAKER_IMAGE=/n/scratchssdlfs/singu
 
 ## Example Job Script
 
-This job script must be submitted (via sbatch) from a directory on a file system that is mounted on all Odyssey compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
+There are two approaches to running MAKER on the FASRC cluster: (1) entirely with in a container on a single compute node (more reliable, but slower) and  (2) on multiple compute nodes (launched using MPI from outside of the container; susceptible to conflicts with the user environment).
+The single-node approach is recommended if you have set environment variables in your bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
+
+Either example job script must be submitted (via sbatch) from a directory on a file system that is mounted on all compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
 The MAKER datastore directory will be created in the directory this job script is submitted from (named using the reference sequence file name prefix, and ending in *-output).
+
+### Example Single-Compute-Node MAKER Job Script
+
+    :::sh
+    #!/bin/sh
+    #SBATCH --partition=shared
+    # use an entire node, and allow use of all the memory on the node
+    #SBATCH --nodes=1
+    #SBATCH --mem=0
+    #SBATCH --exclusive
+    # Customize --time as appropriate
+    #SBATCH --time=0:30:00
+
+    MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif
+
+    # Submit this job script from the directory with the MAKER control files
+
+    # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
+    export REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
+    mkdir -p "${REPEATMASKER_LIB_DIR}"
+    singularity exec --cleanenv ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* ${REPEATMASKER_LIB_DIR}"
+    # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
+    #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
+
+    # singularity options:
+    # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
+    # Add any MAKER options after the "maker" command
+    # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
+    # * -fix_nucleotides needed for hsap_contig.fasta example data
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore
+
+### Example Multi-Compute-Node MAKER Job Script 
 
     :::sh
     #!/bin/sh
@@ -49,32 +84,28 @@ The MAKER datastore directory will be created in the directory this job script i
     #SBATCH --ntasks=8
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
-    
-    MAKER_IMAGE=/n/scratchssdlfs/singularity_images/informatics/maker:2.31.10--pl526_14.sif
-    
-    # NOTE: empty MAKER control files can be generated using the command:
-    #       singularity exec ${MAKER_IMAGE} maker -CTL 
-    # This will be needed at least for the maker_exe.ctl file, which has the paths to executables in the container.
-    # Otherwise, existing maker_bopts.ctl and maker_opts.ctl should be usable.
-    
+
+    MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif
+
     # Submit this job script from the directory with the MAKER control files
-    
+
     # Remove any environment variables
     module purge
-    
+
     # Use Intel MPI for the "mpiexec" command
     module load intel/17.0.4-fasrc01 impi/2017.2.174-fasrc01
-    
+
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
     export REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
     mkdir -p "${REPEATMASKER_LIB_DIR}"
     singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* ${REPEATMASKER_LIB_DIR}"
     # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
     #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
-    
-    # Add any MAKER options (-fix_nucleotides needed for hsap_contig.fasta example data)
-    # * the -mpi option is needed to use MPI with MAKER in a Singularity container
+
+    # Add any MAKER options
+    # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
+    # * -fix_nucleotides needed for hsap_contig.fasta example data
     mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore
 
 ---
@@ -84,6 +115,7 @@ Possible precedence issue with control flow operator at /usr/local/lib/site_perl
 
 df: Warning: cannot read table of mounted file systems: No such file or directory
 ```
+
 ---
 
 ## Visualizing in JBrowse
@@ -91,9 +123,9 @@ df: Warning: cannot read table of mounted file systems: No such file or director
 [JBrowse](https://jbrowse.org/) can be used to visualize MAKER-generated annotation, RNA/protein evidence sequence alignments, and RepeatMasker-masked regions in the context of the reference genome.
 
 JBrowse provides a script `maker2jbrowse` that automatically exports a MAKER datastore to a JBrowse data directory that can be directly visualized in JBrowse.
-However, this script executes very slowly on a parallel file system (such as Odyssey's scratchlfs and holylfs), and the resulting JBrowse data directory is completely unsuitable for visualization when located on a parallel file system due to a large number of small files created.
+However, this script executes very slowly on a parallel file system (e.g., FASRC scratchlfs and holylfs file systems), and the resulting JBrowse data directory is completely unsuitable for visualization when located on a parallel file system due to a large number of small files created.
 An in-house customization of this script (`maker2jbrowse-odyssey`) has been developed and tuned for parallel file systems.
-Execution time of `maker2jbrose-odyssey` is well over an order of magnitude faster than `maker2jbrowse`, and the resulting JBrowse data directory contains tens of files in standard formats usable by other tools (e.g., [bgzip](https://www.htslib.org/doc/bgzip.html)-compressed & [tabix](https://www.htslib.org/doc/tabix.html)-indexed [GFF3](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), and bgzip-compressed and [samtools](https://www.htslib.org/doc/samtools.html)-faidx-indexed FASTA) instead of tens/hundreds of thousands of JBrowse-specific files.
+Execution time of `maker2jbrowse-odyssey` is well over an order of magnitude faster than `maker2jbrowse`, and the resulting JBrowse data directory contains tens of files in standard formats usable by other tools (e.g., [bgzip](https://www.htslib.org/doc/bgzip.html)-compressed & [tabix](https://www.htslib.org/doc/tabix.html)-indexed [GFF3](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), and bgzip-compressed and [samtools](https://www.htslib.org/doc/samtools.html)-faidx-indexed FASTA) instead of tens/hundreds of thousands of JBrowse-specific files.
 
 ### maker2jbrowse-odyssey setup
 
@@ -142,13 +174,13 @@ If name-based indexing is desired for select tracks, this can subsequently be do
 (jbrowse-utils) $ ${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks protein2genome,est2genome --hashBits 4 --compress --out .
 ```
 
-### Running JBrowse on Odyssey using Open OnDemand
+### Running JBrowse on the FASRC Cluster using Open OnDemand
 
-A JBrowse instance can be launched on Odyssey using the Odyssey Open OnDemand instance ([https://vdi.rc.fas.harvard.edu/]()).
+A JBrowse instance can be launched on the FASRC cluster using Open OnDemand instance ([https://vdi.rc.fas.harvard.edu/]()).
 From the menu, select Interactive Apps > JBrowse.
 In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the maker2jbrowse-odyssey script (in the MAKER datastore directory), then click "Launch".
 
-For more details, see the [JBrowse on Odyssey guide]({filename}/jbrowse.md).
+For more details, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) guide.
 
 ## Using the MAKER Singularity Image on Other HPC Clusters
 
