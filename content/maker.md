@@ -56,22 +56,25 @@ The MAKER datastore directory will be created in the directory this job script i
     # Customize --time as appropriate
     #SBATCH --time=0:30:00
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
 
     # Submit this job script from the directory with the MAKER control files
 
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
-    export REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
+    REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
     mkdir -p "${REPEATMASKER_LIB_DIR}"
-    singularity exec --cleanenv ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* ${REPEATMASKER_LIB_DIR}"
+    singularity exec --cleanenv ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${REPEATMASKER_LIB_DIR}'"
     # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
     #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
 
     # singularity options:
+    # * --cleanenv : don't pass environment variables to container except those prefixed with SINGULARITYENV
     # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
     # Add any MAKER options after the "maker" command
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
+    # pass REPEATMASKER_LIB_DIR
+    export SINGULARITYENV_REPEATMASKER_LIB_DIR=${REPEATMASKER_LIB_DIR}
     singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore
 
 ### Example Multi-Compute-Node MAKER Job Script 
@@ -85,7 +88,7 @@ The MAKER datastore directory will be created in the directory this job script i
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
 
     # Submit this job script from the directory with the MAKER control files
 
@@ -98,7 +101,7 @@ The MAKER datastore directory will be created in the directory this job script i
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
     export REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
     mkdir -p "${REPEATMASKER_LIB_DIR}"
-    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* ${REPEATMASKER_LIB_DIR}"
+    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${REPEATMASKER_LIB_DIR}'"
     # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
     #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
 
