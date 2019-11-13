@@ -20,7 +20,7 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 
 ## Prerequisites
 
-These instructions assume the shell variable `MAKER_IMAGE=/n/singularity_images/informatics/maker:2.31.10--pl526_14.sif` is set.
+These instructions assume the shell variable `MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif` is set.
 
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) via `maker -CTL` (required for maker_exe.ctl to generate pathnames for applications inside the container; existing maker_opts.ctl and maker_bopts.ctl files may be used if desired).
    Singularity is not available on FASRC login nodes, however, `srun` may be used to run `maker -CTL` in a Singularity container on compute node and generate the MAKER control files in the current working directory:
@@ -187,8 +187,9 @@ For more details, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) 
 
 ## Using the MAKER Singularity Image on Other HPC Clusters
 
-The MAKER Singularity image file can be transferred to another HPC cluster, or the Docker image can be downloaded from the [quay.io](https://quay.io) container registry and converted into a Singularity image using the `singularity pull` command on the target system:
+The MAKER Singularity image file was obtained from the [Galaxy Project](https://galaxyproject.org/), which maintains a [large repository of Singularity images](https://depot.galaxyproject.org/singularity/) for use by the [Galaxy platform](https://usegalaxy.org/).
+It can be downloaded for use in other HPC environments that support Singularity:
 
 ```
-singularity pull maker:2.31.10--pl526_14.sif docker://quay.io/biocontainers/maker:2.31.10--pl526_14
+$ curl -O https://depot.galaxyproject.org/singularity/maker:2.31.10--pl526_16
 ```
