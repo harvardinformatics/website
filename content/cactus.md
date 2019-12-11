@@ -102,6 +102,18 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
 
 In the event Cactus does not finish within the wall time limit specified in the job script (sbatch `--time` option) and is terminated by SLURM, simply resubmit the job script with the `sbatch` command.
 
+## Troubleshooting
+
+**Problem:** If spaces appear in the FASTA defline, an error like the following will occur:
+
+> RuntimeError: The fasta header 'CM000102.5 Gallus gallus chromosome 10' contains spaces or tabs. These characters will cause issues in space-separated formats like MAF, and may not function properly when viewed in a browser. Please remove these characters from the input headers and try again.
+
+**Solution:** The following sed command can be used to remove the first space (and all subsequent characters) from FASTA deflines (e.g., in the above example, `>CM000102.5 Gallus gallus chromosome 10` becomes `CM000102.5`):
+
+```
+sed '/^>/s/ .*//'  my.fa > my-mod-defline.fa
+```
+
 ---
 
 ## About the Cactus Singularity Image
