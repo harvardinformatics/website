@@ -75,7 +75,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     if [ ! -e "${JOBSTORE_IMAGE}" ]
     then
       restart=''
-      mkdir -m 700 -p ${CACTUS_SCRATCH}/upper
+      mkdir -m 777 -p ${CACTUS_SCRATCH}/upper
       truncate -s 1T "${JOBSTORE_IMAGE}"
       singularity exec /n/singularity_images/informatics/cactus/e2fsprogs:1.45.2.sif mkfs.ext3 -d ${CACTUS_SCRATCH} "${JOBSTORE_IMAGE}"
     else
@@ -90,8 +90,8 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     srun -n 1 singularity exec --cleanenv \
                                --overlay ${JOBSTORE_IMAGE} \
                                --bind ${CACTUS_SCRATCH}/tmp:/tmp \
-                               --home ${CACTUS_SCRATCH}/home:/cactus/home ${CACTUS_IMAGE} \
-      cactus ${CACTUS_OPTIONS} ${restart-} --workDir=/cactus/workDir --binariesMode local /cactus/jobStore "${SEQFILE}" "${OUTPUTHAL}"
+                               --home ${CACTUS_SCRATCH}/home:/home/cactus ${CACTUS_IMAGE} \
+      cactus ${CACTUS_OPTIONS-} ${restart-} --workDir=/cactus/workDir --binariesMode local /cactus/jobStore "${SEQFILE}" "${OUTPUTHAL}"
     
     # /tmp would eventually be purged, but just in case the
     # next job to run on this node needs lots of /space...
