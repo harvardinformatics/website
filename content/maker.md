@@ -25,7 +25,7 @@ These instructions assume the shell variable `MAKER_IMAGE=/n/singularity_images/
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) via `maker -CTL` (required for maker_exe.ctl to generate pathnames for applications inside the container; existing maker_opts.ctl and maker_bopts.ctl files may be used if desired).
    Singularity is not available on FASRC login nodes, however, `srun` may be used to run `maker -CTL` in a Singularity container on compute node and generate the MAKER control files in the current working directory:
    ```
-   srun singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
+   srun -p test,serial_requeue,shared singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
    ```
 
 2. In maker_opts.ctl, set `max_dna_len=999999999` to avoid splitting reference sequence contigs into smaller segments for sequence alignment.
@@ -61,8 +61,8 @@ The MAKER datastore directory will be created in the directory this job script i
     # Submit this job script from the directory with the MAKER control files
 
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
-    REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
-    mkdir -p "${REPEATMASKER_LIB_DIR}"
+    export SINGULARITYENV_REPEATMASKER_LIB_DIR=${PWD}/REPEATMASKER_LIB_DIR
+    mkdir -p "${SINGULARITYENV_REPEATMASKER_LIB_DIR}"
     singularity exec --cleanenv ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${REPEATMASKER_LIB_DIR}'"
     # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
     #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
@@ -73,9 +73,7 @@ The MAKER datastore directory will be created in the directory this job script i
     # Add any MAKER options after the "maker" command
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    # pass REPEATMASKER_LIB_DIR
-    export SINGULARITYENV_REPEATMASKER_LIB_DIR=${REPEATMASKER_LIB_DIR}
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_REPEATMASKER_LIB_DIR:+}" ] || echo '-RM_off')
 
 ### Example Multi-Compute-Node MAKER Job Script 
 
@@ -83,7 +81,7 @@ The MAKER datastore directory will be created in the directory this job script i
     #!/bin/sh
     # Customize --time, --ntasks, and --partition as appropriate
     #SBATCH --time=0:30:00
-    # --ntasks should be <= 100 on Odyssey!!!
+    # --ntasks should be <= 100 due to possible I/O bottlenecks
     #SBATCH --ntasks=8
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
@@ -109,7 +107,7 @@ The MAKER datastore directory will be created in the directory this job script i
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore
+    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${REPEATMASKER_LIB_DIR:+}" ] || echo '-RM_off')
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
