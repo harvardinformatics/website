@@ -65,7 +65,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     readonly SEQFILE=evolverMammals.txt
     readonly OUTPUTHAL=evolverMammals.hal
     # extra options to Cactus
-    readonly CACTUS_OPTIONS='--root mr'
+    readonly CACTUS_OPTIONS='--root mr' # NOTE: specific to evolverMammals.txt; change/remove for other input seqFile
     
     ########################################
     # ... don't modify below here ...
@@ -96,7 +96,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     # /tmp would eventually be purged, but just in case the
     # next job to run on this node needs lots of /space...
     
-    rm -rf ${CACTUS_SCRATCH}
+    rm -rf ${CACTUS_SCRATCH} jobStore.img
 
 ## Restarting an incomplete Cactus run
 
