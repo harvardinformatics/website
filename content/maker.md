@@ -20,13 +20,21 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 
 ## Prerequisites
 
-These instructions assume the shell variable `MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif` is set.
+These instructions assume the following shell variable is set:
 
-1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) via `maker -CTL` (required for maker_exe.ctl to generate pathnames for applications inside the container; existing maker_opts.ctl and maker_bopts.ctl files may be used if desired).
-   Singularity is not available on FASRC login nodes, however, `srun` may be used to run `maker -CTL` in a Singularity container on compute node and generate the MAKER control files in the current working directory:
-   ```
-   srun -p test,serial_requeue,shared singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
-   ```
+    :::sh
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
+
+1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) by running the following [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) from a FAS RC login node (as Singularity is not installed on the FAS RC login nodes):
+
+        :::sh
+        srun -p test,serial_requeue,shared singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
+
+    This results in 3 files:
+
+    * **maker_opts.ctl** (modify this file)
+    * **maker_exe.ctl** (*do not* modify this file)
+    * **maker_bopts.ctl** (*optionally* modify this file)
 
 2. In maker_opts.ctl, set `max_dna_len=999999999` to avoid splitting reference sequence contigs into smaller segments for sequence alignment.
    This lessens the file metadata load on the parallel file system (FASRC scratchlfs or holylfs file systems), which is one of the main constraints for MAKER scalability.
