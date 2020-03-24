@@ -114,7 +114,19 @@ In the event Cactus does not finish within the wall time limit specified in the 
 sed '/^>/s/ .*//'  my.fa > my-mod-defline.fa
 ```
 
----
+## Working with HAL files
+
+Cactus outputs multiple sequence alignment and ancestral reconstruction information in a [Hierarchical Alignment (HAL)](https://github.com/ComparativeGenomicsToolkit/hal/blob/master/README.md) file.
+[HAL Tools](https://github.com/ComparativeGenomicsToolkit/hal/blob/master/README.md#hal-tools) is a suite of command-line utilities for analyzing HAL files and converting to/from different formats.
+
+HAL Tools is installed in the Cactus Singularity image.
+For example, the following commands run [halValidate](https://github.com/ComparativeGenomicsToolkit/hal/blob/master/README.md#halvalidate) and [halStats](https://github.com/ComparativeGenomicsToolkit/hal/blob/master/README.md#halstats) on the example output evolverMammals.hal:
+
+*NOTE: on the FAS RC Cluster, Singularity is not available on login nodes, and these commands must be run [within a batch or interactive environment](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/#Singularity_on_the_cluster) on a compute node*
+
+    :::sh
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:2019-11-29.sif halValidate evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:2019-11-29.sif halStats evolverMammals.hal
 
 ## About the Cactus Singularity Image
 
