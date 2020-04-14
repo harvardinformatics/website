@@ -299,7 +299,7 @@ Metrics such as N50 should never, by themselves, be treated as good indicators o
 
 As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki/RNA-Seq-Read-Representation-by-Trinity-Assembly) documentation, assembled transcripts may not represent the full complement of paired-end reads. This will occur because, for very short contigs, only one read from paired-end read will align to it. Simply mapping your reads with bowtie (or your aligner of choice) to the transcripts will not shed any insight into this phenomenon as only properly mapped read pairs will be reported. To evalute read support for the assembly is a three step process. First, you build a bowtie2 index for your assembly.
 
-NOTE: while we have run Trinity in a Docker container, for convenience, we can use Trinity accessory scripts for calculating assembly read support statistics, using an older Trinity module, as the scripts themselves don't change.
+NOTE: while we have run Trinity in a Singularity container image, for convenience, we can use Trinity accessory scripts for calculating assembly read support statistics, using an older Trinity module, as the scripts themselves don't change.
 
     :::bash
     #!/bin/bash
