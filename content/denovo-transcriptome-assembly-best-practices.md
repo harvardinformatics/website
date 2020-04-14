@@ -214,17 +214,17 @@ Settings used for Trinity will depend upon a number of factors, including the se
 **Normalization.** In the latest version of Trinity, in silico normalization is done by default. For data sets with > 200 million reads after the filtering steps above, for computational considerations we recommend using the default mode, and allowing Trinity to normalize reads. If you wish to turn off normalization, then include the **--no_normalize_reads** flag in your Trinity command line. 
 
 
-**Running Trinity in a Docker Container.**
-Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity is to do so inside a singularity [SINGULARITY](https://singularity.lbl.gov/) container image, which operates like a virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set. In principle, you could download a docker image from the Trinity website, as follows: 
+**Running Trinity inside a Singuarlity container image.**
+Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity is to do so inside a singularity [SINGULARITY](https://singularity.lbl.gov/) container image, which operates like a virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set. In principle, you could download a docker image from the Trinity website, as follows:
+ 
     :::bash
     singularity pull docker://trinityrnaseq/trinityrnaseq
 
 
 but for convenience of users of the Harvard FAS Cannon Cluster, we will continue to host an image for the most recent Trinity build. 
 
-Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. We do this by reserving exclusive use of a node, and, strangely enough, by setting --mem=0, we effectively reserve all available memory. Below is an example script for a Trinity job (with normalization) 
-
-        
+Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. We do this by reserving exclusive use of a node, and, strangely enough, by setting --mem=0, we effectively reserve all available memory. Below is an example script for a Trinity job (with normalization):
+     
     :::bash
     #!/bin/sh
     #SBATCH --nodes=1
@@ -264,21 +264,24 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
 
 
 If this script was called trinity.sh, we would submit the slurm job like this:
+
     :::bash
     sbatch trinity.sh ${comma-separated R1 fastq files} ${comma-separated R2 fastq files}
 
 
-The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.: 
+The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.:
+
 * Turning off normalization 
 * For directional libraries, --SS_lib_type should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
 * An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
 
-Once the Trinity run has successfully completed, one will need to inspect the results, which are written to /trinity_out_dir **inside trinity.img**. You can acces it as follows:
+Once the Trinity run has successfully completed, one will need to inspect the results, which are written to /trinity_out_dir **inside trinity.img**. You can access it as follows:
+    
     :::bash
     singularity shell --cleanenv --overlay trinity.img /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
     >singularity cd /trinity_out_dir
-    >singularity cp Trinity.fasta $DESTINATION_ON_YOUR_FILESYSTEM 
+    >singularity cp Trinity.fasta ${YOUR_FILESYSTEM_STORAGE_DIRECTORY} 
     >singularity exit
 
 
