@@ -240,8 +240,9 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     ########################################
     readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
     readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
-
-    readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/your_left-reads.fq --right ${PWD}/your_right_reads.fq"
+    # $1 == comma-separated list of R1 fastq files
+    # $2 == comma-separated list of R2 fastq files
+    readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/${1} --right ${PWD}/${2}"
 
     ########################################
     # ... don't modify below here ...
@@ -262,14 +263,11 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
       Trinity ${TRINITY_OPTIONS} --output /trinity_out_dir
 
 
-R1 and R2 read file names should be provided as comma-separated lists to --left and --right arguments, respectively.
 
 The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.: 
 * Turning off normalization 
 * For directional libraries, --SS_lib_type should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
-
-
-Finally, --left and --right are for comma separated lists of R1 and R2 fastq files. An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
+* An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
 
 #### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
