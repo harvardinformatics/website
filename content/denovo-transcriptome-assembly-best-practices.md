@@ -241,9 +241,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
     readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
 
-    ## $1 == the R1 fastq file
-    ## $2 == the R2 fastq file
-    readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/${1} --right ${PWD}/${2}"
+    readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/your_left-reads.fq --right ${PWD}/your_right_reads.fq"
 
     ########################################
     # ... don't modify below here ...
@@ -264,7 +262,9 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
       Trinity ${TRINITY_OPTIONS} --output /trinity_out_dir
 
 
-The Trinity_OPTIONS string can be edited to reflect particular desired features, e.g.: 
+R1 and R2 read file names should be provided as comma-separated lists to --left and --right arguments, respectively.
+
+The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.: 
 * Turning off normalization 
 * For directional libraries, --SS_lib_type should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
 
