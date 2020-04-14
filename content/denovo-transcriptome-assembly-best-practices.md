@@ -270,6 +270,14 @@ The Trinity_OPTIONS string can also be edited to reflect particular desired feat
 * An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
 
+Once the Trinity run has successfully completed, one will need to inspect the results, which are written to /trinity_out_dir **inside trinity.img**. You can acces it as follows:
+    :::bash
+    singularity shell --cleanenv --overlay trinity.img /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
+    >singularity cd /trinity_out_dir
+    >singularity cp Trinity.fasta $DESTINATION_ON_YOUR_FILESYSTEM 
+    >singularity exit
+
+
 #### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
 
 Metrics such as N50 should never, by themselves, be treated as good indicators of assembly quality. An obvious, if extreme, example, is that if you incorrectly assembly all of your reads into one gigantic contig, your N50 will be very large. However, extremely short N50s, such that they represent a fraction of the expected size of the fragments in your library might indicate other problems. Similarly, the number of "transcripts" and "genes" in your Trinity assembly do not provide any absolute metric of quality. However, the more "genes" Trinity assembles--particularly if they are only a few hundred bases long--the more likely your contigs represent subsequences of actual genes. These caveats aside, you can easily generate N50 statistics, and counts of the number of Trinity contigs in an interactive session using the perl script that comes with Trinity.
