@@ -240,8 +240,8 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     ########################################
     readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
     readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
-    # $1 == comma-separated list of R1 fastq files
-    # $2 == comma-separated list of R2 fastq files
+    # $1 == command line argument of comma-separated list of R1 fastq files
+    # $2 == command line argument of comma-separated list of R2 fastq files
     readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/${1} --right ${PWD}/${2}"
 
     ########################################
@@ -262,6 +262,10 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
                                ${SINGULARITY_IMAGE} \
       Trinity ${TRINITY_OPTIONS} --output /trinity_out_dir
 
+
+If this script was called trinity.sh, we would submit the slurm job like this:
+    :::bash
+    sbatch trinity.sh ${comma-separated R1 fastq files} ${comma-separated R2 fastq files}
 
 
 The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.: 
