@@ -1,5 +1,5 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
-Date: 2019-03-07 00:00
+Date: 2020-04-14 00:00
 Author: Adam Freedman
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
