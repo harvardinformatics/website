@@ -215,50 +215,59 @@ Settings used for Trinity will depend upon a number of factors, including the se
 
 
 **Running Trinity in a Docker Container.**
-Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity is to use [SINGULARITY](https://singularity.lbl.gov/) to pull down a [DOCKER](https://www.docker.com/) container and run Trinity from within that container. Docker containers are like virtual machines, bundled with all the appropriate dependencies built in a way compatible with an application of interest, in our case, Trinity. One simply grabs the latest version of the container from its remote repository, and executes Trinity from within it.
+Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity is to do so inside a singularity [SINGULARITY](https://singularity.lbl.gov/) container image, which operates like a virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set. In principle, you could download a docker image from the Trinity website, as follows: 
+    :::bash
+    singularity pull docker://trinityrnaseq/trinityrnaseq
 
-NOTE: once you pull the container you can re-use it (the trinityrnaseq.simg file) to keep the same version of Trinity. Otherwise, ever time you pull the container, you will get the latest version of Trinity.
 
-Below is an example script for a Trinity job (with normalization) that does just that,for a stranded paired-end library, generated using dUTP chemistry (hence the RF flag). Note that turning off normalization on large data sets will lead to use of substantial cluster resources that will negatively impact your group's fairshare. Thus, one should give careful consideration to the possible benefits of forgoing normalization to make sure they outweight the resource and fairshare costs.
+but for convenience of users of the Harvard FAS Cannon Cluster, we will continue to host an image for the most recent Trinity build. 
+
+Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. We do this by reserving exclusive use of a node, and, strangely enough, by setting --mem=0, we effectively reserve all available memory. Below is an example script for a Trinity job (with normalization) 
+
         
     :::bash
-    #!/bin/bash 
-    #SBATCH -N 1
-    #SBATCH -n 32
-    #SBATCH -p general                   # may consider running on a bigmem node for large dataset
-    #SBATCH -e trinity_%A.err            # File to which STDERR will be written
-    #SBATCH -o trinity_%A.out           # File to which STDOUT will be written
-    #SBATCH -J trinity_%A               # Job name
-    #SBATCH --mem=250000                 # Memory requested
-    #SBATCH --time=2-23:00:00              # Runtime in D-HH:MM:SS
-    #SBATCH --mail-type=ALL              # Type of email notification- BEGIN,END,FAIL,ALL
-    #SBATCH --mail-user=name@harvard.edu # Email to send notifications to
+    #!/bin/sh
+    #SBATCH --nodes=1
+    #SBATCH --mem=0
+    #SBATCH --exclusive
+    #SBATCH --time=72:00:00
+    #SBATCH --partition=shared
 
-    singularity pull docker://trinityrnaseq/trinityrnaseq
-    # $1 = comma-separated list of R1 files
-    # $2 = comma-separated list of R2 files
-    # $3 = name of output directory Trinity will create to store results. This must include Trinity in the name, otherwise the job will terminate
+    set -o nounset -o errexit -o xtrace
 
-    singularity exec ./trinityrnaseq.simg Trinity --seqType fq --SS_lib_type RF --max_memory 225G --min_kmer_cov 1 --CPU 32 --left $1 --right $2 --output $3 
+    ########################################
+    # parameters
+    ########################################
+    readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
+    readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
 
-**For libraries built with Illumina TruSeq directional or Wafergen PrepX mRNA kit on the Apollo robot, --SS_lib_type should be set to FR**.
+    ## $1 == the R1 fastq file
+    ## $2 == the R2 fastq file
+    readonly TRINITY_OPTIONS="--max_memory 190G --CPU 48 --seqType fq --left ${PWD}/${1} --right ${PWD}/${2}"
 
-Depending upon the size of the input read data set, you may need some combination of more (or less) time and memory. Another option is to use Trinity's capability to distribute parallelizable steps across a job grid. Recent versions of Trinity have removed the code for managing grid jobs, and recommend using [HpcGridRunner[(https://github.com/HpcGridRunner/HpcGridRunner.github.io/wiki). After installing HpcGridRunner to your home directory, you would add the following arguments to your Trinity cmd line.
+    ########################################
+    # ... don't modify below here ...
 
-    --grid_exec "PATH/TO/YOUR/HpcGridRunner/hpc_cmds_GridRunner.pl --grid_conf $(pwd)/grid.conf -c"  --grid_node_max_memory 5G 
+    if [ ! -e "${OVERLAY_IMAGE}" ]
+    then
+      readonly tmpdir=$(mktemp -d)
+      mkdir -m 777 -p ${tmpdir}/upper
+      truncate -s 4T "${OVERLAY_IMAGE}"
+      singularity exec --cleanenv ${SINGULARITY_IMAGE} mkfs.ext3 -d "${tmpdir}" ${OVERLAY_IMAGE}
+      rm -rf "${tmpdir}"
+    fi
 
-    grid.conf is a file, configured as follows:
+    srun -n 1 singularity exec --cleanenv \
+                               --no-home \
+                               --overlay ${OVERLAY_IMAGE} \
+                               ${SINGULARITY_IMAGE} \
+      Trinity ${TRINITY_OPTIONS} --output /trinity_out_dir
 
-    # grid type:
-    grid=SLURM
-    # template for a grid submission
-    cmd=sbatch -p general --mem=5500 --time=02:00:00 --account=<YOUR ODYSSEY USER ACCT>
-    # number of grid submissions to be maintained at steady state by the Trinity submission system
-    max_nodes=500
-    # number of commands that are batched into a single grid submission job.
-    cmds_per_node=200
 
-NOTE: For those adapting this workflow to a cluster with a job scneduler other than SLURM (LSF,SGE,etc.) check the HpcGridRunner documentation, as the format of the grid.conf file will be slightly different.
+The Trinity_OPTIONS string can be edited to reflect particular desired features, e.g.: 
+* Turning off normalization 
+* For directional libraries, --SS_lib_type should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
+
 
 Finally, --left and --right are for comma separated lists of R1 and R2 fastq files. An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
