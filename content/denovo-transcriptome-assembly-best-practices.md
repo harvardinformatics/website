@@ -290,7 +290,7 @@ Once the Trinity run has successfully completed, one will need to inspect the re
 Metrics such as N50 should never, by themselves, be treated as good indicators of assembly quality. An obvious, if extreme, example, is that if you incorrectly assembly all of your reads into one gigantic contig, your N50 will be very large. However, extremely short N50s, such that they represent a fraction of the expected size of the fragments in your library might indicate other problems. Similarly, the number of "transcripts" and "genes" in your Trinity assembly do not provide any absolute metric of quality. However, the more "genes" Trinity assembles--particularly if they are only a few hundred bases long--the more likely your contigs represent subsequences of actual genes. These caveats aside, you can easily generate N50 statistics, and counts of the number of Trinity contigs in an interactive session using the perl script that comes with Trinity.
     
     :::bash
-    srun -p interact --pty -t 00:20:00 --mem 500 /bin/bash
+    srun --pty -p shared -t 00:20:00 --mem 500 /bin/bash
     module purge
     module load trinityrnaseq/2.3.2-fasrc01
     $TRINITY_HOME/util/TrinityStats.pl Trinity.fasta > Trinity_assembly.metrics
@@ -299,14 +299,13 @@ Metrics such as N50 should never, by themselves, be treated as good indicators o
 
 As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki/RNA-Seq-Read-Representation-by-Trinity-Assembly) documentation, assembled transcripts may not represent the full complement of paired-end reads. This will occur because, for very short contigs, only one read from paired-end read will align to it. Simply mapping your reads with bowtie (or your aligner of choice) to the transcripts will not shed any insight into this phenomenon as only properly mapped read pairs will be reported. To evalute read support for the assembly is a three step process. First, you build a bowtie2 index for your assembly.
 
-NOTE: while we have run Trinity in a Singularity container image, for convenience, we can use Trinity accessory scripts for calculating assembly read support statistics, using an older Trinity module, as the scripts themselves don't change.
 
     :::bash
     #!/bin/bash
     #SBATCH -N 1
     #SBATCH -n 4 #Number of cores
     #SBATCH -t 0:00:00  #Runtime in minutes
-    #SBATCH -p serial_requeue  #Partition to submit to
+    #SBATCH -p serial_requeue,shared  #Partition to submit to
     #SBATCH --mem=8000  #Memory per node in MB
     #SBATCH -e bt2build.e
     #SBATCH -o b2build.o
@@ -316,9 +315,9 @@ NOTE: while we have run Trinity in a Singularity container image, for convenienc
     
     module purge    
     module load bowtie2/2.3.2-fasrc02 
-    bowtie2-build –threads 4 $1 $assembly_prefix
+    bowtie2-build -–threads 4 $1 $assembly_prefix
 
-Next, you map your reads.
+Next, you map your reads and calculate alignment statistics.
 
 
     :::bash
@@ -326,7 +325,7 @@ Next, you map your reads.
     #SBATCH -N 1
     #SBATCH -n 16 #Number of cores
     #SBATCH -t 12:00:00  #Runtime in minutes
-    #SBATCH -p serial_requeue  #Partition to submit to
+    #SBATCH -p serial_requeue,shared  #Partition to submit to
     #SBATCH --mem=16000  #Memory per node in MB
 
     module purge
@@ -336,34 +335,12 @@ Next, you map your reads.
     # $2 comma separated list of left read file names
     # $3 comma separated list of right read file names
     
-    #NOTE: if your assembled your reads with Trinity by providing lists of left and right reads
+    bowtie2 -p 10 -q --no-unal -k 20 -x $1 -1 $2 -2 $3  2>align_stats.txt| samtools view -@10 -Sb -o bowtie2.bam
 
+The align_stats.txt file will provide info on the percentage of read pairs that mapped concordantly,as well as an overall alignment rate.
 
-    bowtie2 -p 16 --local --no-unal -x $1 -q -1 $2 -2 $3 | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam 
- 
-**NOTE: you can use the appropriate flag for stranded libraries (see information in section 6 above re: the appropriate flags to use**
+**NOTE: you can use the appropriate flag for stranded libraries (see information in section 6 above re: the appropriate flags to use. Also, depending upon the size of your read data set, you may want to specify more or less time for this job. If you need > 24 hours, be sure to specify the shared partition.
 
-Finally, you generate alignment statistics
-
-    :::
-    #!/bin/bash 
-    #SBATCH -n 1
-    #SBATCH -p serial_requeue            
-    #SBATCH -e concorstat.err           # File to which STDERR will be written
-    #SBATCH -o concordstats.out         # File to which STDOUT will be written
-    #SBATCH -J concordstats                # Job name
-    #SBATCH --mem=6000                     # Memory requested
-    #SBATCH --time=23:30:00                # Runtime in HH:MM:SS
-    #SBATCH --mail-type=ALL                # Type of email notification- BEGIN,END,FAIL,ALL
-    #SBATCH --mail-user=Your.Email.Address # Email to send notifications to
-
-    module load samtools/1.5-fasrc02
-    module load bowtie2/2.3.2-fasrc02
-    module load trinityrnaseq/2.3.2-fasrc01
-
-    # NOTE: depending upon the size of your read data set, you may want to specify more or less time for this job. If you need > 24 hours, be sure to specify the general queue.
-
-    $TRINITY_HOME/util/SAM_nameSorted_to_uniq_count_stats.pl bowtie2.nameSorted.bam
 
 #### 10-3 Assesing assembly quality step 3: quantifying completeness
 
