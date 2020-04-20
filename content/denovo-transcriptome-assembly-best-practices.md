@@ -23,19 +23,19 @@ Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to exami
     :::bash    
     #!/bin/bash 
     #SBATCH -p serial_requeue       # Partition to submit to 
-    #SBATCH -n 1                   # Number of cores 
+    #SBATCH -N 1
+    #SBATCH -n 6                    # Number of cores
     #SBATCH -t 0-3:00               # Runtime in days-hours:minutes 
-    #SBATCH --mem 2000              # Memory in MB 
+    #SBATCH --mem 6000              # Memory in MB
     #SBATCH -J FastQC               # job name 
     #SBATCH -o FastQC.%A.out        # File to which standard out will be written 
     #SBATCH -e FastQC.%A.err        # File to which standard err will be written 
     #SBATCH --mail-type=ALL         # Type of email notification- BEGIN,END,FAIL,ALL 
     #SBATCH --mail-user=<PUT YOUR EMAIL ADDRESS HERE>  # Email to which notifications will be sent 
 
-    module purge
-    module load fastqc/0.11.5-fasrc01
+    readonly SINGULARITY_IMAGE='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
 
-    fastqc --outdir `pwd` $1  
+    ${SINGULARITY_EXEC} fastqc --threads ${SLURM_CPUS_ON_NODE} --outdir `pwd` $1
 
 The above script uses a command line argument, specified by $1, which would be the name of the fastq file. Thus, job submission would look something like:
          
@@ -179,9 +179,7 @@ Our recommendation is to first map your reads to an rRNA database, such as can b
     # $3 = R2 fastq file
     # $4 = sample_id (no spaces)
     
-    module purge
-    module load bowtie2/2.3.2-fasrc02
-    bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
 
 Both an R1 and R2 will get written for each of the switches.
 
@@ -242,7 +240,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
     # $1 == command line argument of comma-separated list of R1 fastq files
     # $2 == command line argument of comma-separated list of R2 fastq files
-    readonly TRINITY_OPTIONS="--max_memory 190G --CPU ${SLURM_CPUS_ON_NODE} --seqType fq --left ${PWD}/${1} --right ${PWD}/${2}"
+    readonly TRINITY_OPTIONS="--max_memory 190G --CPU ${SLURM_CPUS_ON_NODE} --seqType fq --left ${1} --right ${2}"
 
     ########################################
     # ... don't modify below here ...
@@ -279,10 +277,7 @@ The Trinity_OPTIONS string can also be edited to reflect particular desired feat
 Once the Trinity run has successfully completed, one will need to inspect the results, which are written to /trinity_out_dir **inside trinity.img**. You can access it as follows:
     
     :::bash
-    singularity shell --cleanenv --overlay trinity.img /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
-    >singularity cd /trinity_out_dir
-    >singularity cp Trinity.fasta ${YOUR_FILESYSTEM_STORAGE_DIRECTORY} 
-    >singularity exit
+    singularity exec --cleanenv --overlay trinity.img /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg cp /trinity_out_dir/Trinity.fasta ${YOUR_FILESYSTEM_STORAGE_DIRECTORY}
 
 
 #### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
@@ -291,9 +286,7 @@ Metrics such as N50 should never, by themselves, be treated as good indicators o
     
     :::bash
     srun --pty -p shared -t 00:20:00 --mem 500 /bin/bash
-    module purge
-    module load trinityrnaseq/2.3.2-fasrc01
-    $TRINITY_HOME/util/TrinityStats.pl Trinity.fasta > Trinity_assembly.metrics
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg sh -c '$TRINITY_HOME/util/TrinityStats.pl Trinity.fasta' > Trinity_assembly.metrics
 
 #### 10-2 Assesing assembly quality step 2: quantify read support for the assembly
 
@@ -313,9 +306,9 @@ As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wik
     # $1 = your assembly fasta
     assembly_prefix=$(basename $1 |sed 's/.fasta//g')
     
-    module purge    
-    module load bowtie2/2.3.2-fasrc02 
-    bowtie2-build -–threads 4 $1 $assembly_prefix
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
+
+    ${SINGULARITY_EXEC} bowtie2-build -–threads 4 $1 $assembly_prefix
 
 Next, you map your reads and calculate alignment statistics.
 
@@ -328,14 +321,13 @@ Next, you map your reads and calculate alignment statistics.
     #SBATCH -p serial_requeue,shared  #Partition to submit to
     #SBATCH --mem=16000  #Memory per node in MB
 
-    module purge
-    module load samtools/1.5-fasrc02
-    module load bowtie2/2.3.2-fasrc02 
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
+
     # $1 name of your assembly (without the .fasta suffix)
     # $2 comma separated list of left read file names
     # $3 comma separated list of right read file names
     
-    bowtie2 -p 10 -q --no-unal -k 20 -x $1 -1 $2 -2 $3  2>align_stats.txt| samtools view -@10 -Sb -o bowtie2.bam
+    ${SINGULARITY_EXEC} bowtie2 -p 10 -q --no-unal -k 20 -x $1 -1 $2 -2 $3  2>align_stats.txt| ${SINGULARITY_EXEC} samtools view -@10 -Sb -o bowtie2.bam
 
 The align_stats.txt file will provide info on the percentage of read pairs that mapped concordantly,as well as an overall alignment rate.
 
