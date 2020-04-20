@@ -374,7 +374,7 @@ Once the environment has been build, you simply activate it in your BUSCO job sc
     # $2 output directory (BUSCO will prepend run_)
     # $3 lineage directory see lineages to choose from at: http://busco.ezlab.org/
 
-    run_BUSCO.py -c 16 -o $2 -in $1 -l $3 -m trans
+    run_BUSCO.py -c 16 -o $2 -in $1 -l $3 -m transcriptome
 
     Example submission: sbatch BUSCO.sh Trinity.fasta trinity_BUSCO /n/holyscratch01/external_repos/INFORMATICS/BUSCO/eukaryota_odb9
 
