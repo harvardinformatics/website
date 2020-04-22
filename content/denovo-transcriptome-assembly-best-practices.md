@@ -240,7 +240,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
     # $1 == command line argument of comma-separated list of R1 fastq files
     # $2 == command line argument of comma-separated list of R2 fastq files
-    readonly TRINITY_OPTIONS="--max_memory 190G --CPU ${SLURM_CPUS_ON_NODE} --seqType fq --left ${1} --right ${2}"
+    readonly TRINITY_OPTIONS="--max_memory $((8*$(ulimit -m)/(1024**2)/10))G --CPU ${SLURM_CPUS_ON_NODE} --seqType fq --left ${1} --right ${2}"
 
     ########################################
     # ... don't modify below here ...
