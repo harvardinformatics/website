@@ -1,5 +1,5 @@
 Title: Cactus on the FASRC Cluster
-Date: 2019-09-19
+Date: 2020-04-28
 Author: Nathan Weeks
 Category: Software
 Tags: Multiple Sequence Alignment, Singularity
@@ -16,7 +16,7 @@ This guide describes best practices for running Cactus on the [FASRC Cluster](ht
 
 ## Cactus on the FASRC Cluster
 
-For reliable execution, it is recommended to run Cactus entirely within a provided [Singularity](https://www.rc.fas.harvard.edu/resources/documentation/software/singularity-on-odyssey/) image (`cactus --binariesMode local`) on a single node with enough memory for an MSA of the target genomes.
+For reliable execution, it is recommended to run Cactus entirely within a provided [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) image (`cactus --binariesMode local`), as illustrated below, on a single node with enough memory for an MSA of the target genomes.
 
 ## Example
 
@@ -28,17 +28,17 @@ $ curl -LO https://raw.githubusercontent.com/ComparativeGenomicsToolkit/cactus/m
 
 ### Example job script
 
-This job script must be submitted (via [sbatch](https://www.rc.fas.harvard.edu/resources/running-jobs/#Submitting_batch_jobs_using_the_sbatch_command)) from a directory on a file system that is accessible from all FASRC cluster compute nodes (e.g., directories prefixed with /n/, such as a subdirectory of the scratch directory identified by the [$SCRATCH](https://www.rc.fas.harvard.edu/policy-scratch/) environment variable) that has enough free space to accommodate the Cactus [job store](https://toil.readthedocs.io/en/latest/running/introduction.html#job-store), which stores the state of the workflow.
+This job script must be submitted (via [sbatch](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Submitting_batch_jobs_using_the_sbatch_command)) from a directory on a file system that is accessible from all FASRC cluster compute nodes (e.g., directories prefixed with /n/, such as a subdirectory of the scratch directory identified by the [$SCRATCH](https://docs.rc.fas.harvard.edu/kb/policy-scratch/) environment variable) that has enough free space to accommodate the Cactus [job store](https://toil.readthedocs.io/en/latest/running/introduction.html#job-store), which stores the state of the workflow.
 Depending on the number, size, and phylogeny of the genomes, the job store may require hundreds of gigabytes of storage.
 
 To minimize the performance impact of running Cactus on a parallel file system, this example job script creates the Cactus job store in an image file (`jobStore.img`) that contains an EXT3 file system used as a [persistent overlay](https://sylabs.io/guides/3.5/user-guide/persistent_overlays.html) for the Singularity container.
-The job store image file is created as a [sparse file](https://en.wikipedia.org/wiki/Sparse_file), so it initially consumes far less disk space (as indicated by the `du` command) than its maximum size (1T):
+The job store image file is created as a [sparse file](https://en.wikipedia.org/wiki/Sparse_file), so it initially consumes far less disk space (as indicated by the `du` command) than its maximum size (2T):
 
 ```
 $ ls -lh jobStore.img
--rw-rw----+ 1 user group 1.0T Dec  5 16:22 jobStore.img
+-rw-rw----+ 1 user group 2.0T Dec  5 16:22 jobStore.img
 $ du -h jobStore.img
-18G     jobStore.img
+34G     jobStore.img
 ```
 
 As Cactus memory requirements scale approximately quadratically with genome size, and linearly with the number of genomes, a node from the "bigmem" partitions (or similar) may be required.
@@ -60,7 +60,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     ########################################
     # parameters
     ########################################
-    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus:2019-11-29.sif
+    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus:v1.0.0.sif
     readonly JOBSTORE_IMAGE=jobStore.img # cactus jobStore; will be created if it doesn't exist
     readonly SEQFILE=evolverMammals.txt
     readonly OUTPUTHAL=evolverMammals.hal
@@ -75,22 +75,23 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     if [ ! -e "${JOBSTORE_IMAGE}" ]
     then
       restart=''
-      mkdir -p ${CACTUS_SCRATCH}/upper
-      truncate -s 1T "${JOBSTORE_IMAGE}"
-      singularity exec /n/singularity_images/informatics/e2fsprogs/e2fsprogs:1.45.6.sif mkfs.ext3 -d ${CACTUS_SCRATCH} "${JOBSTORE_IMAGE}"
+      mkdir -m 777 ${CACTUS_SCRATCH}/upper
+      truncate -s 2T "${JOBSTORE_IMAGE}"
+      singularity exec ${CACTUS_IMAGE} mkfs.ext3 -d ${CACTUS_SCRATCH} "${JOBSTORE_IMAGE}"
     else
       restart='--restart'
     fi
     
-    # Use empty home & /tmp directories in the container (to avoid, e.g., pip-installed packages in ~/.local)
-    mkdir -m 700 -p ${CACTUS_SCRATCH}/home ${CACTUS_SCRATCH}/tmp
+    # Use empty /tmp directory in the container (to avoid, e.g., pip-installed packages in ~/.local)
+    mkdir -m 700 -p ${CACTUS_SCRATCH}/tmp
     
     # the toil workDir must be on the same file system as the cactus jobStore
     singularity exec --overlay ${JOBSTORE_IMAGE} ${CACTUS_IMAGE} mkdir -p /cactus/workDir
     srun -n 1 singularity exec --cleanenv \
+                               --no-home \
                                --overlay ${JOBSTORE_IMAGE} \
                                --bind ${CACTUS_SCRATCH}/tmp:/tmp \
-                               --home ${CACTUS_SCRATCH}/home:/home/cactus ${CACTUS_IMAGE} \
+                               ${CACTUS_IMAGE} \
       cactus ${CACTUS_OPTIONS-} ${restart-} --workDir=/cactus/workDir --binariesMode local /cactus/jobStore "${SEQFILE}" "${OUTPUTHAL}"
     
     # /tmp would eventually be purged, but just in case the
@@ -125,45 +126,13 @@ For example, the following commands run [halValidate](https://github.com/Compara
 *NOTE: on the FAS RC Cluster, Singularity is not available on login nodes, and these commands must be run [within a batch or interactive environment](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/#Singularity_on_the_cluster) on a compute node*
 
     :::sh
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:2019-11-29.sif halValidate evolverMammals.hal
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:2019-11-29.sif halStats evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:v1.0.0.sif halValidate evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:v1.0.0.sif halStats evolverMammals.hal
 
 ## About the Cactus Singularity Image
 
-The Cactus Singularity image was generated from the following Dockerfile (specifying the root of a Cactus git working tree as the build context) using [docker2singularity](https://github.com/singularityware/docker2singularity):
+The Cactus Singularity image was generated from the [cactus v1.0.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.0.0) using the `singularity pull` command:
 
 ```
-# https://github.com/ComparativeGenomicsToolkit/cactus/issues/94
-FROM ubuntu:xenial-20191108 AS builder
-
-RUN apt-get update && apt-get install --no-install-recommends -y git gcc g++ build-essential python-dev zlib1g-dev libkyototycoon-dev libtokyocabinet-dev libkyotocabinet-dev libbz2-dev pkg-config python-pip python-setuptools python-wheel
-
-ENV kyotoTycoonIncl -I/usr/include -DHAVE_KYOTO_TYCOON=1
-ENV kyotoTycoonLib -L/usr/lib -Wl,-rpath,/usr/lib -lkyototycoon -lkyotocabinet -lz -lbz2 -lpthread -lm -lstdc++
-RUN mkdir -p /home/cactus
-
-COPY . /home/cactus
-
-RUN cd /home/cactus && make clean && rm -f /home/cactus/submodules/hdf5/bin/h5c++
-RUN cd /home/cactus && make
-
-RUN pip install --upgrade --prefix=/home/cactus/.local toil==3.20.0
-# https://github.com/ComparativeGenomicsToolkit/cactus/pull/79
-RUN cd /home/cactus && sed -i.bak 's/networkx>=2,<3/networkx==2.2/' setup.py && pip install --upgrade --prefix=/home/cactus/.local .
-
-FROM ubuntu:xenial-20191108
-# choose appropriate fast mirror
-RUN sed -i'' 's#http://archive.ubuntu.com/ubuntu/#http://mirror.math.princeton.edu/pub/ubuntu/#' /etc/apt/sources.list
-RUN apt-get update && apt-get install --no-install-recommends -y kyototycoon libtokyocabinet9 python python-pytest zlib1g bzip2 \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /home/cactus/bin/* /usr/local/bin/
-COPY --from=builder /home/cactus/submodules/sonLib/bin/* /usr/local/bin/
-COPY --from=builder /home/cactus/submodules/cactus2hal/bin/* /usr/local/bin/
-COPY --from=builder /home/cactus/.local/bin/* /usr/local/bin/
-# /usr/local/lib/python2.7/site-packages not in sys.path
-COPY --from=builder /home/cactus/.local/lib/python2.7/site-packages/ /usr/local/lib/python2.7/dist-packages/
-
-# https://github.com/ComparativeGenomicsToolkit/cactus/issues/102#issuecomment-540781259
-RUN sed -i'' -n '/config.writeXML/d; p' /usr/local/lib/python2.7/dist-packages/cactus/progressive/cactus_createMultiCactusProject.py
+singularity pull docker://quay.io/comparative-genomics-toolkit/cactus:v1.0.0
 ```
