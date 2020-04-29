@@ -1,5 +1,5 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
-Date: 2020-04-14 00:00
+Date: 2020-04-29 00:00
 Author: Adam Freedman
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
@@ -229,7 +229,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     #SBATCH --mem=0
     #SBATCH --exclusive
     #SBATCH --time=72:00:00
-    #SBATCH --partition=shared
+    #SBATCH --partition=shared # use "bigmem" if inchworm std::bad_alloc error occurs
 
     set -o nounset -o errexit -o xtrace
 
