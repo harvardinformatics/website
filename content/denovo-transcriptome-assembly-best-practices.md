@@ -229,7 +229,10 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     #SBATCH --mem=0
     #SBATCH --exclusive
     #SBATCH --time=72:00:00
-    #SBATCH --partition=shared # use "bigmem" if inchworm std::bad_alloc error occurs
+    # Use the "bigmem" partition if inchworm std::bad_alloc error occurs.
+    # The "shared" partition is otherwise preferred for faster / more reliable
+    # I/O to holyscratch01, faster CPUs, and sooner job start time,
+    #SBATCH --partition=shared
 
     set -o nounset -o errexit -o xtrace
 
