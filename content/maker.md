@@ -20,15 +20,10 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 
 ## Prerequisites
 
-These instructions assume the following shell variable is set:
-
-    :::sh
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
-
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) by running the following [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) from a FAS RC login node (as Singularity is not installed on the FAS RC login nodes):
 
         :::sh
-        srun -p test,serial_requeue,shared singularity exec --cleanenv ${MAKER_IMAGE} maker -CTL
+        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif maker -CTL'
 
     This results in 3 files:
 
