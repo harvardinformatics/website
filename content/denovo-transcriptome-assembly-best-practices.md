@@ -1,6 +1,6 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
-Date: 2020-04-29 00:00
-Author: Adam Freedman
+Date: 2020-07-01 00:00
+Author: Adam Freedman, Nathan Weeks
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
 Summary: A best-practices pipeline for de novo transcriptome assembly with Illumina paired-end reads using Trinity
@@ -33,7 +33,7 @@ Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to exami
     #SBATCH --mail-type=ALL         # Type of email notification- BEGIN,END,FAIL,ALL 
     #SBATCH --mail-user=<PUT YOUR EMAIL ADDRESS HERE>  # Email to which notifications will be sent 
 
-    readonly SINGULARITY_IMAGE='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
+    readonly SINGULARITY_IMAGE='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
 
     ${SINGULARITY_EXEC} fastqc --threads ${SLURM_CPUS_ON_NODE} --outdir `pwd` $1
 
@@ -179,7 +179,7 @@ Our recommendation is to first map your reads to an rRNA database, such as can b
     # $3 = R2 fastq file
     # $4 = sample_id (no spaces)
     
-    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
 
 Both an R1 and R2 will get written for each of the switches.
 
@@ -209,29 +209,29 @@ We continue to evaluate other de novo transcriptome assemblers, but at present w
 
 Settings used for Trinity will depend upon a number of factors, including the sequencing strategy, whether libraries are stranded, and the size of the data set.
 
-**Normalization.** In the latest version of Trinity, in silico normalization is done by default. For data sets with > 200 million reads after the filtering steps above, for computational considerations we recommend using the default mode, and allowing Trinity to normalize reads. If you wish to turn off normalization, then include the **--no_normalize_reads** flag in your Trinity command line. 
+**Normalization.** In the latest version of Trinity, [in silico normalization](https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-Insilico-Normalization) is done by default. For data sets with > 200 million reads after the filtering steps above, for computational considerations we recommend using the default mode, and allowing Trinity to normalize reads. If you wish to turn off normalization, then include the **--no_normalize_reads** flag in your Trinity command line.
 
 
 **Running Trinity inside a Singuarlity container image.**
-Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity is to do so inside a singularity [SINGULARITY](https://singularity.lbl.gov/) container image, which operates like a virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set. In principle, you could download a docker image from the Trinity website, as follows:
- 
-    :::bash
-    singularity pull docker://trinityrnaseq/trinityrnaseq
+Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity (as well as the [preferred mode for the Trinity developers](https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-in-Docker#running-trinity-using-singularity)) is to do so inside a [Singularity](https://sylabs.io/guides/3.5/user-guide/introduction.html) container image, which operates like a light-weight virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set.
+For the convenience of users of the Harvard FAS Cannon Cluster, we provide images from the [Trinity Singularity Image Archive](https://data.broadinstitute.org/Trinity/TRINITY_SINGULARITY/) at /n/singularity_images/informatics/trinityrnaseq/.
 
-
-but for convenience of users of the Harvard FAS Cannon Cluster, we will continue to host an image for the most recent Trinity build. 
-
-Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. We do this by reserving exclusive use of a node, and, strangely enough, by setting --mem=0, we effectively reserve all available memory. Below is an example script for a Trinity job (with normalization):
+Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. Below is an example script for a Trinity job (with normalization):
      
     :::bash
     #!/bin/sh
+    # use an entire node in the specified Slurm partition
     #SBATCH --nodes=1
     #SBATCH --mem=0
     #SBATCH --exclusive
+    # Adjust wall time limit as appropriate for partition. If the job is cancelled
+    # due to time limit exceeded, the job script can be resubmitted, and Trinity
+    # will resume execution after the last completed.
     #SBATCH --time=72:00:00
-    # Use the "bigmem" partition if inchworm std::bad_alloc error occurs.
-    # The "shared" partition is otherwise preferred for faster / more reliable
-    # I/O to holyscratch01, faster CPUs, and sooner job start time,
+    # Resubmit to the "bigmem" partition if inchworm std::bad_alloc error occurs.
+    # The job will then stop after inchworm completes, and can be resubmitted to the
+    # "shared" or "test" partition, which are preferred for faster / more reliable
+    # execution and sooner job start time.
     #SBATCH --partition=shared
 
     set -o nounset -o errexit -o xtrace
@@ -239,57 +239,72 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     ########################################
     # parameters
     ########################################
-    readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg
-    readonly OVERLAY_IMAGE=trinity.img # will be created if it doesn't exist
-    # $1 == command line argument of comma-separated list of R1 fastq files
-    # $2 == command line argument of comma-separated list of R2 fastq files
-    readonly TRINITY_OPTIONS="--max_memory $((8*$(ulimit -m)/(1024**2)/10))G --CPU ${SLURM_CPUS_ON_NODE} --seqType fq --left ${1} --right ${2}"
+    readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg
+    readonly TRINITY_OUT_DIR=trinity_out_dir
+    # To see all options:
+    #    singularity exec --cleanenv ${SINGULARITY_IMAGE}  Trinity --show_full_usage_info
+    readonly TRINITY_OPTIONS="--output ${TRINITY_OUT_DIR} --max_memory $((8*$(ulimit -m)/(1024**2)/10))G --CPU ${SLURM_CPUS_ON_NODE} $@"
 
     ########################################
     # ... don't modify below here ...
-
-    if [ ! -e "${OVERLAY_IMAGE}" ]
+    if [ ! -s "${TRINITY_OUT_DIR}/read_partitions.img" ]
     then
+      mkdir -p "${TRINITY_OUT_DIR}"
       readonly tmpdir=$(mktemp -d)
       mkdir -m 777 -p ${tmpdir}/upper
-      truncate -s 4T "${OVERLAY_IMAGE}"
-      singularity exec --cleanenv ${SINGULARITY_IMAGE} mkfs.ext3 -d "${tmpdir}" ${OVERLAY_IMAGE}
+      truncate -s 4T "${TRINITY_OUT_DIR}/read_partitions.img"
+      singularity exec --cleanenv ${SINGULARITY_IMAGE} mkfs.ext3 -d "${tmpdir}" "${TRINITY_OUT_DIR}/read_partitions.img"
+      singularity exec --cleanenv --overlay ${TRINITY_OUT_DIR}/read_partitions.img ${SINGULARITY_IMAGE} mkdir /read_partitions
+      ln -sf /read_partitions ${TRINITY_OUT_DIR}/read_partitions
       rm -rf "${tmpdir}"
     fi
 
-    srun -n 1 singularity exec --cleanenv \
+    # if on a bigmem node, stop after inchworm
+    case ${SLURM_JOB_PARTITION} in
+      bigmem) no_run_chrysalis='--no_run_chrysalis' ;;
+           *) no_run_chrysalis='' ;;
+    esac
+
+    srun -n 1 env time -v singularity exec \
+                               --cleanenv \
                                --no-home \
-                               --overlay ${OVERLAY_IMAGE} \
-                               ${SINGULARITY_IMAGE} \
-      Trinity ${TRINITY_OPTIONS} --output /trinity_out_dir
+                               --overlay ${TRINITY_OUT_DIR}/read_partitions.img \
+                               "${SINGULARITY_IMAGE}" \
+      Trinity ${TRINITY_OPTIONS} ${no_run_chrysalis}
 
 
-If this script was called trinity.sh, we would submit the slurm job like this:
+
+This script automatically sets the Trinity `--max_memory` and `--CPU` options based on hardware characteristics of the compute node the job is run on.
+
+If this script is saved to a file called _trinity.sh_, we would submit the Slurm job like this:
 
     :::bash
-    sbatch trinity.sh ${comma-separated R1 fastq files} ${comma-separated R2 fastq files}
+    sbatch trinity.sh --seqType fq --left {comma-separated R1 fastq files} --right {comma-separated R2 fastq files}
 
+Alternatively, instead of appending options to the `sbatch` command, the **TRINITY_OPTIONS** string in the trinity.sh script could be edited to reflect particular desired features, e.g.:
 
-The Trinity_OPTIONS string can also be edited to reflect particular desired features, e.g.:
+* Turning off normalization (`--no_normalize_reads`)
+* For directional libraries, `--SS_lib_type` should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
+* An alternative way for specifying a large number of fastq files is to instead use `--left_list` and `--right_list` and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
 
-* Turning off normalization 
-* For directional libraries, --SS_lib_type should be set to FR or RF for ligation-stranded and dUTP-based library construction, respectively.
-* An alternative way for specifying a large number of fastq files is to instead use --left_list and --right_list and have the arguments point to txt files that provide the full path names of the R1 and R2 files, respectively, with 1 row per file
+Then the job script would be submitted without arguments:
 
-
-Once the Trinity run has successfully completed, one will need to inspect the results, which are written to /trinity_out_dir **inside trinity.img**. You can access it as follows:
-    
     :::bash
-    singularity exec --cleanenv --overlay trinity.img /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg cp /trinity_out_dir/Trinity.fasta ${YOUR_FILESYSTEM_STORAGE_DIRECTORY}
+    sbatch trinity.sh
 
+
+Once the Trinity run has successfully completed, one will need to inspect the results, which are written (by default) to _trinity_out_dir/Trinity.fasta_.
+
+The _trinity_out_dir/read_partitions_ directory can contain hundreds of thousands or millions of files from Chrysalis-generated components (de Brujin graphs & partitioned sequence reads) that are input for Butterfly, which generates additional files containing full-length transcripts.
+For I/O efficiency, the contents of the _trinity_out_dir/read_partitions_ directory are written to an [overlay image file](https://sylabs.io/guides/3.5/user-guide/persistent_overlays.html#file-system-image-overlay) (trinity_out_dir/read_partitions.img).
 
 #### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
 
-Metrics such as N50 should never, by themselves, be treated as good indicators of assembly quality. An obvious, if extreme, example, is that if you incorrectly assembly all of your reads into one gigantic contig, your N50 will be very large. However, extremely short N50s, such that they represent a fraction of the expected size of the fragments in your library might indicate other problems. Similarly, the number of "transcripts" and "genes" in your Trinity assembly do not provide any absolute metric of quality. However, the more "genes" Trinity assembles--particularly if they are only a few hundred bases long--the more likely your contigs represent subsequences of actual genes. These caveats aside, you can easily generate N50 statistics, and counts of the number of Trinity contigs in an interactive session using the perl script that comes with Trinity.
+Metrics such as N50 should never, by themselves, be treated as good indicators of assembly quality. An obvious, if extreme, example, is that if you incorrectly assembly all of your reads into one gigantic contig, your N50 will be very large. However, extremely short N50s, such that they represent a fraction of the expected size of the fragments in your library might indicate other problems. Similarly, the number of "transcripts" and "genes" in your Trinity assembly do not provide any absolute metric of quality. However, the more "genes" Trinity assembles--particularly if they are only a few hundred bases long--the more likely your contigs represent subsequences of actual genes. These caveats aside, you can easily generate N50 statistics, and counts of the number of Trinity contigs in an [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) using the [TrinityStats.pl](https://github.com/trinityrnaseq/trinityrnaseq/wiki/Transcriptome-Contig-Nx-and-ExN50-stats#the-gene-contig-nx-statistic) script that comes with Trinity.
     
     :::bash
     srun --pty -p shared -t 00:20:00 --mem 500 /bin/bash
-    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg sh -c '$TRINITY_HOME/util/TrinityStats.pl Trinity.fasta' > Trinity_assembly.metrics
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg sh -c '$TRINITY_HOME/util/TrinityStats.pl Trinity.fasta' > Trinity_assembly.metrics
 
 #### 10-2 Assesing assembly quality step 2: quantify read support for the assembly
 
@@ -309,7 +324,7 @@ As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wik
     # $1 = your assembly fasta
     assembly_prefix=$(basename $1 |sed 's/.fasta//g')
     
-    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
 
     ${SINGULARITY_EXEC} bowtie2-build -–threads 4 $1 $assembly_prefix
 
@@ -324,7 +339,7 @@ Next, you map your reads and calculate alignment statistics.
     #SBATCH -p serial_requeue,shared  #Partition to submit to
     #SBATCH --mem=16000  #Memory per node in MB
 
-    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.10.0.simg'
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
 
     # $1 name of your assembly (without the .fasta suffix)
     # $2 comma separated list of left read file names
@@ -341,7 +356,7 @@ The align_stats.txt file will provide info on the percentage of read pairs that 
 
 Another metric of assembly quality is evaluating the extent to which it recovers single copy orthologs that are present across higher taxonomic groupings. While in the absence of knowing which transcripts are truly expressed in a sample it is difficult to determine an absolute expectation for recovery of these orthologs, clearly, high numbers of such genes classified as missing in an assembly should be considered a potential red flag. Furthermore, asssemblies based upon the same read data can be evaluated with respect to the numbers of genes that are complete, fragmented, or missing from the assembly.
 
-To assess completeness, we use [BUSCO](http://busco.ezlab.org/). BUSCO requires that you specify a BUSCO (Benchmarking Universal Single-Copy Orthologs) data set. Data sets are located on the Cannon cluster in /n/holyscratch01/external_repos/INFORMATICS/BUSCO/. Contact us if the database you need is not currently in that directory. BUSCO wraps HMMER, and uses Hidden Markov Model profiles to determine whether assembly contigs are orthologus with a particular BUSCO dataset entry. We recommend you build a conda environment that contains BUSCO, and then running it using that environment. First, you build the environment by launching an interactive session (e.g. srun --pty -p shared -t 01:00:00 --mem 1000 /bin/bash), then do:
+To assess completeness, we use [BUSCO](http://busco.ezlab.org/). BUSCO requires that you specify a BUSCO (Benchmarking Universal Single-Copy Orthologs) data set. Data sets are located on the Cannon cluster in /n/holyscratch01/external_repos/INFORMATICS/BUSCO/. Contact us if the database you need is not currently in that directory. BUSCO wraps HMMER, and uses Hidden Markov Model profiles to determine whether assembly contigs are orthologus with a particular BUSCO dataset entry. We recommend you build a conda environment that contains BUSCO, and then running it using that environment. First, you build the environment by launching an [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) (e.g. srun --pty -p shared -t 01:00:00 --mem 1000 /bin/bash), then do:
 
     :::
     module load python
