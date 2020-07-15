@@ -75,7 +75,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     if [ ! -e "${JOBSTORE_IMAGE}" ]
     then
       restart=''
-      mkdir -m 777 ${CACTUS_SCRATCH}/upper
+      mkdir -m 777 ${CACTUS_SCRATCH}/upper ${CACTUS_SCRATCH}/work
       truncate -s 2T "${JOBSTORE_IMAGE}"
       singularity exec ${CACTUS_IMAGE} mkfs.ext3 -d ${CACTUS_SCRATCH} "${JOBSTORE_IMAGE}"
     else

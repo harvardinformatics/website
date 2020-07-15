@@ -251,7 +251,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     then
       mkdir -p "${TRINITY_OUT_DIR}"
       readonly tmpdir=$(mktemp -d)
-      mkdir -m 777 -p ${tmpdir}/upper
+      mkdir -m 777 -p ${tmpdir}/upper ${tmpdir}/work
       truncate -s 4T "${TRINITY_OUT_DIR}/read_partitions.img"
       singularity exec --cleanenv ${SINGULARITY_IMAGE} mkfs.ext3 -d "${tmpdir}" "${TRINITY_OUT_DIR}/read_partitions.img"
       singularity exec --cleanenv --overlay ${TRINITY_OUT_DIR}/read_partitions.img ${SINGULARITY_IMAGE} mkdir /read_partitions
