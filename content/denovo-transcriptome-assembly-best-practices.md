@@ -1,5 +1,5 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
-Date: 2020-07-01 00:00
+Date: 2020-07-21 00:00
 Author: Adam Freedman, Nathan Weeks
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
@@ -252,7 +252,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
       mkdir -p "${TRINITY_OUT_DIR}"
       readonly tmpdir=$(mktemp -d)
       mkdir -m 777 -p ${tmpdir}/upper ${tmpdir}/work
-      truncate -s 4T "${TRINITY_OUT_DIR}/read_partitions.img"
+      truncate -s 2T "${TRINITY_OUT_DIR}/read_partitions.img"
       singularity exec --cleanenv ${SINGULARITY_IMAGE} mkfs.ext3 -d "${tmpdir}" "${TRINITY_OUT_DIR}/read_partitions.img"
       singularity exec --cleanenv --overlay ${TRINITY_OUT_DIR}/read_partitions.img ${SINGULARITY_IMAGE} mkdir /read_partitions
       ln -sf /read_partitions ${TRINITY_OUT_DIR}/read_partitions
@@ -297,6 +297,13 @@ Once the Trinity run has successfully completed, one will need to inspect the re
 
 The _trinity_out_dir/read_partitions_ directory can contain hundreds of thousands or millions of files from Chrysalis-generated components (de Brujin graphs & partitioned sequence reads) that are input for Butterfly, which generates additional files containing full-length transcripts.
 For I/O efficiency, the contents of the _trinity_out_dir/read_partitions_ directory are written to an [overlay image file](https://sylabs.io/guides/3.5/user-guide/persistent_overlays.html#file-system-image-overlay) (trinity_out_dir/read_partitions.img).
+The read_partitions.img image file is created as a [sparse file](https://en.wikipedia.org/wiki/Sparse_file), so it initially consumes far less disk space (as indicated by the `du` command, which reports disk usage) than its maximum size (2T):
+
+    :::bash
+    $ ls -lh read_partitions.img
+    -rw-rw----+ 1 user group 2.0T Dec  5 16:22 read_partitions.img
+    $ du -h read_partitions.img
+    34G     read_partitions.img
 
 #### 10-1 Assessing assembly quality step 1: basic alignment summary metrics
 
