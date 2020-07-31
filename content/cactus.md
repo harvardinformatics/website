@@ -1,5 +1,5 @@
 Title: Cactus on the FASRC Cluster
-Date: 2020-04-28
+Date: 2020-07-30
 Author: Nathan Weeks
 Category: Software
 Tags: Multiple Sequence Alignment, Singularity
@@ -60,7 +60,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     ########################################
     # parameters
     ########################################
-    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus:v1.0.0.sif
+    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus_v1.1.0.sif
     readonly JOBSTORE_IMAGE=jobStore.img # cactus jobStore; will be created if it doesn't exist
     readonly SEQFILE=evolverMammals.txt
     readonly OUTPUTHAL=evolverMammals.hal
@@ -75,22 +75,22 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     if [ ! -e "${JOBSTORE_IMAGE}" ]
     then
       restart=''
-      mkdir -m 777 ${CACTUS_SCRATCH}/upper ${CACTUS_SCRATCH}/work
+      mkdir -p -m 777 ${CACTUS_SCRATCH}/upper ${CACTUS_SCRATCH}/work
       truncate -s 2T "${JOBSTORE_IMAGE}"
       singularity exec ${CACTUS_IMAGE} mkfs.ext3 -d ${CACTUS_SCRATCH} "${JOBSTORE_IMAGE}"
     else
       restart='--restart'
     fi
     
-    # Use empty /tmp directory in the container (to avoid, e.g., pip-installed packages in ~/.local)
+    # Use empty /tmp directory in the container
     mkdir -m 700 -p ${CACTUS_SCRATCH}/tmp
     
     # the toil workDir must be on the same file system as the cactus jobStore
     singularity exec --overlay ${JOBSTORE_IMAGE} ${CACTUS_IMAGE} mkdir -p /cactus/workDir
-    srun -n 1 singularity exec --cleanenv \
-                               --no-home \
+    srun -n 1 /usr/bin/time -v singularity exec --cleanenv \
                                --overlay ${JOBSTORE_IMAGE} \
                                --bind ${CACTUS_SCRATCH}/tmp:/tmp \
+                               --env PYTHONNOUSERSITE=1 \
                                ${CACTUS_IMAGE} \
       cactus ${CACTUS_OPTIONS-} ${restart-} --workDir=/cactus/workDir --binariesMode local /cactus/jobStore "${SEQFILE}" "${OUTPUTHAL}"
     
@@ -126,13 +126,13 @@ For example, the following commands run [halValidate](https://github.com/Compara
 *NOTE: on the FAS RC Cluster, Singularity is not available on login nodes, and these commands must be run [within a batch or interactive environment](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/#Singularity_on_the_cluster) on a compute node*
 
     :::sh
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:v1.0.0.sif halValidate evolverMammals.hal
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus:v1.0.0.sif halStats evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v1.1.0.sif halValidate evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v1.1.0.sif halStats evolverMammals.hal
 
 ## About the Cactus Singularity Image
 
-The Cactus Singularity image was generated from the [cactus v1.0.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.0.0) using the `singularity pull` command:
+The Cactus Singularity image was generated from the [cactus:v1.0.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.1.0) using the `singularity pull` command:
 
 ```
-singularity pull docker://quay.io/comparative-genomics-toolkit/cactus:v1.0.0
+singularity pull docker://quay.io/comparative-genomics-toolkit/cactus_v1.1.0
 ```
