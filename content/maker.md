@@ -76,7 +76,7 @@ The MAKER datastore directory will be created in the directory this job script i
     # Add any MAKER options after the "maker" command
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_REPEATMASKER_LIB_DIR:+}" ] || echo '-RM_off')
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_REPEATMASKER_LIB_DIR:-}" ] || echo '-RM_off')
 
 ### Example Multi-Compute-Node MAKER Job Script 
 
@@ -110,7 +110,7 @@ The MAKER datastore directory will be created in the directory this job script i
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${REPEATMASKER_LIB_DIR:+}" ] || echo '-RM_off')
+    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${REPEATMASKER_LIB_DIR:-}" ] || echo '-RM_off')
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
