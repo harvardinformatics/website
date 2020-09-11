@@ -44,59 +44,59 @@ Our example scripts used to implement workflows rely on creating an Anaconda env
 You will likely get asked it you want to update particular dependencies, so click yes. Once you have created a conda environment, you can re-use it at any time. the -n specifies the name of the environment you care creating, the -c the channels you use to grab packages, followed by a list of packages you want installed into the environment. You can also add additional packages later to an environment. Examples for basic conda environment operations can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html). Scripts below demonstrate how to activate the enviroment.
 
 #### 1. Build STAR index
-	:::bash
-	#!/bin/sh
-	#SBATCH -n 12 
-	#SBATCH -N 1
-	#SBATCH -t 12:00:00
+        :::bash
+        #!/bin/sh
+        #SBATCH -n 12 
+        #SBATCH -N 1
+        #SBATCH -t 12:00:00
         #SBATCH --mem=64000
-	#SBATCH -p shared
-	#SBATCH -e starprep.e
-	#SBATCH -o starprep.o
+        #SBATCH -p shared
+        #SBATCH -e starprep.e
+        #SBATCH -o starprep.o
 
-	module purge
-	module load python
+        module purge
+        module load python
         source activate rsem
 
         # $1 == 1 - read length, i.e. if you did 2 x 100 PE, this value is 99
-	# $2 == gtf annotation file
-	# $3 == full path to genome fasta
-	# Note: this script writes the STAR index to the current working directory where
-	# the SLURM script is being executed.
+        # $2 == gtf annotation file
+        # $3 == full path to genome fasta
+        # Note: this script writes the STAR index to the current working directory where
+        # the SLURM script is being executed.
 
-	STAR --runMode genomeGenerate -runThreadN 12 --sjdbOverhang $1 --sjdbGTFfile $2 --genomeDir $(pwd) --genomeFastaFiles $3 
+        STAR --runMode genomeGenerate -runThreadN 12 --sjdbOverhang $1 --sjdbGTFfile $2 --genomeDir $(pwd) --genomeFastaFiles $3 
 
 Note: building a STAR index can be a memory-itensive process, and one may need to allocate more memory to the job. If the SLURM jobs fails to exceeding the memory allocation, the error log will indicate the minimum amount of memory one should reserve.
 #### 2. Do first-pass alignment to the genome with STAR
-	:::bash
-	#!/bin/bash 
-	#SBATCH -N 1
-	#SBATCH -n 16
-	#SBATCH -p shared
-	#SBATCH -e star_%A.e
-	#SBATCH -o star_%A.o
-	#SBATCH -J star
-	#SBATCH --mem=64000  
-	#SBATCH -t 23:00:00 
+        :::bash
+        #!/bin/bash 
+        #SBATCH -N 1
+        #SBATCH -n 16
+        #SBATCH -p shared
+        #SBATCH -e star_%A.e
+        #SBATCH -o star_%A.o
+        #SBATCH -J star
+        #SBATCH --mem=64000  
+        #SBATCH -t 23:00:00 
 
-	module purge
+        module purge
         module load python
         source activate rsem
 	
         # $1 == path to directory where STAR index lives
-	# $2 == a prefix for the STAR output, typically includes sample name
-	# $3 == R1 fastq file
-	# $4 == R2 fastq file
-	# The readFilesCommand is set to zcat under the assumption that the fastq files are provided
-	# as gzipped files. The number of threads, total memory, and length of job will depend upon
-	# a number of factors including the library size, size of genome, etc. 	
+        # $2 == a prefix for the STAR output, typically includes sample name
+        # $3 == R1 fastq file
+        # $4 == R2 fastq file
+        # The readFilesCommand is set to zcat under the assumption that the fastq files are provided
+        # as gzipped files. The number of threads, total memory, and length of job will depend upon
+        # a number of factors including the library size, size of genome, etc. 	
 
-	STAR --runThreadN 16 --genomeDir $1 --readFilesCommand zcat --outFileNamePrefix $2 --readFilesIn $3 $4
+        STAR --runThreadN 16 --genomeDir $1 --readFilesCommand zcat --outFileNamePrefix $2 --readFilesIn $3 $4
 
 #### 3. 2nd pass STAR alignments
 As with 1st pass, these are done for each sample. The one difference,is that we use splice sites detected from all 1st-pass alignments performed as part of your experiment.
-	:::bash
-	#!/bin/bash
+        :::bash
+        #!/bin/bash
         #SBATCH -N 1
         #SBATCH -n 16
         #SBATCH -p shared
@@ -111,40 +111,40 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
         source activate rsem
 
         # $1 == path to directory where STAR index lives
-	$ $2 == space separated list of all splice site *tab files generated from 1-st pass
+        # $2 == space separated list of all splice site *tab files generated from 1-st pass
         # $3 == a prefix for the STAR output, typically includes sample name
         # $4 == R1 fastq file
         # $5 == R2 fastq file
 	
-	STAR --runThreadN 16 --genomeDir $1 --sjdbFileChrStartEnd $2 --readFilesCommand zcat --outFileNamePrefix $3 --readFilesIn $4 $5
+        STAR --runThreadN 16 --genomeDir $1 --sjdbFileChrStartEnd $2 --readFilesCommand zcat --outFileNamePrefix $3 --readFilesIn $4 $5
 
 #### 4. Build an RSEM index for wrapping bowtie2 alignment to genome annotations
-	:::bash
-	#!/bin/bash 
-	#SBATCH -n 6
-	#SBATCH –N 1
-	#SBATCH -p shared
-	#SBATCH -e rsemindex_%A.err
-	#SBATCH -o rsemindex_%A.out
-	#SBATCH –J rsemindex
-	#SBATCH --mem=8000
-	#SBATCH -t 03:00:00
+        :::bash
+        #!/bin/bash 
+        #SBATCH -n 6
+        #SBATCH –N 1
+        #SBATCH -p shared
+        #SBATCH -e rsemindex_%A.err
+        #SBATCH -o rsemindex_%A.out
+        #SBATCH –J rsemindex
+        #SBATCH --mem=8000
+        #SBATCH -t 03:00:00
 
-	module purge
+        module purge
         module load python
-	source activate rsem
+        source activate rsem
 	
-	# $1 == path to gtf annotation file
-	# $2 == genome fasta file
-	# $3 == name of index, e.g. the genome name without the .fa/.fasta file extension
-	# The --bowtie2 argument tells RSEM to build a bowtie2 index for the alignment step.
-	# On Odyssey, loading the RSEM module also loads a compatible version of bowtie 2.
+        # $1 == path to gtf annotation file
+        # $2 == genome fasta file
+        # $3 == name of index, e.g. the genome name without the .fa/.fasta file extension
+        # The --bowtie2 argument tells RSEM to build a bowtie2 index for the alignment step.
+        # On Odyssey, loading the RSEM module also loads a compatible version of bowtie 2.
 
-	rsem-prepare-reference -p 6 --bowtie2 --gtf $1 $(pwd)/${2} $(pwd)/$3 
+        rsem-prepare-reference -p 6 --bowtie2 --gtf $1 $(pwd)/${2} $(pwd)/$3 
 
 #### 5. Build an RSEM index, specifying gene-transcript relationsips
 This approach is used when gene-transcript relationships are defined from an external source,e.g. if you are using BLASTP/X annotation of de novo transcriptome assembly contigs to associated contigs to gene-level symbols.
-	:::bash
+        :::bash
         #!/bin/bash 
         #SBATCH -n 6
         #SBATCH –N 1
@@ -161,7 +161,7 @@ This approach is used when gene-transcript relationships are defined from an ext
 
         # $1 == path to gtf annotation file
         # $2 == tab-separated file with gene id and transcript/contig id in 1st and 2nd columns, respectively
-	# $3 == genome fasta file
+        # $3 == genome fasta file
         # $4 == name of index, e.g. the genome name without the .fa/.fasta file extension
         # The --bowtie2 argument tells RSEM to build a bowtie2 index for the alignment step.
         # On Odyssey, loading the RSEM module also loads a compatible version of bowtie 2.
@@ -181,26 +181,26 @@ One quantifies abundances of the transcripts in the RNA-seq dataset with the RSE
 - the sample name
 
 #### 6. Estimate expression from pre-computed STAR alignments  
-	:::bash
-    	#!/bin/bash
-    	#SBATCH -n 16
-    	#SBATCH -N 1
-    	#SBATCH --mem 64000
-    	#SBATCH -p serial_requeue,shared
-    	#SBATCH -o rsem_%A.out
-    	#SBATCH -e rsem_%A.err
-    	#SBATCH -J rsem
-    	#SBATCH -t 10:00:00
-	
-	module purge
+        :::bash
+        #!/bin/bash
+        #SBATCH -n 16
+        #SBATCH -N 1
+        #SBATCH --mem 64000
+        #SBATCH -p serial_requeue,shared
+        #SBATCH -o rsem_%A.out
+        #SBATCH -e rsem_%A.err
+        #SBATCH -J rsem
+        #SBATCH -t 10:00:00
+
+        module purge
         module load python
         source activate rsem
 	
         # $1 == STAR alignments bam file
-	# $2 == name of STAR index
-	# #3 == sample name
+        # $2 == name of STAR index
+        # #3 == sample name
 
-	rsem-calculate-expression --star --num-threads 16 --alignments $1 $(pwd)/$2 $(pwd)/$3 
+        rsem-calculate-expression --star --num-threads 16 --alignments $1 $(pwd)/$2 $(pwd)/$3 
 
 #### 7. Align reads with bowtie2 and estimate expression
         :::bash
