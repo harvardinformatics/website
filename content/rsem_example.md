@@ -1,6 +1,6 @@
 Title: RSEM example on Odyssey
 Author: Adam Freedman
-Date: 2019-07-18 00:00
+Date: 2020-09-11 00:00
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, RSEM
 Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey cluster
@@ -11,8 +11,6 @@ Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey clust
 If an annotated reference genome is available, RSEM can use a gtf file representation of those annotations to extract the transcript sequences for which quantification will be performed, and build the relevant genome and transcriptome indices. If this is done and the alignment step is implemented within RSEM, the option is available to also write the read alignments in genomic coordiinates, permitting visualization of expression data in a browser such as [IGV](http://software.broadinstitute.org/software/igv/). If no reference genome is available, one must supply RSEM a fasta file of transcript sequences. In addition, one can supply information that groups transcripts by gene, such that gene-level expression estimates. 
 
 The example workflows below are demonstrated as sbatch scripts for using with the SLURM job scheduling engine. With modest tweaking,these can be reconfigured for other schedulers, e.g. LSF, SGE. 
-
-# Preliminaries
 
 ### Choosing an aligner
 [STAR](https://github.com/alexdobin/STAR)is a splice-aware aligner that will produce gapped alignments to handle reads that span exon-intron junctions. Thus it is only appropriate when an annotated reference genome is available. STAR performs two-pass iterative mapping that identifies novel splice sites, and uses the updated splicing information to generate transcriptome (as well as genomic) alignments.
@@ -37,6 +35,14 @@ While STAR can be run from within RSEM, this prevents best practice with respect
 
 We define these workflows as combinations of numbered steps enumerated below.
 
+### Workflow steps (to be combined as described above)
+Our example scripts used to implement workflows rely on creating an Anaconda environment, with doing so on the Cannon cluster described [here](https://informatics.fas.harvard.edu/python-on-odyssey.html). Anaconda python distributions, available on the cluster, are used to create such an environment. To create an enviornment for rsem, and aligners it might use, one would do this:
+    :::bash
+    module load python
+    conda create -n rsem -c bioconda rsem star bowtie2
+
+You will likely get asked it you want to update particular dependencies, so click yes. Once you have created a conda environment, you can re-use it at any time. the -n specifies the name of the environment you care creating, the -c the channels you use to grab packages, followed by a list of packages you want installed into the environment. You can also add additional packages later to an environment. Examples for basic conda environment operations can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html). Scripts below demonstrate how to activate the enviroment.
+
 #### 1. Build STAR index
 	:::bash
 	#!/bin/sh
@@ -44,12 +50,13 @@ We define these workflows as combinations of numbered steps enumerated below.
 	#SBATCH -N 1
 	#SBATCH -t 12:00:00
         #SBATCH --mem=64000
-	#SBATCH -p shared,general 
+	#SBATCH -p shared
 	#SBATCH -e starprep.e
 	#SBATCH -o starprep.o
 
 	module purge
-	module load STAR/2.7.0e-fasrc01
+	module load python
+        source activate rsem
 
         # $1 == 1 - read length, i.e. if you did 2 x 100 PE, this value is 99
 	# $2 == gtf annotation file
@@ -65,7 +72,7 @@ Note: building a STAR index can be a memory-itensive process, and one may need t
 	#!/bin/bash 
 	#SBATCH -N 1
 	#SBATCH -n 16
-	#SBATCH -p shared,serial_requeue,general
+	#SBATCH -p shared
 	#SBATCH -e star_%A.e
 	#SBATCH -o star_%A.o
 	#SBATCH -J star
@@ -73,8 +80,10 @@ Note: building a STAR index can be a memory-itensive process, and one may need t
 	#SBATCH -t 23:00:00 
 
 	module purge
-	module load STAR/2.7.0e-fasrc01
-	# $1 == path to directory where STAR index lives
+        module load python
+        source activate rsem
+	
+        # $1 == path to directory where STAR index lives
 	# $2 == a prefix for the STAR output, typically includes sample name
 	# $3 == R1 fastq file
 	# $4 == R2 fastq file
@@ -90,7 +99,7 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
 	#!/bin/bash
         #SBATCH -N 1
         #SBATCH -n 16
-        #SBATCH -p shared,serial_requeue,general
+        #SBATCH -p shared
         #SBATCH -e star_%A.e
         #SBATCH -o star_%A.o
         #SBATCH -J star
@@ -98,7 +107,9 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
         #SBATCH -t 23:00:00
 
         module purge
-        module load STAR/2.7.0e-fasrc01
+        module load python
+        source activate rsem
+
         # $1 == path to directory where STAR index lives
 	$ $2 == space separated list of all splice site *tab files generated from 1-st pass
         # $3 == a prefix for the STAR output, typically includes sample name
@@ -112,7 +123,7 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
 	#!/bin/bash 
 	#SBATCH -n 6
 	#SBATCH –N 1
-	#SBATCH -p serial_requeue,shared,general
+	#SBATCH -p shared
 	#SBATCH -e rsemindex_%A.err
 	#SBATCH -o rsemindex_%A.out
 	#SBATCH –J rsemindex
@@ -120,7 +131,8 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
 	#SBATCH -t 03:00:00
 
 	module purge
-	module load rsem/1.2.29-fasrc03
+        module load python
+	source activate rsem
 	
 	# $1 == path to gtf annotation file
 	# $2 == genome fasta file
@@ -136,7 +148,7 @@ This approach is used when gene-transcript relationships are defined from an ext
         #!/bin/bash 
         #SBATCH -n 6
         #SBATCH –N 1
-        #SBATCH -p serial_requeue,shared,general
+        #SBATCH -p shared
         #SBATCH -e rsemindex_%A.err
         #SBATCH -o rsemindex_%A.out
         #SBATCH –J rsemindex
@@ -144,7 +156,8 @@ This approach is used when gene-transcript relationships are defined from an ext
         #SBATCH -t 03:00:00
 
         module purge
-        module load rsem/1.2.29-fasrc03
+        module load python
+        source activate rsem
 
         # $1 == path to gtf annotation file
         # $2 == tab-separated file with gene id and transcript/contig id in 1st and 2nd columns, respectively
@@ -173,16 +186,17 @@ One quantifies abundances of the transcripts in the RNA-seq dataset with the RSE
     	#SBATCH -n 16
     	#SBATCH -N 1
     	#SBATCH --mem 64000
-    	#SBATCH -p serial_requeue
+    	#SBATCH -p serial_requeue,shared
     	#SBATCH -o rsem_%A.out
     	#SBATCH -e rsem_%A.err
     	#SBATCH -J rsem
     	#SBATCH -t 10:00:00
 	
 	module purge
-	module load STAR/2.7.0e-fasrc01
-	module load rsem/1.2.29-fasrc03
-	# $1 == STAR alignments bam file
+        module load python
+        source activate rsem
+	
+        # $1 == STAR alignments bam file
 	# $2 == name of STAR index
 	# #3 == sample name
 
@@ -201,7 +215,8 @@ One quantifies abundances of the transcripts in the RNA-seq dataset with the RSE
         #SBATCH -t 10:00:00
 
         module purge
-        module load rsem/1.2.29-fasrc03
+        module load python
+        source activate rsem
 
         # $1 == R1
         # $2 == R2
