@@ -36,7 +36,7 @@ While STAR can be run from within RSEM, this prevents best practice with respect
 We define these workflows as combinations of numbered steps enumerated below.
 
 ### Workflow steps (to be combined as described above)
-Our example scripts used to implement workflows rely on creating an Anaconda environment, with doing so on the Cannon cluster described [here](https://informatics.fas.harvard.edu/python-on-odyssey.html). Anaconda python distributions, available on the cluster, are used to create such an environment. To create an enviornment for rsem, and aligners it might use, one would do this:
+Our example scripts used to implement workflows rely on creating an Anaconda environment, with doing so on the Cannon cluster described [here](https://informatics.fas.harvard.edu/python-on-cannon.html). Anaconda python distributions, available on the cluster, are used to create such an environment. To create an enviornment for rsem, and aligners it might use, one would do this:
     :::bash
     module load python
     conda create -n rsem -c bioconda rsem star bowtie2
