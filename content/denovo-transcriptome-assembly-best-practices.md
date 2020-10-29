@@ -1,5 +1,5 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
-Date: 2020-07-21 00:00
+Date: 2020-09-29 00:00
 Author: Adam Freedman, Nathan Weeks
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
@@ -217,6 +217,10 @@ Rebuilding a new Trinity module with each update is increasingly complicated, as
 For the convenience of users of the Harvard FAS Cannon Cluster, we provide images from the [Trinity Singularity Image Archive](https://data.broadinstitute.org/Trinity/TRINITY_SINGULARITY/) at /n/singularity_images/informatics/trinityrnaseq/.
 
 Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. Below is an example script for a Trinity job (with normalization):
+
+> **The current recommended file system on Cannon from which to run Trinity jobs is holyscratch01, as it is colocated in the same data center as the Cannon compute nodes (Holyoke).
+> Do not submit Trinity jobs from a boslfs / boslfs02 file system (located in Boston).
+> Input FASTQ/FASTA files *may* reside on boslfs/boslfs02 as long as the `trinity_out_dir` (created by default in the directory from which the job script is sumitted; see the TRINITY_OUT_DIR variable below) is located on holyscratch01.**
      
     :::bash
     #!/bin/sh
