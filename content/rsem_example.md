@@ -1,6 +1,6 @@
 Title: RSEM example on Odyssey
 Author: Adam Freedman
-Date: 2020-09-11 00:00
+Date: 2020-10-28 00:00
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, RNA-seq Quantitation, Differential Expression, RSEM
 Summary: An example of quantifying RNA-seq expression with RSEM on Odyssey cluster
@@ -94,7 +94,7 @@ Note: building a STAR index can be a memory-itensive process, and one may need t
         STAR --runThreadN 16 --genomeDir $1 --readFilesCommand zcat --outFileNamePrefix $2 --readFilesIn $3 $4
 
 #### 3. 2nd pass STAR alignments
-As with 1st pass, these are done for each sample. The one difference,is that we use splice sites detected from all 1st-pass alignments performed as part of your experiment.
+As with 1st pass, these are done for each sample. The two differences are that 1) we use splice sites detected from all 1st-pass alignments performed as part of your experiment and 2) we tell STAR to output a bam in transcriptome coordinates (with *Aligned.toTranscriptome.out.bam* as a suffix), which is what one will then feed into RSEM.
         :::bash
         #!/bin/bash
         #SBATCH -N 1
@@ -116,7 +116,7 @@ As with 1st pass, these are done for each sample. The one difference,is that we 
         # $4 == R1 fastq file
         # $5 == R2 fastq file
 	
-        STAR --runThreadN 16 --genomeDir $1 --sjdbFileChrStartEnd $2 --readFilesCommand zcat --outFileNamePrefix $3 --readFilesIn $4 $5
+        STAR --runThreadN 16 --genomeDir $1 --sjdbFileChrStartEnd $2 --quantMode TranscriptomeSAM --readFilesCommand zcat --outFileNamePrefix $3 --readFilesIn $4 $5
 
 #### 4. Build an RSEM index for wrapping bowtie2 alignment to genome annotations
         :::bash
