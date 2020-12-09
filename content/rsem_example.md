@@ -65,7 +65,7 @@ You will likely get asked it you want to update particular dependencies, so clic
     # Note: this script writes the STAR index to the current working directory where
     # the SLURM script is being executed.
 
-    STAR --runMode genomeGenerate -runThreadN ${SLURM_JOB_CPUS_PER_NODE} --sjdbOverhang $1 --sjdbGTFfile $2 --genomeDir $(pwd) --genomeFastaFiles $3 
+    STAR --runMode genomeGenerate --runThreadN ${SLURM_JOB_CPUS_PER_NODE} --sjdbOverhang $1 --sjdbGTFfile $2 --genomeDir $(pwd) --genomeFastaFiles $3 
 
 Note: building a STAR index can be a memory-itensive process, and one may need to allocate more memory to the job. If the SLURM jobs fails to exceeding the memory allocation, the error log will indicate the minimum amount of memory one should reserve.
 #### 2. Do first-pass alignment to the genome with STAR
