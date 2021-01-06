@@ -1,5 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
+Modified: 2021-01-04
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -7,68 +8,101 @@ Summary: How to run MAKER on the FASRC Cluster
 
 ## Introduction
 
-[MAKER](http://www.yandell-lab.org/software/maker.html) is a popular genome annotation pipeline for both prokaryotic and eukaryotic genomes.
+[MAKER](http://www.yandell-lab.org/software/maker.html)[^maker2]<sup>,</sup>[^maker] is a popular genome annotation pipeline for both prokaryotic and eukaryotic genomes.
 This guide describes best practices for running MAKER on the FASRC cluster to maximize performance.
 For additional MAKER background and examples, see [this tutorial](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/MAKER_Tutorial_for_WGS_Assembly_and_Annotation_Winter_School_2018).
-Most tutorial examples can be run on an compute node in an [interactive job](https://www.rc.fas.harvard.edu/resources/running-jobs/#Interactive_jobs_and_srun), prefixing any MAKER commands with `singularity exec ${MAKER_IMAGE}`.
+Most tutorial examples can be run on an compute node in an [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun), prefixing any MAKER commands with `singularity exec --cleanenv ${MAKER_IMAGE}`.
 For general MAKER support, see the [maker-devel Google Group](https://groups.google.com/forum/#!forum/maker-devel).
 
 ## MAKER on the FASRC Cluster
 
-MAKER is run on the FASRC cluster using a provided [Singularity](https://www.rc.fas.harvard.edu/resources/documentation/software/singularity-on-odyssey/) image.
-This image was created from the MAKER [Biocontainers](https://biocontainers.pro) image (which in turn was generated from the corresponding [Bioconda package](https://bioconda.github.io/recipes/maker/README.html)), and at the time of this writing contains the latest versions of most bioinformatics software dependencies.
+MAKER is run on the FASRC cluster using a provided [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) image.
+This image was created from the MAKER [Biocontainers](https://biocontainers.pro) image (which was automatically generated from the corresponding [Bioconda package](https://bioconda.github.io/recipes/maker/README.html)), and bundles [RepBase RepeatMasker edition](https://www.girinst.org/repbase/update/) in addition to the default [Dfam 3.2](https://xfam.wordpress.com/2020/07/09/dfam-3-2-release/)[^dfam] library.
 
 ## Prerequisites
 
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) by running the following [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) from a FAS RC login node (as Singularity is not installed on the FAS RC login nodes):
 
         :::sh
-        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif maker -CTL'
+        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif maker -CTL'
 
     This results in 3 files:
 
-    * **maker_opts.ctl** (modify this file)
+    * **maker_opts.ctl** (*required*: modify this file)
     * **maker_exe.ctl** (*do not* modify this file)
     * **maker_bopts.ctl** (*optionally* modify this file)
 
-2. In maker_opts.ctl, set `max_dna_len=999999999` to avoid splitting reference sequence contigs into smaller segments for sequence alignment.
-   This lessens the file metadata load on the parallel file system (FASRC scratchlfs or holylfs file systems), which is one of the main constraints for MAKER scalability.
-   Note that with a test data set, memory usage per process remained below the `--mem-per-cpu=4g` limit suggested in the SLURM job script below, but YMMV.
+2. In **maker_opts.ctl**:
+    * *(Required)* If not using RepeatMasker, change:
 
-3. *(Optional; applicable to eukaryotic genomes only)* Download [RepBase RepeatMasker Edition](https://www.girinst.org/) to use as a supplemental repeat database for [RepeatMasker](http://www.repeatmasker.org/RMDownload.html) (license required == $$).
-   See the comments of the sample job script below for where to copy the RepeatMaskerLib.embl file.
-   Note that RepeatMasker is bundled with [Dfam 3.0](https://dfam.org/home).
+          `model_org=all`
+          
+          to
+          
+          `model_org= `
+       
+          If using RepeatMasker, change `model_org=all` to an appropriate family/genus/species (or other taxonomic rank).
+          The [famdb.py](https://github.com/Dfam-consortium/FamDB#famdbpy) utility can be used to query the combined Dfam/Repbase repeat library:
+
+
+            :::sh
+            $ srun --pty test,serial_requeue,shared singularity shell --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
+            ...
+            Singularity> /usr/local/share/RepeatMasker/famdb.py -i /usr/local/share/RepeatMasker/Libraries/RepeatMaskerLib.h5 names Heliconius
+            Exact Matches
+            =============
+            33416 Heliconius (scientific name)
+
+            Non-exact Matches
+            =================
+            33418 Heliconius ethilla (scientific name), Heliconius ethilla (Godart, 1819) (authority)
+            33419 Heliconius numata (scientific name), Heliconius numata (Cramer, 1780) (authority)
+            ...
+            Singularity> /usr/local/share/RepeatMasker/famdb.py -i /usr/local/share/RepeatMasker/Libraries//RepeatMaskerLib.h5  lineage --ancestors --descendants 'Heliconius melpomene'
+            ...
+            ...
+            └─33416 Heliconius [538]
+              └─34740 Heliconius melpomene [75]
+                ├─171916 Heliconius melpomene rosina [0]
+                ├─171917 Heliconius melpomene melpomene [88]
+            ...
+            Singularity> exit
+
+          In this case, to use the species "Heliconius melpomene", specify `model_org=heliconius_melpomene` (i.e., case insensitive, replace spaces with underscores)
+
+    * *(Recommended)* Change `max_dna_len=100000` to `max_dna_len=300000` to increase the length of the segments that the reference sequence is partitioned into for sequence alignment.
+      This reduces the number of files created during MAKER execution, lessening the file metadata load on the [FASRC scratch file system](https://docs.rc.fas.harvard.edu/kb/policy-scratch/), which is one of the main constraints for MAKER scalability.
+    * Other options may need to be adjusted (e.g., `split_hit=10000` corresponds to the longest expected intron length).
+      See [this table](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4286374/table/T1/)[^maker] for a description of additional relevant MAKER options in maker_opts.ctl and maker_bopts.ctl.
 
 ## Example Job Script
 
 There are two approaches to running MAKER on the FASRC cluster: (1) entirely with in a container on a single compute node (more reliable, but slower) and  (2) on multiple compute nodes (launched using MPI from outside of the container; susceptible to conflicts with the user environment).
-The single-node approach is considered more robust, and recommended if your if you have environment variables set in bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
-
 Either example job script must be submitted (via sbatch) from a directory on a file system that is mounted on all compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
 The MAKER datastore directory will be created in the directory this job script is submitted from (named using the reference sequence file name prefix, and ending in *-output).
 
 ### Example Single-Compute-Node MAKER Job Script
 
+The single-node approach is considered more robust (though less scalable), and is recommended if your if you have environment variables set in bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
+
     :::sh
     #!/bin/sh
+    # Customize --time and --partition as appropriate.
+    # --exclusive --mem=0 allocates all CPUs and memory on the node.
     #SBATCH --partition=shared
-    # use an entire node, and allow use of all the memory on the node
     #SBATCH --nodes=1
     #SBATCH --mem=0
     #SBATCH --exclusive
-    # Customize --time as appropriate
     #SBATCH --time=0:30:00
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
 
     # Submit this job script from the directory with the MAKER control files
 
-    # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
-    export SINGULARITYENV_LIBDIR=${PWD}/SINGULARITYENV_LIBDIR
-    mkdir -p "${SINGULARITYENV_LIBDIR}"
-    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${SINGULARITYENV_LIBDIR}'"
-    # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory (replacing the existing symlink):
-    #   rm -f ${SINGULARITYENV_LIBDIR}/RepeatMaskerLib.embl && cp /path/to/RepeatMaskerLib.embl ${SINGULARITYENV_LIBDIR}
+    # RepeatMasker setup (if not using RepeatMasker, optionally comment-out these three lines)
+    export SINGULARITYENV_LIBDIR=${PWD}/LIBDIR
+    mkdir -p LIBDIR
+    singularity exec ${MAKER_IMAGE} sh -c 'ln -sf /usr/local/share/RepeatMasker/Libraries/* LIBDIR'
 
     # singularity options:
     # * --cleanenv : don't pass environment variables to container (except those specified in --env option-arguments)
@@ -76,41 +110,42 @@ The MAKER datastore directory will be created in the directory this job script i
     # Add any MAKER options after the "maker" command
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_LIBDIR:-}" ] || echo '-RM_off')
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore
 
 ### Example Multi-Compute-Node MAKER Job Script 
+
+In the following job script, MAKER can scale across multiple nodes in the FAS RC cluster by increasing the sbatch `--ntasks` value (which indicates the total number of processor cores, or "CPUs", to allocate across any number of compute nodes).
+Increase `--ntasks` may cause the job to take longer to schedule and start.
+See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Slurm_partitions) for a description of limits on jobs submitted to available Slurm partitions.
 
     :::sh
     #!/bin/sh
     # Customize --time, --ntasks, and --partition as appropriate
     #SBATCH --time=0:30:00
-    # --ntasks should be <= 100 due to possible I/O bottlenecks
     #SBATCH --ntasks=8
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
 
     # Submit this job script from the directory with the MAKER control files
 
-    # Remove any environment variables
+    # Remove any environment modules
     module purge
 
     # Use Intel MPI for the "mpiexec" command
     module load intel/19.0.5-fasrc01 impi/2019.8.254-fasrc01
 
-    # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
+    # RepeatMasker setup (if not using RepeatMasker, optionally comment-out these three lines)
+    mkdir -p LIBDIR
+    singularity exec ${MAKER_IMAGE} sh -c 'ln -sf /usr/local/share/RepeatMasker/Libraries/* LIBDIR'
     export LIBDIR=$PWD/LIBDIR
-    mkdir -p "${LIBDIR}"
-    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${LIBDIR}'"
-    # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
-    #   cp /path/to/RepeatMaskerLib.embl ${LIBDIR}
 
     # Add any MAKER options
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${LIBDIR:-}" ] || echo '-RM_off')
+    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
@@ -192,5 +227,11 @@ The MAKER Singularity image file was obtained from the [Galaxy Project](https://
 It can be downloaded for use in other HPC environments that support Singularity:
 
 ```
-$ curl -O /n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0
+$ curl -O /n/singularity_images/informatics/maker/maker:2.31.11-repbase
 ```
+
+## References
+
+[^maker2]: Holt C, Yandell M. *MAKER2: an annotation pipeline and genome-database management tool for second-generation genome projects.* BMC Bioinformatics. 2011 Dec 22;12:491. doi: [10.1186/1471-2105-12-491](https://dx.doi.org/10.1186%2F1471-2105-12-491). PMID: 22192575; PMCID: [PMC3280279](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3280279/).
+[^maker]: Campbell MS, Holt C, Moore B, Yandell M. *Genome Annotation and Curation Using MAKER and MAKER-P.* Curr Protoc Bioinformatics. 2014 Dec 12;48:4.11.1-39. doi: [10.1002/0471250953.bi0411s48](https://dx.doi.org/10.1002%2F0471250953.bi0411s48). PMID: 25501943; PMCID: [PMC4286374](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4286374/).
+[^dfam]: Hubley R, Finn RD, Clements J, Eddy SR, Jones TA, Bao W, Smit AF, Wheeler TJ. *The Dfam database of repetitive DNA families.* Nucleic Acids Res. 2016 Jan 4;44(D1):D81-9. doi: [10.1093/nar/gkv1272](https://dx.doi.org/10.1093%2Fnar%2Fgkv1272). Epub 2015 Nov 26. PMID: 26612867; PMCID: [PMC4702899](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4702899/).
