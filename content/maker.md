@@ -23,7 +23,7 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) by running the following [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) from a FAS RC login node (as Singularity is not installed on the FAS RC login nodes):
 
         :::sh
-        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif maker -CTL'
+        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif maker -CTL'
 
     This results in 3 files:
 
@@ -42,7 +42,7 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 ## Example Job Script
 
 There are two approaches to running MAKER on the FASRC cluster: (1) entirely with in a container on a single compute node (more reliable, but slower) and  (2) on multiple compute nodes (launched using MPI from outside of the container; susceptible to conflicts with the user environment).
-The single-node approach is recommended if you have set environment variables in your bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
+The single-node approach is considered more robust, and recommended if your if you have environment variables set in bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
 
 Either example job script must be submitted (via sbatch) from a directory on a file system that is mounted on all compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
 The MAKER datastore directory will be created in the directory this job script is submitted from (named using the reference sequence file name prefix, and ending in *-output).
@@ -59,24 +59,24 @@ The MAKER datastore directory will be created in the directory this job script i
     # Customize --time as appropriate
     #SBATCH --time=0:30:00
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif
 
     # Submit this job script from the directory with the MAKER control files
 
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
-    export SINGULARITYENV_REPEATMASKER_LIB_DIR=${PWD}/REPEATMASKER_LIB_DIR
-    mkdir -p "${SINGULARITYENV_REPEATMASKER_LIB_DIR}"
-    singularity exec --cleanenv ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${REPEATMASKER_LIB_DIR}'"
-    # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
-    #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
+    export SINGULARITYENV_LIBDIR=${PWD}/SINGULARITYENV_LIBDIR
+    mkdir -p "${SINGULARITYENV_LIBDIR}"
+    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${SINGULARITYENV_LIBDIR}'"
+    # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory (replacing the existing symlink):
+    #   rm -f ${SINGULARITYENV_LIBDIR}/RepeatMaskerLib.embl && cp /path/to/RepeatMaskerLib.embl ${SINGULARITYENV_LIBDIR}
 
     # singularity options:
-    # * --cleanenv : don't pass environment variables to container except those prefixed with SINGULARITYENV
+    # * --cleanenv : don't pass environment variables to container (except those specified in --env option-arguments)
     # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
     # Add any MAKER options after the "maker" command
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_REPEATMASKER_LIB_DIR:-}" ] || echo '-RM_off')
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore $([ "${SINGULARITYENV_LIBDIR:-}" ] || echo '-RM_off')
 
 ### Example Multi-Compute-Node MAKER Job Script 
 
@@ -89,7 +89,7 @@ The MAKER datastore directory will be created in the directory this job script i
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.10--pl526_16.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0.sif
 
     # Submit this job script from the directory with the MAKER control files
 
@@ -97,20 +97,20 @@ The MAKER datastore directory will be created in the directory this job script i
     module purge
 
     # Use Intel MPI for the "mpiexec" command
-    module load intel/17.0.4-fasrc01 impi/2017.2.174-fasrc01
+    module load intel/19.0.5-fasrc01 impi/2019.8.254-fasrc01
 
     # Optional repeat masking (if not using RepeatMasker, comment-out these three lines)
-    export REPEATMASKER_LIB_DIR=$PWD/REPEATMASKER_LIB_DIR
-    mkdir -p "${REPEATMASKER_LIB_DIR}"
-    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${REPEATMASKER_LIB_DIR}'"
+    export LIBDIR=$PWD/LIBDIR
+    mkdir -p "${LIBDIR}"
+    singularity exec ${MAKER_IMAGE} sh -c "ln -sf /usr/local/share/RepeatMasker/Libraries/* '${LIBDIR}'"
     # If RepBase RepeatMasker Edition has been downloaded, it should be copied into this directory:
-    #   cp /path/to/RepeatMaskerLib.embl ${REPEATMASKER_LIB_DIR}
+    #   cp /path/to/RepeatMaskerLib.embl ${LIBDIR}
 
     # Add any MAKER options
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${REPEATMASKER_LIB_DIR:-}" ] || echo '-RM_off')
+    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore $([ "${LIBDIR:-}" ] || echo '-RM_off')
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
@@ -192,5 +192,5 @@ The MAKER Singularity image file was obtained from the [Galaxy Project](https://
 It can be downloaded for use in other HPC environments that support Singularity:
 
 ```
-$ curl -O https://depot.galaxyproject.org/singularity/maker:2.31.10--pl526_16
+$ curl -O /n/singularity_images/informatics/maker/maker:2.31.11--pl526h61907ee_0
 ```
