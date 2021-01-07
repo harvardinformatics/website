@@ -151,7 +151,7 @@
 <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
     <div class="row">
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-8 col-md-8" style="margin-top: 2em; padding: 20px 30px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)">
+        <div class="col-lg-9 col-md-9" style="margin-top: 2em; padding: 20px 30px; box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)">
         {% else %}
         <div class="col-sm-12">
         {% endif %}
@@ -169,7 +169,7 @@
         {% endblock %}
         </div>
         {% if not HIDE_SIDEBAR or ABOUT_ME %}
-        <div class="col-lg-4 col-md-4 hidden-sm" id="sidebar">
+        <div class="col-lg-3 col-md-3 hidden-sm" id="sidebar">
             <aside>
             {% if ABOUT_ME %}
                 {% include 'includes/aboutme.html' %}
