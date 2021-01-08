@@ -73,6 +73,7 @@ MENUITEMS = (
     ('About', '/pages/about.html'),
 )
 SHOW_ARTICLE_AUTHOR = True
+SHOW_DATE_MODIFIED = True
 # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
 #           ('Another social link', '#'),)
