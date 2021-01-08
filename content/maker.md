@@ -1,6 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-01-04
+Modified: 2021-01-08
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -163,24 +163,13 @@ df: Warning: cannot read table of mounted file systems: No such file or director
 
 JBrowse provides a script `maker2jbrowse` that automatically exports a MAKER datastore to a JBrowse data directory that can be directly visualized in JBrowse.
 However, this script executes very slowly on a parallel file system (e.g., FASRC scratchlfs and holylfs file systems), and the resulting JBrowse data directory is completely unsuitable for visualization when located on a parallel file system due to a large number of small files created.
-An in-house customization of this script (`maker2jbrowse-odyssey`) has been developed and tuned for parallel file systems.
-Execution time of `maker2jbrowse-odyssey` is well over an order of magnitude faster than `maker2jbrowse`, and the resulting JBrowse data directory contains tens of files in standard formats usable by other tools (e.g., [bgzip](https://www.htslib.org/doc/bgzip.html)-compressed & [tabix](https://www.htslib.org/doc/tabix.html)-indexed [GFF3](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), and bgzip-compressed and [samtools](https://www.htslib.org/doc/samtools.html)-faidx-indexed FASTA) instead of tens/hundreds of thousands of JBrowse-specific files.
+An in-house customization of this script (`ifxmaker2jbrowse`) has been developed and tuned for parallel file systems.
+Execution time of `ifxmaker2jbrowse` is well over an order of magnitude faster than `maker2jbrowse`, and the resulting JBrowse data directory contains tens of files in standard formats usable by other tools (e.g., [bgzip](https://www.htslib.org/doc/bgzip.html)-compressed & [tabix](https://www.htslib.org/doc/tabix.html)-indexed [GFF3](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), and bgzip-compressed and [samtools](https://www.htslib.org/doc/samtools.html)-faidx-indexed FASTA) instead of tens/hundreds of thousands of JBrowse-specific files.
 
-### maker2jbrowse-odyssey setup
+### ifxmaker2jbrowse
 
-Create a [conda environment](https://informatics.fas.harvard.edu/python-on-odyssey.html) with the [JBrowse Perl libraries and command-line utilities](https://bioconda.github.io/recipes/jbrowse/README.html), [samtools](https://bioconda.github.io/recipes/samtools/README.html), and [htslib](https://bioconda.github.io/recipes/htslib/README.html), then copy the [maker2jbrowse-odyssey script](images/maker2jbrowse-odyssey) into the ${JBROWSE_SOURCE_DIR}/bin directory and ensure it is executable:
-
-```
-$ module load Anaconda3/5.0.1-fasrc02
-$ conda create -n jbrowse-utils jbrowse samtools htslib
-$ source activate jbrowse-utils
-(jbrowse-utils) $ cp /path/to/maker2jbrowse-odyssey ${JBROWSE_SOURCE_DIR}/bin
-(jbrowse-utils) $ chmod +x ${JBROWSE_SOURCE_DIR}/bin/maker2jbrowse-odyssey
-```
-
-### maker2jbrowse-odyssey execution
-
-The following example job script (submitted from the MAKER datastore directory) demonstrates the use of the maker2jbrowse-odyssey script:
+A Singularity image containing the [ifxmaker2jbrowse script](images/ifxmaker2jbrowse) and and all dependencies provided.
+The following example job script (submitted from the MAKER datastore directory) demonstrates its use:
 
     :::sh
     #!/bin/sh
@@ -191,33 +180,30 @@ The following example job script (submitted from the MAKER datastore directory) 
     #SBATCH --mem=32G
     #SBATCH --partition=shared
     
-    module load Anaconda3/5.0.1-fasrc02
-    source activate jbrowse-utils
-    
     # set to the pathname of reference FASTA file specified for the maker_opts.ctl "genome=" option.
     REFERENCE_FASTA=../MY_REF.fa 
     
     # options to bgzip and sort (assuming GNU coreutils sort); these are used for optimizing performance and disk usage
-    export MAKER2JBROWSE_BGZIP_OPTIONS="--threads=${SLURM_CPUS_PER_TASK}"
-    export MAKER2JBROWSE_SORT_OPTIONS="--parallel=${SLURM_CPUS_PER_TASK} --stable --buffer-size=1G --compress-program=gzip"
+    export SINGULARITYENV_MAKER2JBROWSE_BGZIP_OPTIONS="--threads=${SLURM_CPUS_PER_TASK}"
+    export SINGULARITYENV_MAKER2JBROWSE_SORT_OPTIONS="--parallel=${SLURM_CPUS_PER_TASK} --stable --buffer-size=1G --compress-program=gzip"
     
     # if you would like to omit the creation of a compressed/indexed reference FASTA file, and store just the
     # reference sequence the lengths for use in JBrowse, add the `--noseq` option to the following command:
-    ${JBROWSE_SOURCE_DIR}/bin/maker2jbrowse-odyssey --bgzip_fasta=${REFERENCE_FASTA} --no_names_index --ds_index *_master_datastore_index.log
+    singularity run --cleanenv /n/singularity_images/informatics/maker/ifxmaker2jbrowse:20210108.sif --bgzip_fasta=${REFERENCE_FASTA} --no_names_index --ds_index *_master_datastore_index.log
 
-The recommended maker2jbrowse-odyssey `--no_names_index` option disables the creation of a searchable index of all feature names in JBrowse.
+The recommended ifxmaker2jbrowse `--no_names_index` option disables the creation of a searchable index of all feature names in JBrowse.
 If name-based indexing is desired for select tracks, this can subsequently be done more efficiently (resulting in fewer files) using the following options to the JBrowse [generate-names.pl](https://jbrowse.org/docs/generate-names.pl.html) script (e.g., for the protein2genome and est2genome tracks):
 
 ```
 # execute from the JBrowse data/ directory
-(jbrowse-utils) $ ${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks protein2genome,est2genome --hashBits 4 --compress --out .
+singularity exec --cleanenv /n/singularity_images/informatics/maker/ifxmaker2jbrowse:20210108.sif generate-names.pl --tracks protein2genome,est2genome --hashBits 4 --compress --out .
 ```
 
 ### Running JBrowse on the FASRC Cluster using Open OnDemand
 
 A JBrowse instance can be launched on the FASRC cluster using Open OnDemand instance ([https://vdi.rc.fas.harvard.edu/]()).
 From the menu, select Interactive Apps > JBrowse.
-In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the maker2jbrowse-odyssey script (in the MAKER datastore directory), then click "Launch".
+In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the ifxmaker2jbrowse script (in the MAKER datastore directory), then click "Launch".
 
 For more details, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) guide.
 

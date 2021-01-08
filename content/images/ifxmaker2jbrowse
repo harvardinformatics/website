@@ -16,8 +16,8 @@ use URI::Escape;
 
 =head1 USAGE
 
-     maker2jbrowse-odyssey [OPTION] <gff3file1> <gff3file2> ...
-     maker2jbrowse-odyssey [OPTION] -d <datastore_index>
+     ifxmaker2jbrowse [OPTION] <gff3file1> <gff3file2> ...
+     ifxmaker2jbrowse [OPTION] -d <datastore_index>
 
      This script takes MAKER produced GFF3 files and dumps them into a
      JBrowse for you using pre-configured JSON tracks.
@@ -98,7 +98,7 @@ my $compress = 0;
 my $compress_program;
 my $localbin = '';
 
-if($0 eq 'bin/maker2jbrowse-odyssey') {
+if($0 eq 'bin/ifxmaker2jbrowse') {
     $localbin = 'bin/';
 }
 
