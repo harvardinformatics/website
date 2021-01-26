@@ -108,9 +108,10 @@ The single-node approach is considered more robust (though less scalable), and i
     # * --cleanenv : don't pass environment variables to container (except those specified in --env option-arguments)
     # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
     # Add any MAKER options after the "maker" command
+    # * -nolock reduces file creation overhead (lock files not needed when using MPI)
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nodatastore
+    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nolock -nodatastore
 
 ### Example Multi-Compute-Node MAKER Job Script 
 
@@ -143,9 +144,10 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
 
     # Add any MAKER options
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
+    # * -nolock reduces file creation overhead (lock files not needed when using MPI)
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nodatastore
+    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
