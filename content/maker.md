@@ -1,6 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-01-08
+Modified: 2021-02-10
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -24,12 +24,13 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 1. Create the empty MAKER [control files](http://weatherby.genetics.utah.edu/MAKER/wiki/index.php/The_MAKER_control_files_explained) by running the following [interactive job](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Interactive_jobs_and_srun) from a FAS RC login node (as Singularity is not installed on the FAS RC login nodes):
 
         :::sh
-        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif maker -CTL'
+        srun -p test,serial_requeue,shared sh -c 'singularity exec --cleanenv /n/singularity_images/informatics/maker/maker:3.01.03-repbase.sif maker -CTL'
 
     This results in 3 files:
 
     * **maker_opts.ctl** (*required*: modify this file)
     * **maker_exe.ctl** (*do not* modify this file)
+    * **maker_evm.ctl** (*optionally* modify this file)
     * **maker_bopts.ctl** (*optionally* modify this file)
 
 2. In **maker_opts.ctl**:
@@ -46,7 +47,7 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 
 
             :::sh
-            $ srun --pty test,serial_requeue,shared singularity shell --cleanenv /n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
+            $ srun --pty test,serial_requeue,shared singularity shell --cleanenv /n/singularity_images/informatics/maker/maker:3.01.03-repbase.sif
             ...
             Singularity> /usr/local/share/RepeatMasker/famdb.py -i /usr/local/share/RepeatMasker/Libraries/RepeatMaskerLib.h5 names Heliconius
             Exact Matches
@@ -95,7 +96,7 @@ The single-node approach is considered more robust (though less scalable), and i
     #SBATCH --exclusive
     #SBATCH --time=0:30:00
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:3.01.03-repbase.sif
 
     # Submit this job script from the directory with the MAKER control files
 
@@ -127,7 +128,7 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     #SBATCH --mem-per-cpu=4g
     #SBATCH --partition=shared
 
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:2.31.11-repbase.sif
+    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:3.01.03-repbase.sif
 
     # Submit this job script from the directory with the MAKER control files
 
@@ -208,15 +209,6 @@ From the menu, select Interactive Apps > JBrowse.
 In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the ifxmaker2jbrowse script (in the MAKER datastore directory), then click "Launch".
 
 For more details, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) guide.
-
-## Using the MAKER Singularity Image on Other HPC Clusters
-
-The MAKER Singularity image file was obtained from the [Galaxy Project](https://galaxyproject.org/), which maintains a [large repository of Singularity images](https://depot.galaxyproject.org/singularity/) for use by the [Galaxy platform](https://usegalaxy.org/).
-It can be downloaded for use in other HPC environments that support Singularity:
-
-```
-$ curl -O /n/singularity_images/informatics/maker/maker:2.31.11-repbase
-```
 
 ## References
 
