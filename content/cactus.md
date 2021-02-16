@@ -132,7 +132,7 @@ For example, the following commands run [halValidate](https://github.com/Compara
 
 ## About the Cactus Singularity Image
 
-The Cactus Singularity image was generated from the [cactus:v1.0.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.3.0) using the `singularity pull` command:
+The Cactus Singularity image was generated from the [cactus:v1.3.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.3.0) using the `singularity pull` command:
 
 ```
 singularity pull docker://quay.io/comparative-genomics-toolkit/cactus:v1.3.0
