@@ -17,7 +17,7 @@ For general MAKER support, see the [maker-devel Google Group](https://groups.goo
 ## MAKER on the FASRC Cluster
 
 MAKER is run on the FASRC cluster using a provided [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) image.
-This image was created from the MAKER [Biocontainers](https://biocontainers.pro) image (which was automatically generated from the corresponding [Bioconda package](https://bioconda.github.io/recipes/maker/README.html)), and bundles [RepBase RepeatMasker edition](https://www.girinst.org/repbase/update/) in addition to the default [Dfam 3.2](https://xfam.wordpress.com/2020/07/09/dfam-3-2-release/)[^dfam] library.
+This image was created from the MAKER [Biocontainers](https://biocontainers.pro) image (which was automatically generated from the corresponding [Bioconda package](https://bioconda.github.io/recipes/maker/README.html)), and bundles both [GeneMark-ES](http://exon.gatech.edu/GeneMark/gmes_instructions.html) and [RepBase RepeatMasker edition](https://www.girinst.org/repbase/update/) (including the default [Dfam 3.2](https://xfam.wordpress.com/2020/07/09/dfam-3-2-release/)[^dfam] library).
 
 ## Prerequisites
 
@@ -108,11 +108,12 @@ The single-node approach is considered more robust (though less scalable), and i
     # singularity options:
     # * --cleanenv : don't pass environment variables to container (except those specified in --env option-arguments)
     # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
+    # * --home /root : use /root as HOME (location of GeneMark license (.gm_key) in container image)
     # Add any MAKER options after the "maker" command
     # * -nolock reduces file creation overhead (lock files not needed when using MPI)
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_CPUS_ON_NODE} maker -fix_nucleotides -nolock -nodatastore
+    singularity exec --no-home --home /root --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_JOB_CPUS_PER_NODE} maker -fix_nucleotides -nolock -nodatastore
 
 ### Example Multi-Compute-Node MAKER Job Script 
 
@@ -143,12 +144,15 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     singularity exec ${MAKER_IMAGE} sh -c 'ln -sf /usr/local/share/RepeatMasker/Libraries/* LIBDIR'
     export LIBDIR=$PWD/LIBDIR
 
-    # Add any MAKER options
+    # singularity options:
+    # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
+    # * --home /root : use /root as HOME (location of GeneMark license (.gm_key) in container image)
+    # Add any MAKER options after the "maker" command
     # * the -mpi option is needed to use the host MPI for MAKER in a Singularity container
     # * -nolock reduces file creation overhead (lock files not needed when using MPI)
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
+    mpiexec -n ${SLURM_NTASKS} singularity exec --no-home --home /root ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
 
 ---
 *NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
