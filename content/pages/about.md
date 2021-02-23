@@ -99,46 +99,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear:both;"></div>
 </div>
 
-### Yasin Kaymaz
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/yasin_kaymaz.jpg">
-                          <img class="img-responsive" src="/images/yasin_kaymaz.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation.
-He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatics from Boston University. He graduated from University of Massachusetts Medical school with a PhD degree in Bioinformatics and Computational Biology.</p>
-                <p>
-                <a href="mailto:yasinkaymaz@fas.harvard.edu">yasinkaymaz at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
-### Tommy Tang
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/tommy_pic.jpeg">
-                          <img class="img-responsive" src="/images/tommy_pic.jpeg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-Bioinformatics scientist working closely with Catherine Dulac's lab to catalog and understand the diversity and function of cell types in the mouse brain using single-cell RNA-seq and other cutting-edge techniques. He gained his PhD in Genetics and Genomics at the University of Florida and did a postdoc in computational biology at MD Anderson Cancer Center. He cares about reproducible research and open science. You can visit his personal website <a href="https://divingintogeneticsandgenomics.rbind.io/">here</a></p>
-                <p>
-                <a href="mailto:mingtang@fas.harvard.edu">mingtang at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
 
 ### Juerg Straubhaar
 <div>
@@ -160,46 +120,7 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
         <div style="clear:both;"></div>
 </div>
 
-### Brian Arnold
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/placeholder-profile-pic-large.png">
-                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-Bioinformatics scientist working on population genetics across a diverse taxonomic range including bacteria, plants, and animals.</p>
-                <p>
-                <a href="mailto:barnold@hsph.harvard.edu">barnold at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
 
-### Andy Bryant
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/AndyHeadshot_small.jpg">
-                          <img class="img-responsive" src="/images/AndyHeadshot_small.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                 Software Developer, building applications that support research throughout the Faculty of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
-                </p>
-                <p>
-                <a href="mailto:andy_bryant@harvard.edu">andy_bryant at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
 
 ### Nathan Weeks
 <div>
@@ -282,6 +203,87 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
                 Bioinformatics Scientist, specializing in data processing and genomic enrichment assays.</p>
                 <p>
                 <a href="mailto:jgaspar@fas.harvard.edu">jgaspar at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+### Yasin Kaymaz
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/yasin_kaymaz.jpg">
+                          <img class="img-responsive" src="/images/yasin_kaymaz.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation.
+He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatics from Boston University. He graduated from University of Massachusetts Medical school with a PhD degree in Bioinformatics and Computational Biology.</p>
+                <p>
+                <a href="mailto:yasinkaymaz@fas.harvard.edu">yasinkaymaz at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Tommy Tang
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/tommy_pic.jpeg">
+                          <img class="img-responsive" src="/images/tommy_pic.jpeg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+Bioinformatics scientist working closely with Catherine Dulac's lab to catalog and understand the diversity and function of cell types in the mouse brain using single-cell RNA-seq and other cutting-edge techniques. He gained his PhD in Genetics and Genomics at the University of Florida and did a postdoc in computational biology at MD Anderson Cancer Center. He cares about reproducible research and open science. You can visit his personal website <a href="https://divingintogeneticsandgenomics.rbind.io/">here</a></p>
+                <p>
+                <a href="mailto:mingtang@fas.harvard.edu">mingtang at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Brian Arnold
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/placeholder-profile-pic-large.png">
+                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+Bioinformatics scientist working on population genetics across a diverse taxonomic range including bacteria, plants, and animals.</p>
+                <p>
+                <a href="mailto:barnold@hsph.harvard.edu">barnold at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Andy Bryant
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/AndyHeadshot_small.jpg">
+                          <img class="img-responsive" src="/images/AndyHeadshot_small.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Software Developer, building applications that support research throughout the Faculty of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
+                </p>
+                <p>
+                <a href="mailto:andy_bryant@harvard.edu">andy_bryant at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
