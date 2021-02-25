@@ -100,28 +100,6 @@ We are small in number and try to cover the needs of as many people across campu
 </div>
 
 
-### Juerg Straubhaar
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/placeholder-profile-pic-large.png">
-                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-Bioinformatics scientist working closely with Doug Melton's lab on single-cell RNA-seq and other methods. Also does proteomics.</p>
-                <p>
-                <a href="mailto:jstraubhaar@fas.harvard.edu">jstraubhaar at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
-
-
 ### Nathan Weeks
 <div>
         <div class="team-photo">
@@ -140,6 +118,111 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
                 </p>
                 <p>
                 <a href="mailto:nweeks@g.harvard.edu">nweeks at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Danielle Khost
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/danielle.jpg">
+                          <img class="img-responsive" src="/images/danielle.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Computational biologist specializing in third generation sequencing and genome assembly. She completed her PhD at the University of Rochester on repetitive element biology in 2019.
+                </p>
+                <p>
+                <a href="mailto:danielle_khost@fas.harvard.edu">danielle_khost at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Alexandria D'Souza
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/alexandria.jpg">
+                          <img class="img-responsive" src="/images/alexandria.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Bioinformatician working on proteomics analysis, in particular to support quantitative and computational work with the Woo Lab in the Chemistry and Chemical Biology department."
+                </p>
+                <p>
+                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Scott Van Buren
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/scott.jpg">
+                          <img class="img-responsive" src="/images/scott.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Bioinformatics Scientist working with Dr. Catherinc Dulac’s lab to help catalog and understand the diversity and function of cell types in the mouse brain."
+                </p>
+                <p>
+                <a href="mailto:skvanburen@g.harvard.edu">skvanburen at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Sara Wuitchik
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/sara.jpg">
+                          <img class="img-responsive" src="/images/sara.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Bioinformatics postdoc, co-advised by Mike Sorenson (BU Biology), researching the comparative genomics of obligate brood parasitism in birds. She earned her B.Sc. in Marine Biology & Oceanography from the University of Victoria and her Ph.D. in Ecology & Evolutionary Biology from the University of Calgary."
+                </p>
+                <p>
+                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Alejandro Llanos Garrido
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/alex.jpg">
+                          <img class="img-responsive" src="/images/alex.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Postdoc funded by Real Colegio Complutense at Harvard, working on population genetics to understand the role of genetic diversity in shaping the distributional patterns of different species."
+                </p>
+                <p>
+                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
@@ -263,6 +346,26 @@ Bioinformatics scientist working closely with Catherine Dulac's lab to catalog a
 Bioinformatics scientist working on population genetics across a diverse taxonomic range including bacteria, plants, and animals.</p>
                 <p>
                 <a href="mailto:barnold@hsph.harvard.edu">barnold at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Juerg Straubhaar
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/placeholder-profile-pic-large.png">
+                          <img class="img-responsive" src="/images/placeholder-profile-pic-large.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+Bioinformatics scientist working closely with Doug Melton's lab on single-cell RNA-seq and other methods. Also does proteomics.</p>
+                <p>
+                <a href="mailto:jstraubhaar@fas.harvard.edu">jstraubhaar at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
