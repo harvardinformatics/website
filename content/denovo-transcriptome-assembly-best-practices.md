@@ -1,5 +1,6 @@
 Title: Best Practices for De Novo Transcriptome Assembly with Trinity
 Date: 2020-09-29 00:00
+Modified: 2021-03-05
 Author: Adam Freedman, Nathan Weeks
 Category: Tutorials
 Tags: Next-Gen Sequencing, Transcriptome, Transcriptome Assembly, Trinity
@@ -33,7 +34,7 @@ Use [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to exami
     #SBATCH --mail-type=ALL         # Type of email notification- BEGIN,END,FAIL,ALL 
     #SBATCH --mail-user=<PUT YOUR EMAIL ADDRESS HERE>  # Email to which notifications will be sent 
 
-    readonly SINGULARITY_IMAGE='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
+    readonly SINGULARITY_IMAGE='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg'
 
     ${SINGULARITY_EXEC} fastqc --threads ${SLURM_CPUS_ON_NODE} --outdir `pwd` $1
 
@@ -179,7 +180,7 @@ Our recommendation is to first map your reads to an rRNA database, such as can b
     # $3 = R2 fastq file
     # $4 = sample_id (no spaces)
     
-    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg bowtie2 --quiet --very-sensitive-local --phred33  -x $1 -1 $2 -2 $3 --threads 12 --met-file ${4}_bowtie2_metrics.txt --al-conc-gz blacklist_paired_aligned_${4}.fq.gz --un-conc-gz blacklist_paired_unaligned_${4}.fq.gz  --al-gz blacklist_unpaired_aligned_${4}.fq.gz --un-gz blacklist_unpaired_unaligned_${4}.fq.gz
 
 Both an R1 and R2 will get written for each of the switches.
 
@@ -213,8 +214,16 @@ Settings used for Trinity will depend upon a number of factors, including the se
 
 
 **Running Trinity inside a Singuarlity container image.**
-Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity (as well as the [preferred mode for the Trinity developers](https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-in-Docker#running-trinity-using-singularity)) is to do so inside a [Singularity](https://sylabs.io/guides/3.5/user-guide/introduction.html) container image, which operates like a light-weight virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set.
+Rebuilding a new Trinity module with each update is increasingly complicated, as functionality gets added along with additional dependencies. Thus, our preferred mode of running Trinity (as well as the [preferred mode for the Trinity developers](https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-in-Docker#running-trinity-using-singularity)) is to do so inside a [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) container image, which operates like a light-weight virtual machine, within which software dependencies are conveniently bundled, and relevant environment variables are properly set.
 For the convenience of users of the Harvard FAS Cannon Cluster, we provide images from the [Trinity Singularity Image Archive](https://data.broadinstitute.org/Trinity/TRINITY_SINGULARITY/) at /n/singularity_images/informatics/trinityrnaseq/.
+
+---
+
+*NOTE*: The directions in this guide refer to Trinity v2.12.0.
+To see all supported versions of Trinity available, use the FAS RC [module-query](https://docs.rc.fas.harvard.edu/kb/modules-intro/) command: `module-query trinityrnaseq`
+
+---
+
 
 Running Trinity via Singularity involves two steps. First we run Trinity as a SLURM job. Below is an example script for a Trinity job (with normalization):
 
@@ -243,7 +252,7 @@ Running Trinity via Singularity involves two steps. First we run Trinity as a SL
     ########################################
     # parameters
     ########################################
-    readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg
+    readonly SINGULARITY_IMAGE=/n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg
     readonly TRINITY_OUT_DIR=trinity_out_dir
     # To see all options:
     #    singularity exec --cleanenv ${SINGULARITY_IMAGE}  Trinity --show_full_usage_info
@@ -315,7 +324,7 @@ Metrics such as N50 should never, by themselves, be treated as good indicators o
     
     :::bash
     srun --pty -p shared -t 00:20:00 --mem 500 /bin/bash
-    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg sh -c '$TRINITY_HOME/util/TrinityStats.pl Trinity.fasta' > Trinity_assembly.metrics
+    singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg sh -c '$TRINITY_HOME/util/TrinityStats.pl Trinity.fasta' > Trinity_assembly.metrics
 
 #### 10-2 Assesing assembly quality step 2: quantify read support for the assembly
 
@@ -335,7 +344,7 @@ As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wik
     # $1 = your assembly fasta
     assembly_prefix=$(basename $1 |sed 's/.fasta//g')
     
-    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg'
 
     ${SINGULARITY_EXEC} bowtie2-build -–threads 4 $1 $assembly_prefix
 
@@ -350,7 +359,7 @@ Next, you map your reads and calculate alignment statistics.
     #SBATCH -p serial_requeue,shared  #Partition to submit to
     #SBATCH --mem=16000  #Memory per node in MB
 
-    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.11.0.simg'
+    readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg'
 
     # $1 name of your assembly (without the .fasta suffix)
     # $2 comma separated list of left read file names
