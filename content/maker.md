@@ -1,6 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-02-10
+Modified: 2021-03-15
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -154,13 +154,29 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     # * -fix_nucleotides needed for hsap_contig.fasta example data
     mpiexec -n ${SLURM_NTASKS} singularity exec --no-home --home /root ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
 
----
-*NOTE*: MAKER will emit the following warnings during execution; they can be ignored:
+## Troubleshooting
+
+#### Warnings during execution
+
+MAKER will emit the following warnings during execution; they can be ignored:
 ```
 Possible precedence issue with control flow operator at /usr/local/lib/site_perl/5.26.2/Bio/DB/IndexedBase.pm line 805.
 
 df: Warning: cannot read table of mounted file systems: No such file or directory
 ```
+
+#### Memory allocation errors
+
+If messages like the following appear in the Slurm job output file (`slurm-<jobid>.out` by default):
+```
+open3: fork failed: Cannot allocate memory at /usr/local/bin/../lib/Widget/blastx.pm line 40.
+--> rank=17, hostname=holy2a09203.rc.fas.harvard.edu
+ERROR: Failed while doing blastx of proteins
+ERROR: Chunk failed at level:8, tier_type:3
+FAILED CONTIG:Chr4
+```
+MAKER has been observed to continue execution, but not make progress.
+It is recommended to cancel the job (`scancel <jobid>`), increase the amount of memory per process (for single-node job script: decrease the number of processes; e.g., `...mpiexec -n $((SLURM_CPUS_PER_TASK*3/4))...`; for multi-node job script: increase the `#SBATCH --mem-per-cpu=` option-argument).
 
 ---
 
