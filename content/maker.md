@@ -1,6 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-03-15
+Modified: 2021-06-08
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -137,7 +137,7 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     module purge
 
     # Use Intel MPI for the "mpiexec" command
-    module load intel/19.0.5-fasrc01 impi/2019.8.254-fasrc01
+    module load intel/21.2.0-fasrc01 impi/2021.2.0-fasrc01
 
     # RepeatMasker setup (if not using RepeatMasker, optionally comment-out these three lines)
     mkdir -p LIBDIR
