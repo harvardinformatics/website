@@ -1,6 +1,6 @@
 Title: Cactus on the FASRC Cluster
 Date: 2020-07-30
-Modified: 2021-02-16
+Modified: 2021-06-21
 Author: Nathan Weeks
 Category: Software
 Tags: Multiple Sequence Alignment, Singularity
@@ -61,7 +61,7 @@ Cactus will automatically limit the number of concurrent tasks based on the numb
     ########################################
     # parameters
     ########################################
-    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus_v1.3.0.sif
+    readonly CACTUS_IMAGE=/n/singularity_images/informatics/cactus/cactus_v2.0.1.sif
     readonly JOBSTORE_IMAGE=jobStore.img # cactus jobStore; will be created if it doesn't exist
     readonly SEQFILE=evolverMammals.txt
     readonly OUTPUTHAL=evolverMammals.hal
@@ -127,13 +127,13 @@ For example, the following commands run [halValidate](https://github.com/Compara
 *NOTE: on the FAS RC Cluster, Singularity is not available on login nodes, and these commands must be run [within a batch or interactive environment](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/#Singularity_on_the_cluster) on a compute node*
 
     :::sh
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v1.3.0.sif halValidate evolverMammals.hal
-    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v1.3.0.sif halStats evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v2.0.1.sif halValidate evolverMammals.hal
+    singularity exec --cleanenv /n/singularity_images/informatics/cactus/cactus_v2.0.1.sif halStats evolverMammals.hal
 
 ## About the Cactus Singularity Image
 
-The Cactus Singularity image was generated from the [cactus:v1.3.0 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v1.3.0) using the `singularity pull` command:
+The Cactus Singularity image was generated from the [cactus:v2.0.1 release](https://github.com/ComparativeGenomicsToolkit/cactus/releases/tag/v2.0.1) using the `singularity pull` command:
 
 ```
-singularity pull docker://quay.io/comparative-genomics-toolkit/cactus:v1.3.0
+singularity pull --disable-cache docker://quay.io/comparative-genomics-toolkit/cactus:v2.0.1
 ```
