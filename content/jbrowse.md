@@ -1,5 +1,6 @@
 Title: JBrowse on the FASRC Cluster
 Date: 2019-06-19
+Modified: 2021-06-23
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, JBrowse, Open OnDemand
@@ -9,9 +10,28 @@ Summary: How to launch JBrowse on the FASRC Cluster with Open OnDemand
 
 [JBrowse](https://jbrowse.org/) is a web-based genome browser for visualizing genomic features in common file formats, such as variants (VCF), genes (GFF3, BigBed) and gene expression (BigWig), and sequence alignments (BAM, CRAM, and GFF3).
 
-## JBrowse configuration file (tracks.conf)
+Both [JBrowse 1](https://jbrowse.org/jbrowse1.html) and [JBrowse 2](https://jbrowse.org/jb2/) can be launched from the FAS RC VDI (see [Running JBrowse on the FASRC Cluster using Open OnDemand](#running-jbrowse-on-the-fasrc-cluster-using-open-ondemand)).
+JBrowse 2 is generally recommended for new use.
 
-The following is an example of a tracks.conf [minimal configuration](https://jbrowse.org/docs/minimal.html) that lets JBrowse infer track types and defaults from file name suffixes (see entries under "Configuring Tracks" section at the aforementioned minimal configuration link for additional configuration options).
+## JBrowse 2 configuration file (config.json)
+
+The [jbrowse CLI](https://jbrowse.org/jb2/docs/cli/) can be used to generate the JBrowse 2 [config.json](https://jbrowse.org/jb2/docs/config_guide#intro-to-the-configjson).
+A [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) image containing the jbrowse/cli npm module is available on the FAS RC cluster, and used in the example below.
+
+The following sequence of commands initializes a config.json with a set of reference sequences, adds two tracks of files that refer to the reference sequence IDs, and sets the default session to a linear view of the chromosomes (note all files are assumed to be formatted appropriately; see [JBrowse data file formats](#jbrowse-data-file-formats)):
+
+    :::bash
+    jbrowse_cli=/n/singularity_images/informatics/jbrowse/jbrowse2_v1.3.0.sif
+    singularity exec ${jbrowse_cli} jbrowse add-assembly reference.fa.gz --load inPlace
+    singularity exec ${jbrowse_cli} jbrowse add-track genes.sorted.gff3.gz --load inPlace
+    singularity exec ${jbrowse_cli} jbrowse add-track variants.sorted.vcf.gz --load inPlace
+    singularity exec ${jbrowse_cli} jbrowse set-default-session -v LinearGenomeView
+
+Note that all data files must exist in the same directory, or subdirectory of, the directory with the config.json file (note that hard links to files located elsewhere on the same file system are possible).
+
+## JBrowse 1 configuration file (tracks.conf)
+
+The following is an example of a tracks.conf [minimal configuration](https://jbrowse.org/docs/minimal.html) that lets JBrowse 1 infer track types and defaults from file name suffixes (see entries under "Configuring Tracks" section at the aforementioned minimal configuration link for additional configuration options).
 
 ```
 [GENERAL]
@@ -44,19 +64,20 @@ urlTemplate=peaks.bed.gz
 # peaks.bed.gz.tbi assumed to exist
 ```
 
-All files listed as urlTemplate values are assumed to be in the same directory (a directory typically named "data" and referred to as the JBrowse data directory) as tracks.conf (note that symbolic links to files accessible from FASRC compute nodes may be used instead); e.g.:
+`tracks.conf` and all data files listed therein are assumed to be in the same directory (typically named "data" and referred to as the JBrowse data directory; note that data files may be in subdirectories); e.g.:
 
 ```
 $ ls data/
 alignments.sorted.bam
 alignments.sorted.bam.bai
+config.json     # JBrowse 2
 expression.bw
 genes.sorted.gff3.gz
 genes.sorted.gff3.gz.tbi
 reference.fa.gz
 reference.fa.gz.fai
 reference.fa.gz.gzi
-tracks.conf
+tracks.conf     # JBrowse 1
 variants.sorted.vcf.gz
 variants.sorted.vcf.gz.tbi
 ```
@@ -66,11 +87,13 @@ variants.sorted.vcf.gz.tbi
 For optimal performance on FASRC [networked, high-performance storage](https://www.rc.fas.harvard.edu/resources/odyssey-storage/#Networked_High-performance_Shared_Scratch_Storage),  data backing JBrowse tracks should be stored in compressed, indexed file formats that represent data for a given track in a single file (plus one or two smaller associated index files).
 Examples are below.
 
-In particular, the JBrowse [flatfile-to-json.pl](https://jbrowse.org/docs/flatfile-to-json.pl.html) script should *not* be used, as it converts the input GFF3/GenBank/BED file into numerous smaller files that degrade performance on network/parallel file systems.
+In particular, the JBrowse 1 [flatfile-to-json.pl](https://jbrowse.org/docs/flatfile-to-json.pl.html) script should *not* be used, as it converts the input GFF3/GenBank/BED file into numerous smaller files that degrade performance on network/parallel file systems.
 
 ### Software Environment Setup
 
-For the commands listed below, `bgzip` and `tabix` are provided on the FASRC cluster by the `htslib` environment module, while `samtools` is provided by the `samtools` environment module (use `module-query htslib` and `module-query samtools` to list the latest installed verions).
+For the commands listed below, `bgzip` and `tabix` are provided on the FASRC cluster by the `htslib` environment module, while `samtools` and `bcftools` are provided by their own environment modules:
+    :::bash
+    module load bcftools htslib samtools
 
 ### GFF3
 
@@ -129,18 +152,18 @@ ${JBROWSE_SOURCE_DIR}/bin/generate-names.pl --tracks genes,variants --hashBits 4
 
 ## Running JBrowse on the FASRC Cluster using Open OnDemand
 
-A JBrowse instance can be launched on the FASRC cluster using the Open OnDemand web portal ([https://vdi.rc.fas.harvard.edu/](https://vdi.rc.fas.harvard.edu/)).
+A JBrowse instance can be launched on the FASRC cluster using the [Open OnDemand web portal](https://docs.rc.fas.harvard.edu/kb/virtual-desktop/) ([https://vdi.rc.fas.harvard.edu/](https://vdi.rc.fas.harvard.edu/)).
 From the menu bar, select *Interactive Apps > JBrowse*.
-The web form will be used to submit a SLURM job that runs on a compute node (see [https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions](https://www.rc.fas.harvard.edu/resources/running-jobs/#Slurm_partitions) for a list of some the commonly-available partitions; lab-specific partitions may also be specified, as well as a comma-separated list of partitions that SLURM may consider when scheduling the job).
+The web form will be used to submit a SLURM job that runs on a compute node (see [https://docs.rc.fas.harvard.edu/kb/running-jobs/#Slurm_partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Slurm_partitions) for a list of some the commonly-available partitions; lab-specific partitions may also be specified, as well as a comma-separated list of partitions that SLURM may consider when scheduling the job).
 The custom JBrowse Singularity container image runs the [lighttpd](https://www.lighttpd.net/) web server, which requires only a single processor core and minimal memory (256 MB is requested for the purpose SLURM job scheduling).
 
-In the "path of a JBrowse data directory" textbox, enter the absolute path to the desired JBrowse data/ directory created previously, then click "Launch".
+In the "path of a JBrowse data directory" textbox, enter the absolute path to the desired JBrowse data/ directory containing the config.json (if using JBrowse 2) or tracks.conf (if using JBrowse 1) created previously, then click "Launch".
 Once the JBrowse job has been scheduled and the JBrowse instance started on a compute node, a "Connect to JBrowse" button will appear; click to open JBrowse in a new tab.
 
 ## Support
 
 For assistance with launching JBrowse on the FASRC cluster, please submit a [help ticket](https://portal.rc.fas.harvard.edu/rcrt/submit_ticket).
 
-JBrowse bug reports/feature requests may be submitted to the [JBrowse issue tracker](https://github.com/GMOD/jbrowse/issues) on GitHub.
+JBrowse bug reports/feature requests may be submitted to the [JBrowse 1 issue tracker](https://github.com/GMOD/jbrowse/issues) or [JBrowse 2 issue tracker](https://github.com/GMOD/jbrowse-components) on GitHub.
 
-For general JBrowse questions, see the [JBrowse Gitter chatroom](https://gitter.im/GMOD/jbrowse) and the [gmod-ajax mailing list](https://sourceforge.net/p/gmod/mailman/gmod-ajax/).
+For general JBrowse questions, see the [JBrowse Gitter chatroom](https://gitter.im/GMOD/jbrowse).
