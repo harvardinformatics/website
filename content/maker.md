@@ -1,6 +1,6 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-06-08
+Modified: 2021-06-23
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
@@ -184,14 +184,14 @@ It is recommended to cancel the job (`scancel <jobid>`), increase the amount of 
 
 [JBrowse](https://jbrowse.org/) can be used to visualize MAKER-generated annotation, RNA/protein evidence sequence alignments, and RepeatMasker-masked regions in the context of the reference genome.
 
-JBrowse provides a script `maker2jbrowse` that automatically exports a MAKER datastore to a JBrowse data directory that can be directly visualized in JBrowse.
+JBrowse 1 provides a script `maker2jbrowse` that automatically exports a MAKER datastore to a JBrowse 1 data directory that can be directly visualized in JBrowse 1.
 However, this script executes very slowly on a parallel file system (e.g., FASRC scratchlfs and holylfs file systems), and the resulting JBrowse data directory is completely unsuitable for visualization when located on a parallel file system due to a large number of small files created.
 An in-house customization of this script (`ifxmaker2jbrowse`) has been developed and tuned for parallel file systems.
 Execution time of `ifxmaker2jbrowse` is well over an order of magnitude faster than `maker2jbrowse`, and the resulting JBrowse data directory contains tens of files in standard formats usable by other tools (e.g., [bgzip](https://www.htslib.org/doc/bgzip.html)-compressed & [tabix](https://www.htslib.org/doc/tabix.html)-indexed [GFF3](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), and bgzip-compressed and [samtools](https://www.htslib.org/doc/samtools.html)-faidx-indexed FASTA) instead of tens/hundreds of thousands of JBrowse-specific files.
 
 ### ifxmaker2jbrowse
 
-A Singularity image containing the [ifxmaker2jbrowse script](images/ifxmaker2jbrowse) and and all dependencies provided.
+A Singularity image containing the [ifxmaker2jbrowse script](images/ifxmaker2jbrowse) and and all dependencies is provided on the FAS RC cluster.
 The following example job script (submitted from the MAKER datastore directory) demonstrates its use:
 
     :::sh
@@ -222,13 +222,16 @@ If name-based indexing is desired for select tracks, this can subsequently be do
 singularity exec --cleanenv /n/singularity_images/informatics/maker/ifxmaker2jbrowse:20210108.sif generate-names.pl --tracks protein2genome,est2genome --hashBits 4 --compress --out .
 ```
 
+Note that ths protocol generates a JBrowse 1 compatible `tracks.conf`.
+For guidance on using the jbrowse CLI to generate a JBrowse 2 compatible `config.json`, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) guide.
+
+
 ### Running JBrowse on the FASRC Cluster using Open OnDemand
 
 A JBrowse instance can be launched on the FASRC cluster using Open OnDemand instance ([https://vdi.rc.fas.harvard.edu/]()).
 From the menu, select Interactive Apps > JBrowse.
+Choose **JBrowse Version** `JBrowse 1 (v1.x.x)` (unless a JBrowse 2 `config.json` has been generated).
 In the "path of a JBrowse data directory" textbox, enter the absolute path to the JBrowse data/ directory that was created by the ifxmaker2jbrowse script (in the MAKER datastore directory), then click "Launch".
-
-For more details, see the [JBrowse on the FASRC Cluster]({filename}/jbrowse.md) guide.
 
 ## References
 
