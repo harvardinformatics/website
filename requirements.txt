@@ -1,6 +1,7 @@
-Pygments==2.0.2
-Markdown==2.6.2
-beautifulsoup4==4.3.2
-pelican==3.7.1
-icalendar==3.9.1
-
+Pygments==2.5.2 # required by pelican
+beautifulsoup4==4.9.3 # required by interlinks
+pelican[markdown]==4.2.0
+icalendar==4.0.7
+jinja2==2.11.3 # required by pelican
+markupsafe==1.1.1 # required by pelican
+setuptools==44.0.0 # required by Markdown

@@ -1,0 +1,11 @@
+services:
+  pelican:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/var/www/website:ro
+    working_dir: /var/www/website
+    command: pelican --debug --theme-path informatics-theme --autoreload --listen --bind 0.0.0.0 --output /var/www/html content
+    ports:
+      - "8000:8000"
