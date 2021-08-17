@@ -3,7 +3,7 @@ Date: 2021-08-17
 Category: Employment
 Author: Tim Sackton
 
-##Postdoctoral Positions in Comparative or Statistical Genomics**
+##Postdoctoral Positions in Comparative or Statistical Genomics
 
 We are hiring two postdoctoral fellows to work on an NIH-funded project focused on the comparative and population genomics of conserved non-coding elements in birds, building on our published work on [PhyloAcc](https://doi.org/10.1093/molbev/msz049), a program to infer evolutionary forces acting on non-coding sequences in a phylogenetic context.
 
