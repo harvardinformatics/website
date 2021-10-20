@@ -5,10 +5,14 @@ Summary:Occasionally, large files become corrupted during download. You can dete
 
 Occasionally, large files become corrupted during download. You can determine whether this has occurred by comparing the [checksum](http://en.wikipedia.org/wiki/Checksum) of a file before and after download. We have placed checksums for your fastq.gz files in your run directory in a file called md5sum.txt. Compare the values in this file to new checksums calculated on your downloaded files.
 
-To calculate a checksum for a file called myfile.fastq.gz, use:
+To calculate a checksum for a file called myfile.fastq.gz, use the GNU [md5sum](https://en.wikipedia.org/wiki/Md5sum) utility:
 
     :::bash
     md5sum myfile.fastq.gz
     
 If the checksums for a file before and after download differ, then the file is corrupt or incomplete and should be downloaded again.
 
+To calculate and compare the checksums of all FASTQ files listed in md5sum.txt:
+
+    :::bash
+    md5sum -c md5sum.txt
