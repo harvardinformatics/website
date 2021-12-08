@@ -346,7 +346,7 @@ As explained in the [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wik
     
     readonly SINGULARITY_EXEC='singularity exec --cleanenv /n/singularity_images/informatics/trinityrnaseq/trinityrnaseq.v2.12.0.simg'
 
-    ${SINGULARITY_EXEC} bowtie2-build -–threads 4 $1 $assembly_prefix
+    ${SINGULARITY_EXEC} bowtie2-build --threads 4 $1 $assembly_prefix
 
 Next, you map your reads and calculate alignment statistics.
 
