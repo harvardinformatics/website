@@ -7,26 +7,26 @@
     {% if events_list %}
     <div class="calendar-link"><a href="/calendar.ics">Calendar (ics)</a></div>
     <div class="post-list">
-    {% for evstart, evend, event in events_list %}
+    {% for event in events_list %}
         <div class="event-item">
     		<div class="event-title">
-          <a href="../{{event.slug}}.html">
-            {{event['title']}}
+          <a href="{{ SITEURL }}/{{ event.url }}">
+            <b>{{ event.metadata["title"] }}</b>
           </a>
         </div>
         <p>
-        {% if evstart.date() == evend.date() %}
-        {{evstart|strftime('%B %d, %Y %-I:%M %p')}} to {{evend|strftime('%-I:%M %p')}}
+        {% if event.event_plugin_data["dtstart"].date() == event.event_plugin_data["dtend"].date() %}
+        From {{ event.event_plugin_data["dtstart"] }} to {{ event.event_plugin_data["dtend"].time() }}
         {% else %}
-        {{evstart|strftime('%B %d, %Y %-I:%M %p')}} to {{evend|strftime('%B %d, %Y %-I:%M %p')}}
+        From {{ event.event_plugin_data["dtstart"] }} to {{ event.event_plugin_data["dtend"] }}
         {% endif %}
         </p>
 
         {% if event.location %}
-        <p>Location: {{event.location}}</p>
+        <p>Location: {{ event.metadata["location"] }}</p>
         {% endif %}
 
-        <p>{{event['summary']}}</p>
+        <p>{{ event.metadata["summary"] }}</p>
         </div>
     {% endfor %}
     </div>
