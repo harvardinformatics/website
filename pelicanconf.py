@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from datetime import datetime
 from dateutil.tz import tzlocal
 
-PLUGIN_PATHS = ['../pelican-plugins/']
+PLUGIN_PATHS = ['../pelican-plugins/',
+                '../pelican-plugins/tipue_search/pelican/plugins/']
 PLUGINS = ['tag_cloud.tag_cloud',
            'interlinks',
            'pelican-toc',
