@@ -31,9 +31,9 @@ Regardless of whether you are using Docker, once you're satisfied, just check yo
 ## Building the website the hard way
 If you want to build it without Docker, you have to do all this setup stuff.
 
-### Install pelican and markdown (python 2.7 required)
+### Install pelican and markdown (python 3.x required)
 
-    pip install pelican markdown beautifulsoup4 icalendar
+    pip install --user -r requirements.txt
 
 ### Install the pelican plugins (the pelicanconf.py file assumes it is cloned at the same level as this repo)
 
@@ -48,15 +48,11 @@ If clone --recursive does not work (you might see a complaint about a non-existe
 
 ### From the root of the project run the conversion with the specified theme:
 
-    cd website 
-    pelican content -t `pwd`/informatics-theme -o output
+    make html
 
-### Then go to the output directory and start the server
+### Then start the server
 
-    cd output && python -m pelican.server
-
-### Or use a one-liner
-    pelican content -t `pwd`/informatics-theme -o output && (cd output && python -m pelican.server)
+    make serve
 
 ### Should be visible from localhost:8000
 

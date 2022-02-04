@@ -66,6 +66,7 @@ prod:
 	docker push harvardinformatics/website 
 
 html:
+	mkdir -p $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
 
 clean:
