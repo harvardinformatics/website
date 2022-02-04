@@ -6,6 +6,8 @@ Category: Software
 Tags: Genome Annotation, JBrowse, Open OnDemand
 Summary: How to launch JBrowse on the FASRC Cluster with Open OnDemand
 
+[TOC]
+
 ## Introduction
 
 [JBrowse](https://jbrowse.org/) is a web-based genome browser for visualizing genomic features in common file formats, such as variants (VCF), genes (GFF3, BigBed) and gene expression (BigWig), and sequence alignments (BAM, CRAM, and GFF3).

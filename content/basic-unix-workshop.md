@@ -5,6 +5,7 @@ Author: Michele Clamp
 Tags: Linux, Workshop
 Summary: This tutorial is intended for people completely new to unix and command line driven analysis.  It introduces how to navigate the unix filesystem, make and delete files and directories and be able to list the contents of files and directories.
 
+[TOC]
 
 ## Prerequisites
 

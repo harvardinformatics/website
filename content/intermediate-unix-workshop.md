@@ -5,7 +5,7 @@ Author: mclamp@harvard.edu
 Tags: Linux, Workshop
 Summary: This tutorial is intended for people who are familiar with the basics of unix but want to learn more about manipulating files and running commands.
 
-
+[TOC]
 
 
 ## 1. Introduction and prerequisites

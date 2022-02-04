@@ -5,6 +5,7 @@ Author: Tim Sackton
 Tags: Differential Expression, Mouse
 Summary: This tutorial is intended for diffeq
 
+[TOC]
 
 ## Mouse immune cells
 

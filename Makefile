@@ -1,4 +1,3 @@
-PY?=python3
 PELICAN?=pelican
 PELICANOPTS=--relative-urls -t informatics-theme
 
@@ -67,7 +66,7 @@ prod:
 
 html:
 	mkdir -p $(OUTPUTDIR)
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) --delete-output-directory
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
@@ -77,9 +76,9 @@ regenerate:
 
 serve:
 ifdef PORT
-	cd $(OUTPUTDIR) && $(PY) -m pelican.server $(PORT)
+	$(PELICAN) --listen --autoreload --output $(OUTPUTDIR) --port $(PORT)
 else
-	cd $(OUTPUTDIR) && $(PY) -m pelican.server
+	$(PELICAN) --listen --autoreload --output $(OUTPUTDIR)
 endif
 
 serve-global:

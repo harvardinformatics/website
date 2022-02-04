@@ -5,6 +5,8 @@ Author: Tim Sackton
 Tags: R
 Summary: This is a review of some R basics.
 
+[TOC]
+
 This document and the data in this example can be found at:
 
 `/n/ngsdata/workshops/2015_March`

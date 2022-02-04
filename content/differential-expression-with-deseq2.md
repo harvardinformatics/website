@@ -5,6 +5,8 @@ Author: Tim Sackton
 Tags: Differential Expression, Drosophila melanogaster
 Summary: This tutorial is intended for diffeq
 
+[TOC]
+
 ## Drosophila melanogaster
 
 This document and the data used in this example can be found at:

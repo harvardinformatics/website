@@ -5,6 +5,8 @@ Author: Tim Sackton
 Tags: Journal Club
 Summary: Walkthrough of Pairwise Sequentially Markovian Coalescent (PSMC) models
 
+[TOC]
+
 ## Introduction and setup
 
 The Pairwise Sequentially Markovian Coalescent (PSMC) model uses information in the complete diploid sequence of a single individual to infer the history of population size changes. Originally published in 2011 ([Li and Durbin 2011](http://www.nature.com/nature/journal/v475/n7357/full/nature10231.html)), it has become a very popular tool in the world of genomics. In this tutorial, we walk through the steps to generate the necessary input data for PSMC and run it on recently published [data from woolly mammoths (Palkopoulou et al., 2015)](http://www.sciencedirect.com/science/article/pii/S0960982215004200). 

@@ -6,6 +6,8 @@ RUN yum -y install git python3-pip httpd
 
 RUN echo -e "ServerName ${HOSTNAME}\n" >> /etc/httpd/conf/httpd.conf
 
+# https://github.com/pypa/pip/issues/10219
+ENV LC_ALL=en_US.UTF-8
 ADD requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 

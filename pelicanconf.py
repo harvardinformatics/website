@@ -8,7 +8,6 @@ PLUGIN_PATHS = ['../pelican-plugins/',
                 '../pelican-plugins/tipue_search/pelican/plugins/']
 PLUGINS = ['tag_cloud.tag_cloud',
            'interlinks',
-           'pelican-toc',
            'tipue_search',
            'rmd_reader',
            'pin_to_top',
@@ -33,15 +32,10 @@ MARKDOWN = {
             'linenums' : False,
             'guess_lang' : False,
         },
+        "markdown.extensions.toc": {"title": "Table of Contents"},
     }
 }
 
-TOC = {
-    'TOC_HEADERS' : '^h[1-3]',  # What headers should be included in the generated toc
-                                # Expected format is a regular expression
-    'TOC_RUN'     : 'true'      # Default value for toc generation, if it does not evaluate
-                                # to 'true' no toc will be generated
-}
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
 SITEURL = 'https://informatics.fas.harvard.edu'

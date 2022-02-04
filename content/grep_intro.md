@@ -5,6 +5,7 @@ Author: Danielle Khost
 Tags: grep, unix
 Summary: This tutorial provides useful tips for using grep for bioinformatics
 
+[TOC]
 
 # Manipulating files with grep
 ## What is grep?

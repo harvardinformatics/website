@@ -6,6 +6,8 @@ Category: Software
 Tags: Genome Annotation, MAKER
 Summary: How to run MAKER on the FASRC Cluster
 
+[TOC]
+
 ## Introduction
 
 [MAKER](http://www.yandell-lab.org/software/maker.html)[^maker2]<sup>,</sup>[^maker] is a popular genome annotation pipeline for both prokaryotic and eukaryotic genomes.

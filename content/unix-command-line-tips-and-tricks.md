@@ -4,6 +4,8 @@ Category: Tutorials
 Tags: Unix
 Summary: This basic unix tutorial will get you up and running for making files, listing directories and running single commands.   It will show you what you need for about 80% of your command line work.
 
+[TOC]
+
 This basic unix tutorial will get you up and running for making files, listing directories and running single commands.   It will show you what you need for about 80% of your command line work.
 
 If you find yourself at the command line a lot and have a lot of files to process then there are built in features on the bash command line (or shell) to help you.

@@ -5,6 +5,8 @@ Tags: MiniLIMS
 Author: Michele Clamp
 Summary: Billing checks to do before invoicing.
 
+[TOC]
+
 Before invoices can be generated there are a set of billing checks that can be run that check everything is valid and can proceed to invoicing.  These things are : 
 
 * Each group has the right status (HARVARD,OUTSIDE_ACADEMIC,COMMERCIAL) 

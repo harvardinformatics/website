@@ -5,6 +5,8 @@ Category: Software
 Tags: PICRUSt, Python, Odyssey, Anaconda
 Summary: Setup PICRUSt on Odyssey
 
+[TOC]
+
 From the [Picrust website](http://picrust.github.io/picrust/):
 
     PICRUSt (pronounced “pie crust”) is a bioinformatics software package 

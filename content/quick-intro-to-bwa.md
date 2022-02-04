@@ -5,6 +5,8 @@ Author: Nathan Weeks
 Tags: grep, unix
 Summary: This tutorial provides a basic overview of using bwa to align fastqs to a reference genome
 
+[TOC]
+
 ## Aligning Reads to a Reference Genome with BWA
 ### Bioinformatics Coffee Chat - April 7, 2020
 ### Programs used in this session

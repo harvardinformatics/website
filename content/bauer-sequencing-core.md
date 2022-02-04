@@ -5,6 +5,8 @@ Author: Michele Clamp
 Tags: Next-Gen Sequencing, Bauer Core
 Summary: Our core sequencing service has two Illumina HiSeqs and a MiSeq.  The FAS Informatics group is committed to providing a fast basecalling and QC service for all users of the facility.   Beyond this we strongly encourage people to [get in contact with us](mailto:informatics@fas.harvard.edu) and we’ll be happy to discuss things further.  We aim to work alongside researchers with the intention of spreading knowledge and enabling people to run analyses themselves.   As we grow we are building workflows and pipelines to enable more people to be self sufficient in bioinformatics analysis.
 
+[TOC]
+
 Our core sequencing service has two Illumina HiSeqs and a MiSeq.  The FAS Informatics group is committed to providing a fast basecalling and QC service for all users of the facility.   Beyond this we strongly encourage people to [get in contact with us](mailto:informatics@fas.harvard.edu) and we’ll be happy to discuss things further.  We aim to work alongside researchers with the intention of spreading knowledge and enabling people to run analyses themselves.   As we grow we are building workflows and pipelines to enable more people to be self sufficient in bioinformatics analysis.
 
 ## Support 
