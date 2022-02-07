@@ -46,13 +46,23 @@ If clone --recursive does not work (you might see a complaint about a non-existe
     git submodule init
     git submodule update
 
-### From the root of the project run the conversion with the specified theme:
+### For interactive development
 
-    make html
+	pelican -lrd
 
-### Then start the server
+Then point your browser to http://localhost:8000.
+Updates to content will automatically be reflected in the browser after a page reload.
 
-    make serve
+### To only build the site (e.g., for serving by a production http server), from the root of the git working tree execute
+
+    pelican [-d]
+
+The resulting static site will be generated in the `output/` directory.
+Add the `-d` option to this command if there is existing content in `output/` that you want removed.
+
+### To check the resulting site with pelican's built-in web server
+
+    pelican -l
 
 ### Should be visible from localhost:8000
 

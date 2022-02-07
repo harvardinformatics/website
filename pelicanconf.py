@@ -36,11 +36,14 @@ MARKDOWN = {
     }
 }
 
+THEME = 'informatics-theme'
+
 AUTHOR = u'Aaron Kitzmiller'
 SITENAME = u'Harvard FAS Informatics'
 SITEURL = 'https://informatics.fas.harvard.edu'
 TAGS_URL = 'tags.html'
-# PATH = 'content2'
+PATH = 'content'
+OUTPUT_RETENTION = [".gitignore"]
 BANNER = True
 BANNER_ALL_PAGES = False
 DISPLAY_PAGES_ON_MENU = True

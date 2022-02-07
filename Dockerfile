@@ -14,7 +14,7 @@ RUN pip3 install -r /tmp/requirements.txt
 WORKDIR /var/www
 RUN git clone --single-branch --recursive https://github.com/getpelican/pelican-plugins.git && (cd pelican-plugins/jinja2content && git checkout 483215d) && mkdir website
 ADD . website
-RUN cd website && pelican -D content -t informatics-theme -o /var/www/html
+RUN cd website && pelican -o /var/www/html
 RUN cp -r website/static/* /var/www/html
 
 CMD ["/usr/sbin/httpd","-DFOREGROUND"]
