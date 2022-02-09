@@ -10,7 +10,7 @@ Event-Duration: 3h
 Slug: informatics-training-october-2016
 
 
-![Introduction to Unix]({filename}/images/october-workshop-banner.png)
+![Introduction to Unix]({static}/images/october-workshop-banner.png)
 
 RC and Informatics are running a series of fall introductory workshops in October/November.    These are intended for users either new to the command line and the cluster and/or people who are embarking on RNA-Seq and transcriptome analysis.
 

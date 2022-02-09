@@ -7,4 +7,4 @@ Summary:  Walkthrough from data visualization workshop using ggplot2 in R
 
 Please find data for the workshop [here](/images/tanagercolordata.csv).
 
-[HTML file](/workshops/DataVizR_Fall2017.html)
+[HTML file]({attach}/workshops/DataVizR_Fall2017.html)

@@ -10,7 +10,7 @@ Event-Duration: 5h
 Slug: practical-python-odyssey-april-7-2017
 
 
-![Practical Python on Odyssey]({filename}/images/practical-python-banner.png)
+![Practical Python on Odyssey]({static}/images/practical-python-banner.png)
 
 <p>
 Learn the practical use of Python on the FAS Odyssey cluster by working through common challenges of the Python language and Odyssey environment. Topics will include file I/O, shell execution, Slurm job submission, package installation, virtual environments, and parallel execution.

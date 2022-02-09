@@ -10,7 +10,7 @@ Event-Duration: 3h
 Slug: informatics-training-february-2016
 
 
-![Introduction to Unix]({filename}/images/intro-to-unix-banner-feb-2016.png)
+![Introduction to Unix]({static}/images/intro-to-unix-banner-feb-2016.png)
 
 We are presenting 3 workshops in February 2016.  These are aimed at people completely new to unix and the command line and will cover
 

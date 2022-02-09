@@ -35,17 +35,6 @@ If you want to build it without Docker, you have to do all this setup stuff.
 
     pip install --user -r requirements.txt
 
-### Install the pelican plugins (the pelicanconf.py file assumes it is cloned at the same level as this repo)
-
-    cd ..
-    git clone --recursive https://github.com/getpelican/pelican-plugins
-
-If clone --recursive does not work (you might see a complaint about a non-existent plugin), you may need to manually init and update the submodule:
-
-    cd pelican-plugins/pelican-toc
-    git submodule init
-    git submodule update
-
 ### For interactive development
 
 	pelican -lrd

@@ -14,13 +14,13 @@ This tutorial is intended for people who are familiar with the basics of unix bu
 about manipulating files and running commands.
 
 *   A Harvard FAS RC cluster account 
-    [https://account.rc.fas.harvard.edu/request/](account-request>)
+    <https://portal.rc.fas.harvard.edu/request/>
 
 *   A terminal program so you can log into the cluster 
-    [https://rc.fas.harvard.edu/resources/access-and-login/](access-and-login>)
+    <https://docs.rc.fas.harvard.edu/kb/terminal-access/>
 
 *   The ability to log into the cluster 
-    [https://rc.fas.harvard.edu/resources/access-and-login/](access-and-login>)
+    <https://rc.fas.harvard.edu/docs/access-and-login.html>
 
 *   <b>Familiarity with basic unix commands involving files (cp, rm , mv, cat, less, ls)
 and/or have attended the ‘Basic Unix’ workshop previously.</b>

@@ -1,7 +1,7 @@
 Title: What computing resources are available to FAS and HSPH?
 Date: 2015-10-06 11:00
 Category: FAQ
-Summary:The Cannon cluster serves Harvard’s Faculty of Arts and Science (FAS) and School of Public Health (HSPH).  For more information, see the [RC Website](rc_site>)
+Summary:The Cannon cluster serves Harvard’s Faculty of Arts and Science (FAS) and School of Public Health (HSPH).  For more information, see the [RC Website](https://www.rc.fas.harvard.edu/)
 
 The Cannon cluster serves Harvard’s Faculty of Arts and Science (FAS) and School of Public Health (HSPH). 
 

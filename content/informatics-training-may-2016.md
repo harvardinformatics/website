@@ -10,7 +10,7 @@ Event-Duration: 3h
 Slug: informatics-training-may-2016
 
 
-![Introduction to Unix]({filename}/images/bioinformatics-workshops-may-2016.png)
+![Introduction to Unix]({static}/images/bioinformatics-workshops-may-2016.png)
 
 We are presenting 3 workshops in May 2016. These are aimed at people with a good grounding in unix and the command line but are new to bioinformatics analysis. 
 

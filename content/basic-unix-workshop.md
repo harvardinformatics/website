@@ -10,13 +10,13 @@ Summary: This tutorial is intended for people completely new to unix and command
 ## Prerequisites
 
 *   A Harvard FAS RC cluster account 
-    [https://account.rc.fas.harvard.edu/request/](account-request>)
+    <https://portal.rc.fas.harvard.edu/request/>
 
 *   A terminal program so you can log into the cluster 
-    [https://rc.fas.harvard.edu/docs/access-and-login.html](access-and-login>)
+    <https://docs.rc.fas.harvard.edu/kb/terminal-access/>
 
 *   The ability to log into the cluster 
-    [https://rc.fas.harvard.edu/docs/access-and-login.html](access-and-login>)
+    <https://rc.fas.harvard.edu/docs/access-and-login.html>
 
 
 
