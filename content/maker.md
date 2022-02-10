@@ -1,12 +1,14 @@
 Title: MAKER on the FASRC Cluster
 Date: 2019-06-18
-Modified: 2021-06-23
+Modified: 2022-02-10
 Author: Nathan Weeks
 Category: Software
 Tags: Genome Annotation, MAKER
 Summary: How to run MAKER on the FASRC Cluster
 
-[TOC]
+** _Note: See <https://github.com/harvardinformatics/GenomeAnnotation> for an updated comparision of software tools and approaches for genome annotation_ **
+
+---
 
 ## Introduction
 
@@ -80,48 +82,12 @@ This image was created from the MAKER [Biocontainers](https://biocontainers.pro)
 
 ## Example Job Script
 
-There are two approaches to running MAKER on the FASRC cluster: (1) entirely with in a container on a single compute node (more reliable, but slower) and  (2) on multiple compute nodes (launched using MPI from outside of the container; susceptible to conflicts with the user environment).
-Either example job script must be submitted (via sbatch) from a directory on a file system that is mounted on all compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
-The MAKER datastore directory will be created in the directory this job script is submitted from (named using the reference sequence file name prefix, and ending in *-output).
-
-### Example Single-Compute-Node MAKER Job Script
-
-The single-node approach is considered more robust (though less scalable), and is recommended if your if you have environment variables set in bash startup files (e.g., `LD_LIBRARY_PATH` or Perl-related environment variables) that may interfere with the operation of software in the MAKER container.
-
-    :::sh
-    #!/bin/sh
-    # Customize --time and --partition as appropriate.
-    # --exclusive --mem=0 allocates all CPUs and memory on the node.
-    #SBATCH --partition=shared
-    #SBATCH --nodes=1
-    #SBATCH --mem=0
-    #SBATCH --exclusive
-    #SBATCH --time=0:30:00
-
-    MAKER_IMAGE=/n/singularity_images/informatics/maker/maker:3.01.03-repbase.sif
-
-    # Submit this job script from the directory with the MAKER control files
-
-    # RepeatMasker setup (if not using RepeatMasker, optionally comment-out these three lines)
-    export SINGULARITYENV_LIBDIR=${PWD}/LIBDIR
-    mkdir -p LIBDIR
-    singularity exec ${MAKER_IMAGE} sh -c 'ln -sf /usr/local/share/RepeatMasker/Libraries/* LIBDIR'
-
-    # singularity options:
-    # * --cleanenv : don't pass environment variables to container (except those specified in --env option-arguments)
-    # * --no-home : don't mount home directory (if not current working directory) to avoid any application/language startup files
-    # * --home /root : use /root as HOME (location of GeneMark license (.gm_key) in container image)
-    # Add any MAKER options after the "maker" command
-    # * -nolock reduces file creation overhead (lock files not needed when using MPI)
-    # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
-    # * -fix_nucleotides needed for hsap_contig.fasta example data
-    singularity exec --no-home --home /root --cleanenv ${MAKER_IMAGE} mpiexec -n ${SLURM_JOB_CPUS_PER_NODE} maker -fix_nucleotides -nolock -nodatastore
-
-### Example Multi-Compute-Node MAKER Job Script 
-
 In the following job script, MAKER can scale across multiple nodes in the FAS RC cluster by increasing the sbatch `--ntasks` value (which indicates the total number of processor cores, or "CPUs", to allocate across any number of compute nodes).
 Increase `--ntasks` may cause the job to take longer to schedule and start.
 See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#Slurm_partitions) for a description of limits on jobs submitted to available Slurm partitions.
+
+This example job script must be submitted (via sbatch) from a directory on a file system that is mounted on all compute nodes (e.g., directories prefixed with /n/, such as /n/scratchlfs).
+The MAKER datastore directory will be created in the directory this job script is submitted from (named using the reference sequence file name prefix, and ending in *-output).
 
     :::sh
     #!/bin/sh
@@ -138,9 +104,6 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     # Remove any environment modules
     module purge
 
-    # Use Intel MPI for the "mpiexec" command
-    module load intel/21.2.0-fasrc01 impi/2021.2.0-fasrc01
-
     # RepeatMasker setup (if not using RepeatMasker, optionally comment-out these three lines)
     mkdir -p LIBDIR
     singularity exec ${MAKER_IMAGE} sh -c 'ln -sf /usr/local/share/RepeatMasker/Libraries/* LIBDIR'
@@ -154,7 +117,7 @@ See FAS RC [Slurm Partitions](https://docs.rc.fas.harvard.edu/kb/running-jobs/#S
     # * -nolock reduces file creation overhead (lock files not needed when using MPI)
     # * -nodatastore is suggested for Lustre, as it reduces the number of directories created
     # * -fix_nucleotides needed for hsap_contig.fasta example data
-    mpiexec -n ${SLURM_NTASKS} singularity exec --no-home --home /root ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
+    srun --mpi=pmi2 singularity exec --no-home --home /root ${MAKER_IMAGE} maker -mpi -fix_nucleotides -nolock -nodatastore
 
 ## Troubleshooting
 
@@ -178,7 +141,7 @@ ERROR: Chunk failed at level:8, tier_type:3
 FAILED CONTIG:Chr4
 ```
 MAKER has been observed to continue execution, but not make progress.
-It is recommended to cancel the job (`scancel <jobid>`), increase the amount of memory per process (for single-node job script: decrease the number of processes; e.g., `...mpiexec -n $((SLURM_CPUS_PER_TASK*3/4))...`; for multi-node job script: increase the `#SBATCH --mem-per-cpu=` option-argument).
+It is recommended to cancel the job (`scancel <jobid>`), and increase the amount of memory per process (i.e., the `#SBATCH --mem-per-cpu=` option-argument) before resubmitting.
 
 ---
 
