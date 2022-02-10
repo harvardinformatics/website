@@ -3,20 +3,6 @@
 from datetime import datetime
 from dateutil.tz import tzlocal
 
-#PLUGIN_PATHS = ['../pelican-plugins/']
-#PLUGINS = ['tag_cloud.tag_cloud',
-#           'tipue_search',
-#          'events',
-#           'jinja2content',
-#           ]
-
-PLUGIN_EVENTS = {
-    'ics_fname': 'calendar.ics',
-}
-
-KNITR_OPTS_CHUNK = {
-    'fig.path': 'images/',
-}
 # MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 MARKDOWN = {
     'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta','markdown.extensions.footnotes'],
