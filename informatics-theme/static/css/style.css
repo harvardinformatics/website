@@ -61,6 +61,10 @@ code {
 	background-color: transparent;
 	color: #c7254e;
 }
+/* override bootstrap; do't wrap <pre><code> blocks */
+pre code {
+    white-space: pre;
+}
 h1 {
 	font-size: 28px;
 	font-weight: bold;
