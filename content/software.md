@@ -7,7 +7,7 @@ Summary: Software support at FAS Informatics
 
 <p>
 Formal(ish) software development is represented in FAS Informatics by Software Operations, a group of software developers that work closely with Informatics scientific staff and FAS Research Computing to enable scientists and core staff to take advantage of the massive Cannon research computing infrastructure.
-</p
+</p>
 <div class="content-section">
     <div class="bullet-title-img-div"><img class="bullet-title-img" src="/images/application-icon-6550.png"/></div>
     <div class="bullet-title">Scientific Software</div>

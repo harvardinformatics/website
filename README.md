@@ -31,32 +31,29 @@ Regardless of whether you are using Docker, once you're satisfied, just check yo
 ## Building the website the hard way
 If you want to build it without Docker, you have to do all this setup stuff.
 
-### Install pelican and markdown (python 2.7 required)
+### Create / activate virtual environment; install pelican & dependencies
 
-    pip install pelican markdown beautifulsoup4 icalendar
+    python3 -m venv venv
+    source venv/bin/activate
+    python3 -m pip install --no-cache-dir -r requirements.txt
 
-### Install the pelican plugins (the pelicanconf.py file assumes it is cloned at the same level as this repo)
+### For interactive development
 
-    cd ..
-    git clone --recursive https://github.com/getpelican/pelican-plugins
+	pelican -lrd
 
-If clone --recursive does not work (you might see a complaint about a non-existent plugin), you may need to manually init and update the submodule:
+Then point your browser to http://localhost:8000.
+Updates to content will automatically be reflected in the browser after a page reload.
 
-    cd pelican-plugins/pelican-toc
-    git submodule init
-    git submodule update
+### To only build the site (e.g., for serving by a production http server), from the root of the git working tree execute
 
-### From the root of the project run the conversion with the specified theme:
+    pelican [-d]
 
-    cd website 
-    pelican content -t `pwd`/informatics-theme -o output
+The resulting static site will be generated in the `output/` directory.
+Add the `-d` option to this command if there is existing content in `output/` that you want removed.
 
-### Then go to the output directory and start the server
+### To check the resulting site with pelican's built-in web server
 
-    cd output && python -m pelican.server
-
-### Or use a one-liner
-    pelican content -t `pwd`/informatics-theme -o output && (cd output && python -m pelican.server)
+    pelican -l
 
 ### Should be visible from localhost:8000
 

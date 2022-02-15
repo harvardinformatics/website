@@ -5,6 +5,8 @@ Author: Michele Clamp
 Tags: IGV, Visualization
 Summary: This tutorial provides useful tips for IGV analysis.
 
+[TOC]
+
 ## Prerequisites and Installation.
 
 Note:  The IGV user guide [http://www.broadinstitute.org/software/igv/UserGuide](http://www.broadinstitute.org/software/igv/UserGuide) is extremely good and has all this information and much more.  

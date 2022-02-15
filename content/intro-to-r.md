@@ -5,6 +5,8 @@ Author: Tim Sackton
 Tags: R
 Summary: This is a basic introduction to the R programming language.  The tutorial is not specific to Linux or the Cannon cluster.
 
+[TOC]
+
 R is a functional programming language, which means that most of what one does is apply functions to objects.
 
 We will begin with a brief introduction to R objects and how functions work, and then focus on getting data into R, manipulating that data in R, and generating basic summary statistics.

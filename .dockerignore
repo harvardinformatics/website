@@ -3,6 +3,7 @@
 README.md
 .dockerignore
 Dockerfile
+output
 
 #
 # OS X

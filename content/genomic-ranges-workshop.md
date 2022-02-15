@@ -5,6 +5,7 @@ Author: Michele Clamp
 Tags: Genome, R, bedtools
 Summary: This tutorial provides useful tips for manipulating genomic range data.
 
+[TOC]
 
 Many kinds of genomic data can be represented as **ranges**:
 

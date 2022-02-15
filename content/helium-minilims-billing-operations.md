@@ -5,6 +5,7 @@ Tags: Helium
 Author: Michele Clamp
 Summary: Billing through the Helium MiniLIMS
 
+[TOC]
 
 The Helium LIMS tracks dewars (Helium_Dewar, Helium_Dewar_Request) that have been requested and delivered.  When they are delivered they are weighed and  the reading saved Helium_Dewar_Reading).  At the end of the month these delivered dewars are charged by the volume of Helium delivered.  This is calculated by converting from weight to volume of Helium liquid. 
 

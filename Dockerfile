@@ -1,18 +1,16 @@
-FROM centos:7
+FROM python:3.10-slim-bullseye AS pelican
 
 EXPOSE 80
-RUN yum -y install epel-release
-RUN yum -y install git python python2-pip httpd
+RUN apt update && apt install -y --no-install-recommends git \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN echo -e "ServerName ${HOSTNAME}\n" >> /etc/httpd/conf/httpd.conf
+ADD requirements.txt requirements.txt
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
-ADD requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+WORKDIR /app
+COPY . .
+RUN pelican
 
-WORKDIR /var/www
-RUN git clone --recursive https://github.com/getpelican/pelican-plugins.git && (cd pelican-plugins/jinja2content && git checkout 130bdd8466) && mkdir website
-ADD . website
-RUN cd website && pelican -D content -t informatics-theme -o /var/www/html
-RUN cp -r website/static/* /var/www/html
+FROM httpd:2.4.52-alpine
 
-CMD ["/usr/sbin/httpd","-DFOREGROUND"]
+COPY --from=pelican /app/output/ /usr/local/apache2/htdocs/

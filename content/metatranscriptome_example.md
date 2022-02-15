@@ -223,7 +223,7 @@ Then, run the KronaTools command "ktImportText" on this text file to generate an
 
 A screen capture of the generated html file is shown below.
 
-![abundance_profile.krona]({filename}/images/abundance_profile.krona.png)  
+![abundance_profile.krona]({static}/images/abundance_profile.krona.png)  
 
 
 

@@ -6,6 +6,8 @@ Category: Software
 Tags: Multiple Sequence Alignment, Singularity
 Summary: How to run Cactus on the FASRC Cluster
 
+[TOC]
+
 ## Introduction
 
 [Cactus](https://github.com/ComparativeGenomicsToolkit/cactus) performs Multiple Sequence Alignment on whole genomes.

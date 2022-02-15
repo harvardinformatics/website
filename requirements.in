@@ -1,0 +1,6 @@
+Markdown
+git+https://github.com/getpelican/pelican-plugins/#egg=pelican-tipue-search&subdirectory=tipue_search
+icalendar # for events
+pelican
+pelican-jinja2content
+pelican-tag-cloud

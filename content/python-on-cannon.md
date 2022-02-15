@@ -5,6 +5,8 @@ Category: Software
 Tags: Unix, Python, Cannon
 Summary: Using Python on the Cannon cluster
 
+[TOC]
+
 This page describes the use of Python on the Cannon cluster.  See also the [RC Website](https://www.rc.fas.harvard.edu/resources/documentation/software-on-the-cluster/python/)
 
 ## The Cannon system Python is 2.7.5 and you can't do much with it

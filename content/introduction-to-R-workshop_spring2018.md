@@ -7,4 +7,4 @@ Summary:  Walkthrough from the Introduction to R workshop
 
 Please find data for the workshop [here](/images/prep_data.R). You will need to source this file as indicated in the tutorial. Please make sure the tidyverse package is installed prior to sourcing.
 
-[HTML file](/workshops/Introduction_to_R_Spring2018.html)
+[HTML file]({attach}/workshops/Introduction_to_R_Spring2018.html)

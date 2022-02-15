@@ -5,6 +5,7 @@ Tags: Next-Gen Sequencing, Bauer Core, MiniLIMS
 Author: Michele Clamp
 Summary: How to add a new Sequencing Price to the Bauer Core MiniLIMS system
 
+[TOC]
 
 ## Create a new Sequencing Price record
 
