@@ -31,9 +31,11 @@ Regardless of whether you are using Docker, once you're satisfied, just check yo
 ## Building the website the hard way
 If you want to build it without Docker, you have to do all this setup stuff.
 
-### Install pelican and markdown (python 3.x required)
+### Create / activate virtual environment; install pelican & dependencies
 
-    pip install --user -r requirements.txt
+    python3 -m venv venv
+    source venv/bin/activate
+    python3 -m pip install --no-cache-dir -r requirements.txt
 
 ### For interactive development
 

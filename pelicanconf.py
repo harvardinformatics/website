@@ -82,5 +82,5 @@ DIRECT_TEMPLATES = ['search','index','archives','tags']
 
 CUTOFF_DATE = datetime(2090, 1, 1, 0, 0, 0, tzinfo=tzlocal())
 
-IGNORE_FILES = ['includes']
+IGNORE_FILES = ['includes', 'venv']
 JINJA2CONTENT_TEMPLATES = ['includes']
