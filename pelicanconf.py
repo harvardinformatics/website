@@ -3,7 +3,6 @@
 from datetime import datetime
 from dateutil.tz import tzlocal
 
-# MD_EXTENSIONS = (['codehilite(use_pygments=True)','fenced_code'])
 MARKDOWN = {
     'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta','markdown.extensions.footnotes'],
     'extension_configs' : {
