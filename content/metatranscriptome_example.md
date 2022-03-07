@@ -252,7 +252,7 @@ Trinity writes out large intermediate files, so make sure you run the jobs on ap
 
 The results are in output folder with ".trinity_results" suffix; the main output is the Fasta with the assembled transcripts, "Trinity.fasta".
 
-In order to annotate these transcripts, you can use the [Trinotate](https://trinotate.github.io/) tool (from the same group who produced Trinity): an example workflow for Trinotate can be found in this [document](trinotate-workflow-example-on-odyssey.html). 
+In order to annotate these transcripts, you can use the [Trinotate](https://trinotate.github.io/) tool (from the same group who produced Trinity)<!--: an example workflow for Trinotate can be found in this [document](trinotate-workflow-example-on-odyssey.html)-->. 
 
 
 #### 6 References
