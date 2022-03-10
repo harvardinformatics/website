@@ -5,6 +5,9 @@ Author: Allison Shultz
 Tags: Genomics, Next-gen Sequencing, Whole Genome Resequencing, GATK
 Summary:  This tutorial will help users go from raw FASTQ sequencing files to analysis-read VCF files.
 
+## Automating with Snakemake
+We are currently developing a Snakemake-driven workflow for automating short read mapping and variant calling. For more information, see [snpArcher](https://github.com/harvardinformatics/snpArcher) on GitHub.
+
 ## Table of Contents
 [Whole-genome Pop Gen Sequencing Overview](#overview)<br>
 [Experimental Design](#design)<br>
