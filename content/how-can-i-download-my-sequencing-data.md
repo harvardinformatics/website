@@ -212,11 +212,13 @@ If downloading to your local computer, [wget](https://www.gnu.org/software/wget/
 
 _**Who**_
 
-* Users without a FAS RC account, _and_ who prefer to not use rclone (faster) or Globus (fastest).
+Users without a FAS RC account, _and_ who prefer to not use rclone (faster) or Globus (fastest).
+
+_**How**_
 
     wget -r -nH --cut-dirs=1 --no-parent -e robots=off  --no-check-certificate --reject="index.htm*" https://data.rc.fas.harvard.edu/ngsdata/<run_name>/
 
-**NOTE: the trailing slash (`<run_name>/`) is necessary to download only `<run_name>` and not the entire contents of `/ngsdata/**`
+*NOTE: the trailing slash (`<run_name>/`) is necessary to download only `<run_name>` and not the entire contents of `/ngsdata/*`*
 
 We use InCommon certificates that may or may not be part of the trusted authorities on your local machine, so --no-check-certificate may be necessary.
 
