@@ -1,3 +1,3 @@
 #!/bin/sh
 pelican
-pelican -l
+pelican --listen --bind 0.0.0.0 --port 8000
