@@ -144,6 +144,44 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear:both;"></div>
 </div>
 
+### Gregg Thomas
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/gregg.jpg">
+                          <img class="img-responsive" src="/images/gregg.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Computational biologist specializing in comparative genomics and phylogenetics.
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+
+### Rawan Olayan
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/rawan.jpg">
+                          <img class="img-responsive" src="/images/rawan.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Computational biologist specializing in single cell RNA-seq.
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+
 ### Alexandria D'Souza
 <div>
         <div class="team-photo">
@@ -165,68 +203,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear:both;"></div>
 </div>
 
-### Scott Van Buren
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/scott.jpg">
-                          <img class="img-responsive" src="/images/scott.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                 Bioinformatics Scientist working with Dr. Catherinc Dulac’s lab to help catalog and understand the diversity and function of cell types in the mouse brain."
-                </p>
-                <p>
-                <a href="mailto:skvanburen@g.harvard.edu">skvanburen at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
-### Sara Wuitchik
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/sara.jpg">
-                          <img class="img-responsive" src="/images/sara.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                 Bioinformatics postdoc, co-advised by Mike Sorenson (BU Biology), researching the comparative genomics of obligate brood parasitism in birds. She earned her B.Sc. in Marine Biology & Oceanography from the University of Victoria and her Ph.D. in Ecology & Evolutionary Biology from the University of Calgary."
-                </p>
-                <p>
-                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
-### Alejandro Llanos Garrido
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/alex.jpg">
-                          <img class="img-responsive" src="/images/alex.jpg"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                 Postdoc funded by Real Colegio Complutense at Harvard, working on population genetics to understand the role of genetic diversity in shaping the distributional patterns of different species."
-                </p>
-                <p>
-                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
 
 
 ## Alumni
@@ -392,6 +368,69 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
         <div style="clear:both;"></div>
 </div>
 
+
+### Scott Van Buren
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/scott.jpg">
+                          <img class="img-responsive" src="/images/scott.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Bioinformatics Scientist working with Dr. Catherinc Dulac’s lab to help catalog and understand the diversity and function of cell types in the mouse brain."
+                </p>
+                <p>
+                <a href="mailto:skvanburen@g.harvard.edu">skvanburen at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Sara Wuitchik
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/sara.jpg">
+                          <img class="img-responsive" src="/images/sara.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Bioinformatics postdoc, co-advised by Mike Sorenson (BU Biology), researching the comparative genomics of obligate brood parasitism in birds. She earned her B.Sc. in Marine Biology & Oceanography from the University of Victoria and her Ph.D. in Ecology & Evolutionary Biology from the University of Calgary."
+                </p>
+                <p>
+                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+### Alejandro Llanos Garrido
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/alex.jpg">
+                          <img class="img-responsive" src="/images/alex.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Postdoc funded by Real Colegio Complutense at Harvard, working on population genetics to understand the role of genetic diversity in shaping the distributional patterns of different species."
+                </p>
+                <p>
+                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
 
 ## Where to find us
 Informatics and Scientific Applications is located on the first floor of 38 Oxford Street, Cambridge, MA 02138. Please note that this building is not actually on Oxford Street. It is located just to the east (or behind) the Northwest Labs, and just north of the Biological Labs. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=38+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=38+&amp;hnear=38+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
