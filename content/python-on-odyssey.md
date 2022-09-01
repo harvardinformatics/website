@@ -5,6 +5,9 @@ Category: Software
 Tags: Unix, Python, Odyssey
 Summary: Using Python on the Odyssey cluster
 
+<h1>The content in this page is out-of-date, and is for historical purposes only.
+Please see the latest FAS RC Python documentation at <a href="https://docs.rc.fas.harvard.edu/kb/python/" target="_blank">https://docs.rc.fas.harvard.edu/kb/python/</a></h1>
+
 [TOC]
 
 *Updated for Odyssey 3*
