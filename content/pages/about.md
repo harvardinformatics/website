@@ -11,7 +11,7 @@ A large part of our remit is to smooth the path of scientific discovery by worki
 
 The Informatics group provides bioinformatics analysis support for all users of the Core Sequencing facility and to FAS faculty groups regardless of the origin of their data.    In addition we have the responsibility for sample submission, tracking, scheduling and billing services for many of the core instrument facilities across FAS.
 
-We are small in number and try to cover the needs of as many people across campus as possible.  This means, however, that we can’t provide in-depth or long-term analysis services for single groups.   In these cases we encourage PIs to budget for a bioinformatics post-doc in their grant applications.   We are very happy to provide letters of support and text detailing our expertise,  and outlining possible analyses in grant applications.   Additionally Scott Yockel in Research Computing is happy to provide letters of support for computational hardware.
+We are small in number and try to cover the needs of as many people across campus as possible.  This means, however, that we can’t provide in-depth or long-term analysis services for single groups.   In these cases we encourage PIs to budget for a bioinformatics post-doc in their grant applications.   We are very happy to provide letters of support and text detailing our expertise,  and outlining possible analyses in grant applications. 
 
 
 ## Team
