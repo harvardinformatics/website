@@ -58,27 +58,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear: both;"></div>
 </div>
 
-### Meghan Porter-Mahoney
-<div>
-        <div class="team-photo">
-                <figure>
-                        <a class="img" href="/images/meghan.png">
-                          <img class="img-responsive" src="/images/meghan.png"></img>
-                        </a>
-                    <figcaption></figcaption>
-                </figure>
-        </div>
-        <div class="team-blurb">
-                <p>
-                Senior Software Engineer BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
-                </p>
-                <p>
-                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
-                </p>
-        </div>
-        <div style="clear:both;"></div>
-</div>
-
 ### Adam Freedman
 <div>
         <div class="team-photo">
@@ -182,6 +161,50 @@ We are small in number and try to cover the needs of as many people across campu
 </div>
 
 
+### David D'Antonio
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/DDA.jpg">
+                          <img class="img-responsive" src="/images/DDA.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Research Application Developer designing and building applications to support the Cores. He's been doing web design development since the days of the Standards Wars.
+                </p>
+                <p>
+                <a href="mailto:dcdantonio@fas.harvard.edu">dcdantonio at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
+## Alumni
+
+### Meghan Porter-Mahoney
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/meghan.png">
+                          <img class="img-responsive" src="/images/meghan.png"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                Senior Software Engineer BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
+                </p>
+                <p>
+                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
 ### Alexandria D'Souza
 <div>
         <div class="team-photo">
@@ -194,7 +217,7 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div class="team-blurb">
                 <p>
-                 Bioinformatician working on proteomics analysis, in particular to support quantitative and computational work with the Woo Lab in the Chemistry and Chemical Biology department."
+                 Bioinformatician working on proteomics analysis, in particular to support quantitative and computational work with the Woo Lab in the Chemistry and Chemical Biology department.
                 </p>
                 <p>
                 <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
@@ -202,10 +225,6 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div style="clear:both;"></div>
 </div>
-
-
-
-## Alumni
 
 ### Michele Clamp
 
@@ -433,9 +452,9 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
 </div>
 
 ## Where to find us
-Informatics and Scientific Applications is located on the first floor of 38 Oxford Street, Cambridge, MA 02138. Please note that this building is not actually on Oxford Street. It is located just to the east (or behind) the Northwest Labs, and just north of the Biological Labs. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=38+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=38+&amp;hnear=38+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
+Informatics and Scientific Applications is located on the second basement floor of 52 Oxford Street, Cambridge, MA 02138 aka the Northwest Labs building. Click [here](http://map.harvard.edu/?ctrx=760110&amp;ctry=2963613&amp;level=8&amp;layers=Campus%20Base%20and%20Buildings,Map%20Text&amp;bld=04350) for an interactive map and click [here](https://maps.google.com/maps?q=52+Oxford+St,+Cambridge,+MA&amp;hl=en&amp;ll=42.379391,-71.113311&amp;spn=0.006221,0.011297&amp;sll=42.37839,-71.114729&amp;sspn=0.099544,0.180759&amp;oq=52+&amp;hnear=52+Oxford+St,+Cambridge,+Massachusetts+02138&amp;t=m&amp;z=17) for a Google map.
 
-Use the entrance on the southwest corner of the building (marked in the map below), which is unlocked during regular business hours. Climb the ramp and go through the doors, then follow the hallway to our communal meeting area.
+Use the main entrance the building (marked in the map below), which is unlocked during regular business hours. Use the elevator or go down the stairs to the second basement floor. Our office area is through the _right_ set of double doors and then take a right. If you see the Bauer Core, turn around.
 
 If you are planning to drive, please be advised that on-street parking is very limited and University-owned lots require a pre-paid day [permit](https://www2.uos.harvard.edu/cgi-bin/permit/purchase.pl). We strongly urge using public transportation.
 
@@ -444,10 +463,10 @@ If you are planning to drive, please be advised that on-street parking is very l
 
 ###Directions
 **By Public Transportation**
-Take the Red Line to the Harvard Square stop, and choose the “Church Street” exit. Exit through the turnstiles and up the stairway on your left, which leads to Harvard Yard. Walk through the gate into Harvard Yard and proceed straight ahead to the statue of John Harvard. From here take the path to your left, exit the Yard, and veer slightly to the right. The Science Center (a large, concrete structure with a rock formation in front) will be on your left, and Memorial Hall (a large, ornate red brick building with a tall steeple) on your right. This path will take you to the intersection of Kirkland and Oxford Streets. Cross the street, and proceed left down Oxford Street. You will see the Harvard Museum of Natural History on your right. Take the first path on the right after the Museum and follow to the [main entrance of the Northwest Building](http://rc.fas.harvard.edu/wp-content/uploads/2011/09/Northwest-Building.jpg). When you get to the entrance of the Northwest Building turn right and follow the path that leads to the back of the building. When you get to the end of this path, the 38 Oxford Street building will be in front of you.
+Take the Red Line to the Harvard Square stop, and choose the “Church Street” exit. Exit through the turnstiles and up the stairway on your left, which leads to Harvard Yard. Walk through the gate into Harvard Yard and proceed straight ahead to the statue of John Harvard. From here take the path to your left, exit the Yard, and veer slightly to the right. The Science Center (a large, concrete structure with a rock formation in front) will be on your left, and Memorial Hall (a large, ornate red brick building with a tall steeple) on your right. This path will take you to the intersection of Kirkland and Oxford Streets. Cross the street, and proceed left down Oxford Street. You will see the Harvard Museum of Natural History on your right. Take the first path on the right after the Museum and follow it to the [main entrance of the Northwest Building](http://rc.fas.harvard.edu/wp-content/uploads/2011/09/Northwest-Building.jpg).
 
 **From the North**
-Take I-93 or Route 1 south toward Boston. Take the exit for “Storrow Drive-Cambridge.” Follow Storrow Drive west for approximately 4 miles. After approximately 2 miles Storrow Drive becomes Soldiers Field road. You will not notice any change. Stay in the right hand lane in order to avoid the many left hand exits off Storrow Drive until you reach the exit marked “Harvard Square/Cambridge.” Take the exit and go over the Charles River to the set of lights at Memorial Drive. Go straight ahead through the lights. You will now be on JFK Street. After you pass the intersection of JFK and Mt. Auburn Street, you will come to another set of lights where Nini’s Corner and The Coop are on the left, and Out of Town News and the subway “T” stop will be on your right. Go straight (veering slightly to the right) through these lights, passing Out of Town News. You will then approach another fork in the road — stay to the left of the fork and then immediately get into the right hand lane. This will take you onto Massachusetts Avenue, headed north. Go approximately 0.2 tenths of a mile past the Harvard Law School to Everett Street on your right. Turn right onto Everett Street and go to the next set of lights at Oxford Street. The building directly in front of you and beyond the lights is the Northwest Building. Behind that building is 38 Oxford Street.
+Take I-93 or Route 1 south toward Boston. Take the exit for “Storrow Drive-Cambridge.” Follow Storrow Drive west for approximately 4 miles. After approximately 2 miles Storrow Drive becomes Soldiers Field road. You will not notice any change. Stay in the right hand lane in order to avoid the many left hand exits off Storrow Drive until you reach the exit marked “Harvard Square/Cambridge.” Take the exit and go over the Charles River to the set of lights at Memorial Drive. Go straight ahead through the lights. You will now be on JFK Street. After you pass the intersection of JFK and Mt. Auburn Street, you will come to another set of lights where Nini’s Corner and The Coop are on the left, and Out of Town News and the subway “T” stop will be on your right. Go straight (veering slightly to the right) through these lights, passing Out of Town News. You will then approach another fork in the road — stay to the left of the fork and then immediately get into the right hand lane. This will take you onto Massachusetts Avenue, headed north. Go approximately 0.2 tenths of a mile past the Harvard Law School to Everett Street on your right. Turn right onto Everett Street and go to the next set of lights at Oxford Street. The building directly in front of you and beyond the lights is the Northwest Building.
 
 **From the South**
 Take I-93/Route 3 (South East Expressway) north and follow the above directions for Storrow Drive West.
