@@ -182,6 +182,27 @@ We are small in number and try to cover the needs of as many people across campu
         <div style="clear:both;"></div>
 </div>
 
+### Subir Shakya
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/SBS.jpg">
+                          <img class="img-responsive" src="/images/SBS.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Postdoctoral Fellow co-advised by Tim Sackton and Scott Edwards working on the evolution of enhancer elements in birds.
+                </p>
+                <p>
+                <a href="mailto:subirshakya@fas.harvard.edu">subirshakya at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
 ## Alumni
 
 ### Meghan Porter-Mahoney
