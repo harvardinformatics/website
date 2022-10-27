@@ -1,11 +1,11 @@
-Title: FAS Proteomics Core
-Date: 2016-01-01
+Title: Proteomics Core at Harvard Center for Mass Spectrometry
+Date: 2022-10-26
 Category: Cores
-Author: Michele Clamp
-Tags: Proteomics Core
-Summary: We provide sample submission, tracking and result delivery.    We can also provide access to common proteomics analysis tools such as ProteomeDiscoverer, MaxQuant and TPP.    We’re also happy to install other software as required.  For expert advice on analysis techniques we encourage people to contact Bogdan Budnik,  Sunia Trauger or Bill Lane in the Proteomics Core.
+Author: David D'Antonio
+Tags: Harvard Center for Mass Spectrometry
+Summary: We provide sample submission, tracking and result delivery.    We can also provide access to common proteomics analysis tools such as ProteomeDiscoverer, MaxQuant and TPP.    We’re also happy to install other software as required.  For expert advice on analysis techniques we encourage people to contact Bogdan Budnik,  Sunia Trauger or Bill Lane in the Proteomics Core at Harvard Center for Mass Spectrometry.
 
-We provide sample submission, tracking and result delivery.  We can also provide access to common proteomics analysis tools such as ProteomeDiscoverer, MaxQuant and TPP.  We’re also happy to install other software as required.  For expert advice on analysis techniques we encourage people to contact Bogdan Budnik,  Sunia Trauger or Bill Lane in the Proteomics Core.
+We provide sample submission, tracking and result delivery.  We can also provide access to common proteomics analysis tools such as ProteomeDiscoverer, MaxQuant and TPP.  We’re also happy to install other software as required.  For expert advice on analysis techniques we encourage people to contact Bogdan Budnik,  Sunia Trauger or Bill Lane in the Proteomics Core at Harvard Center for Mass Spectrometry.
 
 ## LIMS Procedures
 
