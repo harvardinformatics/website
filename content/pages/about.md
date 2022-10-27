@@ -205,7 +205,7 @@ We are small in number and try to cover the needs of as many people across campu
 
 ## Alumni
 
-### Meghan Porter-Mahoney
+### Meghan Correa
 <div>
         <div class="team-photo">
                 <figure>
@@ -218,9 +218,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div class="team-blurb">
                 <p>
                 Senior Software Engineer BA in Biochemistry and Molecular Biology, Boston University, MA in Information Technology Systems Management, Harvard University Extension School. Careers previous to software include: Molecular Biologist, Peace Corps Volunteer.
-                </p>
-                <p>
-                <a href="mailto:mportermahoney@g.harvard.edu">mportermahoney at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
@@ -239,9 +236,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div class="team-blurb">
                 <p>
                  Bioinformatician working on proteomics analysis, in particular to support quantitative and computational work with the Woo Lab in the Chemistry and Chemical Biology department.
-                </p>
-                <p>
-                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
@@ -279,9 +273,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div class="team-blurb">
                 <p>
                 Former Bioinformatics Scientist working on analyses of genomic data, specializing on population genomics. Currently Curator of Birds, LA County Museum. Learn more about her research on her <a href="http://www.allisonshultz.com">website</a>.</p>
-                <p>
-                <a href="mailto:ashultz@fas.harvard.edu">ashultz at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 
@@ -300,9 +291,6 @@ We are small in number and try to cover the needs of as many people across campu
         <div class="team-blurb">
                 <p>
                 Bioinformatics Scientist, specializing in data processing and genomic enrichment assays.</p>
-                <p>
-                <a href="mailto:jgaspar@fas.harvard.edu">jgaspar at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -320,9 +308,6 @@ We are small in number and try to cover the needs of as many people across campu
                 <p>
                 Bioinformatics Scientist working in collaborative projects with Boehringer Ingelheim on brain circuitry underlying symptom domains of relevance to the central nervous system. These projects involve various types of single cell Next generation sequencing data analysis, integration, and interpretation.
 He gained his B.Sc. in Biochemistry (Ege University), and M.Sc. in Bioinformatics from Boston University. He graduated from University of Massachusetts Medical school with a PhD degree in Bioinformatics and Computational Biology.</p>
-                <p>
-                <a href="mailto:yasinkaymaz@fas.harvard.edu">yasinkaymaz at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -360,9 +345,6 @@ Bioinformatics scientist working closely with Catherine Dulac's lab to catalog a
         <div class="team-blurb">
                 <p>
 Bioinformatics scientist working on population genetics across a diverse taxonomic range including bacteria, plants, and animals.</p>
-                <p>
-                <a href="mailto:barnold@hsph.harvard.edu">barnold at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -380,9 +362,6 @@ Bioinformatics scientist working on population genetics across a diverse taxonom
         <div class="team-blurb">
                 <p>
 Bioinformatics scientist working closely with Doug Melton's lab on single-cell RNA-seq and other methods. Also does proteomics.</p>
-                <p>
-                <a href="mailto:jstraubhaar@fas.harvard.edu">jstraubhaar at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -400,9 +379,6 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
         <div class="team-blurb">
                 <p>
                  Software Developer, building applications that support research throughout the Faculty of Arts and Sciences. Prior to joining the Informatics team, he worked as a developer, filmmaker, and educator.
-                </p>
-                <p>
-                <a href="mailto:andy_bryant@harvard.edu">andy_bryant at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
@@ -423,9 +399,6 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
                 <p>
                  Bioinformatics Scientist working with Dr. Catherinc Dulac’s lab to help catalog and understand the diversity and function of cell types in the mouse brain."
                 </p>
-                <p>
-                <a href="mailto:skvanburen@g.harvard.edu">skvanburen at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -444,9 +417,6 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
                 <p>
                  Bioinformatics postdoc, co-advised by Mike Sorenson (BU Biology), researching the comparative genomics of obligate brood parasitism in birds. She earned her B.Sc. in Marine Biology & Oceanography from the University of Victoria and her Ph.D. in Ecology & Evolutionary Biology from the University of Calgary."
                 </p>
-                <p>
-                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
-                </p>
         </div>
         <div style="clear:both;"></div>
 </div>
@@ -464,9 +434,6 @@ Bioinformatics scientist working closely with Doug Melton's lab on single-cell R
         <div class="team-blurb">
                 <p>
                  Postdoc funded by Real Colegio Complutense at Harvard, working on population genetics to understand the role of genetic diversity in shaping the distributional patterns of different species."
-                </p>
-                <p>
-                <a href="mailto:allanosgarrido@fas.harvard.edu">allanosgarrido at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
