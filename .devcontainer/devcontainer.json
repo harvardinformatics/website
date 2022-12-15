@@ -1,0 +1,12 @@
+{
+    "onCreateCommand": "pip install --user -r requirements.txt",
+    "postAttachCommand": {
+        "server": "pelican -lrd"
+    },
+    "portsAttributes": {
+        "8000": {
+            "label": "pelican",
+            "onAutoForward": "openPreview"
+        }
+    }
+}
