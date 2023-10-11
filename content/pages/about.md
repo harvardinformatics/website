@@ -218,7 +218,7 @@ We are small in number and try to cover the needs of as many people across campu
                  Lei Ma received her PhD from the MIT-WHOI Joint Program in Oceanography/Applied Ocean Science and Engineering. Her dissertation focused on the ecology of marine microorganisms in coral reefs and in Atlantic killifish. She is particularly interested in genotype-environment-microbiome interactions in animal hosts, such as the influence of host evolution on its microbiome. Other interests include mentoring, finding coding shortcuts, cats, video games, sci-fi, and knitting.
                 </p>
                 <p>
-                <a href="mailto:lei_ma@fas.harvard.edu">lei_ma at harvard</a>
+                <a href="mailto:lei_ma@g.harvard.edu">lei_ma at harvard</a>
                 </p>
         </div>
         <div style="clear:both;"></div>
