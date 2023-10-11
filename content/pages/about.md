@@ -173,7 +173,7 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div class="team-blurb">
                 <p>
-                 Research Application Developer designing and building applications to support the Cores. He's been doing web design development since the days of the Standards Wars.
+                 Senior Web Developer designing and building applications to support the Cores. He's been doing web design and development since the days of the Standards Wars.
                 </p>
                 <p>
                 <a href="mailto:dcdantonio@fas.harvard.edu">dcdantonio at harvard</a>
@@ -202,6 +202,28 @@ We are small in number and try to cover the needs of as many people across campu
         </div>
         <div style="clear:both;"></div>
 </div>
+
+### Lei Ma
+<div>
+        <div class="team-photo">
+                <figure>
+                        <a class="img" href="/images/LeiMa.jpg">
+                          <img class="img-responsive" src="/images/LeiMa.jpg"></img>
+                        </a>
+                    <figcaption></figcaption>
+                </figure>
+        </div>
+        <div class="team-blurb">
+                <p>
+                 Lei Ma received her PhD from the MIT-WHOI Joint Program in Oceanography/Applied Ocean Science and Engineering. Her dissertation focused on the ecology of marine microorganisms in coral reefs and in Atlantic killifish. She is particularly interested in genotype-environment-microbiome interactions in animal hosts, such as the influence of host evolution on its microbiome. Other interests include mentoring, finding coding shortcuts, cats, video games, sci-fi, and knitting.
+                </p>
+                <p>
+                <a href="mailto:lei_ma@fas.harvard.edu">lei_ma at harvard</a>
+                </p>
+        </div>
+        <div style="clear:both;"></div>
+</div>
+
 
 ## Alumni
 
