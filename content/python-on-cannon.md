@@ -5,6 +5,9 @@ Category: Software
 Tags: Unix, Python, Cannon
 Summary: Using Python on the Cannon cluster
 
+<h1>The content in this page is out-of-date, and is for historical purposes only.
+Please see the latest FAS RC Python documentation at <a href="https://docs.rc.fas.harvard.edu/kb/python/" target="_blank">https://docs.rc.fas.harvard.edu/kb/python/</a></h1>
+
 [TOC]
 
 This page describes the use of Python on the Cannon cluster.  See also the [RC Website](https://www.rc.fas.harvard.edu/resources/documentation/software-on-the-cluster/python/)

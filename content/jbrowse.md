@@ -23,7 +23,7 @@ A [Singularity](https://docs.rc.fas.harvard.edu/kb/singularity-on-the-cluster/) 
 The following sequence of commands initializes a config.json with a set of reference sequences, adds two tracks of files that refer to the reference sequence IDs, and sets the default session to a linear view of the chromosomes (note all files are assumed to be formatted appropriately; see [JBrowse data file formats](#jbrowse-data-file-formats)):
 
     :::bash
-    jbrowse_cli=/n/singularity_images/informatics/jbrowse/jbrowse2_v1.3.0.sif
+    jbrowse_cli=/cvmfs/singularity.galaxyproject.org/j/b/jbrowse2:2.3.2--hd6180af_0
     singularity exec ${jbrowse_cli} jbrowse add-assembly reference.fa.gz --load inPlace
     singularity exec ${jbrowse_cli} jbrowse add-track genes.sorted.gff3.gz --load inPlace
     singularity exec ${jbrowse_cli} jbrowse add-track variants.sorted.vcf.gz --load inPlace

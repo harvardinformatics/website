@@ -6,3 +6,4 @@ venv/
 .pydevproject
 .settings*
 
+*.code-workspace

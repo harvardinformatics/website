@@ -4,7 +4,13 @@ from datetime import datetime
 from dateutil.tz import tzlocal
 
 MARKDOWN = {
-    'extensions' : ['markdown.extensions.codehilite','markdown.extensions.fenced_code','markdown.extensions.meta','markdown.extensions.footnotes'],
+    'extensions' : [
+        'markdown.extensions.codehilite',
+        'markdown.extensions.fenced_code',
+        'markdown.extensions.meta',
+        'markdown.extensions.footnotes',
+        'markdown.extensions.tables'
+    ],
     'extension_configs' : {
         'markdown.extensions.codehilite' : {
             'use_pygments' : True,
